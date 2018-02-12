@@ -3,7 +3,7 @@
 <html>
   <head>
     {% block head %}
-      <title>{% block title %}{% endblock %} - Flask Super Example</title>
+      <title>{% block title %}{% endblock %} - Learning2Earn</title>
     {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -11,7 +11,7 @@
       .container {
         max-width: 700px;
       }
-      h2 {color: red;}
+	  .navbar {border-radius: 0px;}
     </style>
   </head>
   <body>
@@ -59,7 +59,7 @@
     </nav>
     <div class="container">
       {% block heading %}
-        <h1>{% block page %}{% endblock %} - Flask Super Example</h1>
+        <h1>{% block page %}{% endblock %}</h1>
       {% endblock %}
       <h2>This is part of my base template</h2>
       <br>

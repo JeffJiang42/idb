@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, Response, render_template
 from l2e_api import endpoints
 import datetime
 
@@ -13,8 +13,7 @@ app.jinja_env.filters['datetimefilter'] = datetimefilter
 
 @app.route("/")
 def template_test():
-    return render_template('template.html', my_string="Wheeeee!", 
-        my_list=[0,1,2,3,4,5], title="Index", current_time=datetime.datetime.now())
+    return render_template('index.html', title="Hello!")
 
 @app.route("/about")
 def about():
@@ -37,12 +36,14 @@ def degrees():
     return render_template('template.html', my_string="FooBar"
         , my_list=[18,19,20,21,22,23], title="Degree", current_time=datetime.datetime.now())
 		
-@app.route('/api/<endpoint>')
+@app.route("/api/<endpoint>")
 def api(endpoint=None):
-        if endpoint in endpoints:
-                return endpoints[endpoint]()
-        else:
-                return '{"error":"doesn\'t exist"}'
+    data = '{"error":"not found"}'
+    if endpoint in endpoints:
+        data = endpoints[endpoint]()
+    res = Response(data)
+    res.headers['Content-Type'] = 'application/json'
+    return res
 
 if __name__ == '__main__':
     app.run(debug=True)
