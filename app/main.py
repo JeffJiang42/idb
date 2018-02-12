@@ -17,13 +17,13 @@ def template_test():
 
 @app.route("/about")
 def about():
-    return render_template('template.html', my_string="Bar", 
+    return render_template('about.html', my_string="Bar", 
         my_list=[12,13,14,15,16,17], title="About", current_time=datetime.datetime.now())
 
 
 @app.route("/jobs")
 def jobs():
-    return render_template('template.html', my_string="Foo", 
+    return render_template('template.html', my_string="Foo",
         my_list=[6,7,8,9,10,11], title="Jobs", current_time=datetime.datetime.now())
 
 @app.route("/courses")
@@ -35,7 +35,7 @@ def courses():
 def degrees():
     return render_template('template.html', my_string="FooBar"
         , my_list=[18,19,20,21,22,23], title="Degree", current_time=datetime.datetime.now())
-		
+
 @app.route("/api/<endpoint>")
 def api(endpoint=None):
     data = '{"error":"not found"}'
