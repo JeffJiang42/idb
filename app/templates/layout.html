@@ -7,12 +7,7 @@
     {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <style type="text/css">
-      .container {
-        max-width: 700px;
-      }
-	  .navbar {border-radius: 0px;}
-    </style>
+	<link rel="stylesheet" href="{{ url_for('static',filename='stylesheet.css') }}">
   </head>
   <body>
     <nav class="navbar navbar-inverse" role="navigation">
@@ -32,20 +27,14 @@
             {{ nav_link('about', 'About') }}
             {{ nav_link('jobs', 'Jobs') }}
             {{ nav_link('courses', 'Courses') }}
-            {{ nav_link('degrees', 'Degrees') }}
+            {{ nav_link('subjects', 'Subjects') }}
 
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
     <div class="container">
-      {% block heading %}
-        <h1>{% block page %}{% endblock %}</h1>
-      {% endblock %}
-      <br>
       {% block content %}{% endblock %}
-      <br>
-      <br>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
