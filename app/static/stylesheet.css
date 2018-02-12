@@ -1,0 +1,9 @@
+.navbar { 
+	border-radius: 0;
+	margin-bottom: 0px;
+}
+.container {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	max-width: none;
+}
