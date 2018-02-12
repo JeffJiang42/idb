@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from l2e_api import endpoints
 import datetime
 
 app = Flask(__name__)
@@ -35,6 +36,13 @@ def courses():
 def degrees():
     return render_template('template.html', my_string="FooBar"
         , my_list=[18,19,20,21,22,23], title="Degree", current_time=datetime.datetime.now())
+		
+@app.route('/api/<endpoint>')
+def api(endpoint=None):
+        if endpoint in endpoints:
+                return endpoints[endpoint]()
+        else:
+                return '{"error":"doesn\'t exist"}'
 
 if __name__ == '__main__':
     app.run(debug=True)
