@@ -8,7 +8,26 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-  <h3> About learning2earn </h3>
+
+  <h2 align="center" style = "padding-top: 25px;padding-bottom: 25px">{{ heading }}</h3>
+
   <p>learning2earn is a website where those who want to learn can find online courses
   in subjects they are interested in, as well as linking those courses to relevant jobs</p>
+
+  {% for i in range(0,data_length) %}
+    <div class="card-deck">
+      <div class="card h-100">
+        <img class="card-img-top" src="" alt="Card image cap">
+        <div class="card-block">
+          <h4 class="card-title">{{data[i]['name']}}</h4>
+          <p class="card-text"><b>Bio: </b>Generic bio here</p>
+          <p class="card-text"><b>Responsibilities: </b> Showing up to work</p>
+          <p class="card-text"># of Commits: {{data[i]['commits']}}</p>
+          <p class="card-text"># of Issues: {{data[i]['issues']}}</p>
+          <p class="card-text"># of Unit Tests: {{data[i]['unit_tests']}}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
 {% endblock %}

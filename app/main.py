@@ -17,8 +17,36 @@ def template_test():
 
 @app.route("/about")
 def about():
-    return render_template('about.html', my_string="Bar", 
-        my_list=[12,13,14,15,16,17], title="About", current_time=datetime.datetime.now())
+
+    info = [{
+    'name': 'Jeffrey Jiang',
+    'commits': 420,
+    'issues': 57,
+    'unit_tests': 0
+    }, {
+    'name': 'Kurtis David',
+    'commits': 420,
+    'issues': 57,
+    'unit_tests': 0
+    },{
+    'name': 'William Chia',
+    'commits': 420,
+    'issues': 57,
+    'unit_tests': 0
+    },{
+    'name': 'Brandon Chan',
+    'commits': 420,
+    'issues': 57,
+    'unit_tests': 0
+    },{
+    'name': 'Spencer Huff',
+    'commits': 420,
+    'issues': 57,
+    'unit_tests': 0
+    }]
+
+    return render_template('about.html', heading="About learning2earn",
+        data=info, data_length = len(info), title="About",current_time=datetime.datetime.now())
 
 @app.route("/jobs")
 def jobs():
@@ -40,7 +68,7 @@ def jobs():
         'related_jobs': 5
     }]
 
-    return render_template('db_page.html', heading="Jobs", 
+    return render_template('db_page.html', heading="Jobs",
         data=info, data_length = len(info), title="Jobs", current_time=datetime.datetime.now())
 
 @app.route("/courses")
@@ -88,7 +116,7 @@ def subjects():
 
     return render_template('db_page.html', heading="Subjects"
         , data = info, data_length = len(info), title="Subjects", current_time=datetime.datetime.now())
-		
+
 @app.route("/api/<endpoint>")
 def api(endpoint=None):
     data = '{"error":"not found"}'
