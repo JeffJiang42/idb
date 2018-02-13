@@ -22,27 +22,32 @@ def about():
     'name': 'Jeffrey Jiang',
     'commits': 420,
     'issues': 57,
-    'unit_tests': 0
+    'unit_tests': 0,
+    'image': 'https://i.imgur.com/EA09WOz.jpg'
     }, {
     'name': 'Kurtis David',
     'commits': 420,
     'issues': 57,
-    'unit_tests': 0
+    'unit_tests': 0,
+    'image': 'https://i.imgur.com/cUfxaZU.jpg'
     },{
     'name': 'William Chia',
     'commits': 420,
     'issues': 57,
-    'unit_tests': 0
+    'unit_tests': 0,
+    'image': 'https://i.imgur.com/DeF2saL.jpg'
     },{
     'name': 'Brandon Chan',
     'commits': 420,
     'issues': 57,
-    'unit_tests': 0
+    'unit_tests': 0,
+    'image': 'https://i.imgur.com/DeF2saL.jpg'
     },{
     'name': 'Spencer Huff',
     'commits': 420,
     'issues': 57,
-    'unit_tests': 0
+    'unit_tests': 0,
+    'image': 'https://i.imgur.com/DeF2saL.jpg'
     }]
 
     return render_template('about.html', heading="About learning2earn",

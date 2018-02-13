@@ -14,20 +14,25 @@
   <p>learning2earn is a website where those who want to learn can find online courses
   in subjects they are interested in, as well as linking those courses to relevant jobs</p>
 
+  <h4>About the team</h4>
+  <div class="card-columns">
   {% for i in range(0,data_length) %}
     <div class="card-deck">
-      <div class="card h-100">
-        <img class="card-img-top" src="" alt="Card image cap">
+      <div class="card" width="300px">
+        <img class="card-img-top" src="{{ data[i]['image'] }}" alt="Developer Image" style="width:300px;height:300px;">
         <div class="card-block">
           <h4 class="card-title">{{data[i]['name']}}</h4>
-          <p class="card-text"><b>Bio: </b>Generic bio here</p>
-          <p class="card-text"><b>Responsibilities: </b> Showing up to work</p>
-          <p class="card-text"># of Commits: {{data[i]['commits']}}</p>
-          <p class="card-text"># of Issues: {{data[i]['issues']}}</p>
-          <p class="card-text"># of Unit Tests: {{data[i]['unit_tests']}}</p>
+          <div class="card-body">
+          <p><b>Bio: </b>Generic bio here</p>
+          <p><b>Responsibilities: </b> Showing up to work</p>
+          <p><b># of Commits: </b> {{data[i]['commits']}}</p>
+          <p><b># of Issues: </b> {{data[i]['issues']}}</p>
+          <p><b># of Unit Tests: </b> {{data[i]['unit_tests']}}</p>
+          </div>
         </div>
       </div>
     </div>
   {% endfor %}
+</div>
 
 {% endblock %}
