@@ -17,7 +17,7 @@ def template_test():
 
 @app.route("/about")
 def about():
-    return render_template('template.html', my_string="Bar", 
+    return render_template('about.html', my_string="Bar", 
         my_list=[12,13,14,15,16,17], title="About", current_time=datetime.datetime.now())
 
 @app.route("/jobs")
