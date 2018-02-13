@@ -14,16 +14,17 @@
   <p>learning2earn is a website where those who want to learn can find online courses
   in subjects they are interested in, as well as linking those courses to relevant jobs</p>
 
-  <h4>About the team</h4>
-  <div class="card-columns">
+  <h3>About the team</h3>
+  <div class="container-fluid">
+  <div class="row">
   {% for i in range(0,data_length) %}
-    <div class="card-deck">
-      <div class="card" width="300px">
-        <img class="card-img-top" src="{{ data[i]['image'] }}" alt="Developer Image" style="width:300px;height:300px;">
+    <div class="col-sm-2">
+      <div class="card">
+        <img class="card-img-top" src="{{ data[i]['image'] }}" alt="Developer Image" style="width:225px;height:225px;">
         <div class="card-block">
           <h4 class="card-title">{{data[i]['name']}}</h4>
           <div class="card-body">
-          <p><b>Bio: </b>Generic bio here</p>
+          <p><b>Bio: </b>{{data[i]['bio']}}</p>
           <p><b>Responsibilities: </b> Showing up to work</p>
           <p><b># of Commits: </b> {{data[i]['commits']}}</p>
           <p><b># of Issues: </b> {{data[i]['issues']}}</p>
@@ -31,8 +32,9 @@
           </div>
         </div>
       </div>
-    </div>
+      </div>
   {% endfor %}
-</div>
+  </div>
+  </div>
 
 {% endblock %}

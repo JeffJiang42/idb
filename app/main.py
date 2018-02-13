@@ -18,36 +18,49 @@ def template_test():
 @app.route("/about")
 def about():
 
+    jeff_bio = "Jeffrey is a third year Math/CS Major at UT Austin. \
+    His life is consumed by his interest in both subjects. In the rare \
+    occasion he has free time, he spends it learning guitar."
+    william_bio = "Insert Bio"
+    brandon_bio = "Insert Bio"
+    kurtis_bio = "Insert Bio"
+    spencer_bio = "Insert Bio"
+
     info = [{
     'name': 'Jeffrey Jiang',
     'commits': 420,
     'issues': 57,
     'unit_tests': 0,
-    'image': 'https://i.imgur.com/EA09WOz.jpg'
+    'image': 'https://i.imgur.com/EA09WOz.jpg',
+    'bio': jeff_bio
     }, {
     'name': 'Kurtis David',
     'commits': 420,
     'issues': 57,
     'unit_tests': 0,
-    'image': 'https://i.imgur.com/cUfxaZU.jpg'
+    'image': 'https://i.imgur.com/cUfxaZU.jpg',
+    'bio': kurtis_bio
     },{
     'name': 'William Chia',
     'commits': 420,
     'issues': 57,
     'unit_tests': 0,
-    'image': 'https://i.imgur.com/DeF2saL.jpg'
+    'image': 'https://i.imgur.com/DeF2saL.jpg',
+    'bio': william_bio
     },{
     'name': 'Brandon Chan',
     'commits': 420,
     'issues': 57,
     'unit_tests': 0,
-    'image': 'https://i.imgur.com/DeF2saL.jpg'
+    'image': 'https://i.imgur.com/DeF2saL.jpg',
+    'bio': brandon_bio
     },{
     'name': 'Spencer Huff',
     'commits': 420,
     'issues': 57,
     'unit_tests': 0,
-    'image': 'https://i.imgur.com/DeF2saL.jpg'
+    'image': 'https://i.imgur.com/DeF2saL.jpg',
+    'bio': spencer_bio
     }]
 
     return render_template('about.html', heading="About learning2earn",
