@@ -2,23 +2,38 @@
 {% block title %}{{title}}{% endblock %}
 {% block head %}
   {{ super() }}
+  <style type="text/css">
+    .carousel {
+      min-width: 100%;
+      height: 400px;
+    }
+    .item {
+      min-height: 400px;
+	  background-size: contain;
+    }
+   .main-body {
+     padding-left: 10%;
+	 padding-right: 10%;
+   }
+  </style>
 {% endblock %}
 {% block page %}{{title}}{% endblock %}
-{% block heading %}
-  {{ super() }}
-{% endblock %}
 {% block content %}
-  <div id="carouselStuff" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-	  <div class="item active">
-	    <img src="https://fthmb.tqn.com/bkqa7sPVIDPFT7Gc7OpOg_xs848=/5130x3420/filters:no_upscale():fill(transparent,1)/woman-s-face-peeking-out-of-a-pile-of-money-71418271-57d6590e5f9b589b0ad652aa.jpg" alt="Get Money Fast">
-		<div class="carousel-caption">
-		  <h3>Get Cash Fast</h3>
-		</div>
-	  </div>
-	  <div class="item">
-	    <img src="https://money2india.icicibank.com/newm2iNet/images/overlayNRI.png" alt="Get Cash Fast">
+<div id="carouselStuff" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+	<div class="item active" style="background: url(&quot;https://fthmb.tqn.com/pCuLnkKkjUFTZXF60YzhiZfIi-Y=/4200x2800/filters:no_upscale():fill(transparent,1)/young-professional-college-student-with-resume-at-job-interview-472097889-57e2eab53df78c690f3199b9.jpg&quot;);">
+	  <div class="carousel-caption">
+		<h3>Get Cash Fast!</h3>
+		<p>Get easy money, even with a low credit score!</p>
 	  </div>
 	</div>
+	<div class="item">
+	  <h3>Hey</h3>
+	</div>
   </div>
+</div>
+<div class="main-body">
+  <h1>Learning2Earn makes it easy</h1>
+  <p>With Learning2Earn, becoming rich and powerful from nothing is as easy as clicking a button!</p>
+</div>
 {% endblock %}

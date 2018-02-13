@@ -17,24 +17,124 @@ def template_test():
 
 @app.route("/about")
 def about():
-    return render_template('template.html', my_string="Bar", 
-        my_list=[12,13,14,15,16,17], title="About", current_time=datetime.datetime.now())
+
+    jeff_bio = "Jeffrey is a third year Math/CS Major at UT Austin. \
+    His life is consumed by his interest in both subjects. In the rare \
+    occasion he has free time, he spends it learning guitar."
+    william_bio = "Insert Bio"
+    brandon_bio = "Insert Bio"
+    kurtis_bio = "Insert Bio"
+    spencer_bio = "Insert Bio"
+
+    info = [{
+    'name': 'Jeffrey Jiang',
+    'commits': 420,
+    'issues': 57,
+    'unit_tests': 0,
+    'image': 'https://i.imgur.com/EA09WOz.jpg',
+    'bio': jeff_bio
+    }, {
+    'name': 'Kurtis David',
+    'commits': 420,
+    'issues': 57,
+    'unit_tests': 0,
+    'image': 'https://i.imgur.com/cUfxaZU.jpg',
+    'bio': kurtis_bio
+    },{
+    'name': 'William Chia',
+    'commits': 420,
+    'issues': 57,
+    'unit_tests': 0,
+    'image': 'https://i.imgur.com/DeF2saL.jpg',
+    'bio': william_bio
+    },{
+    'name': 'Brandon Chan',
+    'commits': 420,
+    'issues': 57,
+    'unit_tests': 0,
+    'image': 'https://i.imgur.com/DeF2saL.jpg',
+    'bio': brandon_bio
+    },{
+    'name': 'Spencer Huff',
+    'commits': 420,
+    'issues': 57,
+    'unit_tests': 0,
+    'image': 'https://i.imgur.com/DeF2saL.jpg',
+    'bio': spencer_bio
+    }]
+
+    return render_template('about.html', heading="About learning2earn",
+        data=info, data_length = len(info), title="About",current_time=datetime.datetime.now())
 
 @app.route("/jobs")
 def jobs():
-    return render_template('db_page.html', heading="Jobs", 
-        my_list=[6,7,8,9,10,11], title="Jobs", current_time=datetime.datetime.now())
+
+    info = [{
+        'name': 'Computer Science',
+        'subtopics': 10,
+        'courses': 20,
+        'related_jobs': 20
+    }, {
+        'name': 'Mathematics',
+        'subtopics': 5,
+        'courses': 10,
+        'related_jobs': 10
+    }, {
+        'name': 'Physics',
+        'subtopics': 10,
+        'courses': 10,
+        'related_jobs': 5
+    }]
+
+    return render_template('db_page.html', heading="Jobs",
+        data=info, data_length = len(info), title="Jobs", current_time=datetime.datetime.now())
 
 @app.route("/courses")
 def courses():
+
+    info = [{
+        'name': 'Computer Science',
+        'subtopics': 10,
+        'courses': 20,
+        'related_jobs': 20
+    }, {
+        'name': 'Mathematics',
+        'subtopics': 5,
+        'courses': 10,
+        'related_jobs': 10
+    }, {
+        'name': 'Physics',
+        'subtopics': 10,
+        'courses': 10,
+        'related_jobs': 5
+    }]
+
     return render_template('db_page.html', heading="Courses"
-        , my_list=[18,19,20,21,22,23], title="Courses", current_time=datetime.datetime.now())
+        , data = info, data_length = len(info), title="Courses", current_time=datetime.datetime.now())
 
 @app.route("/subjects")
 def subjects():
+
+    info = [{
+        'name': 'Computer Science',
+        'subtopics': 10,
+        'courses': 20,
+        'related_jobs': 20
+    }, {
+        'name': 'Mathematics',
+        'subtopics': 5,
+        'courses': 10,
+        'related_jobs': 10
+    }, {
+        'name': 'Physics',
+        'subtopics': 10,
+        'courses': 10,
+        'related_jobs': 5
+    }]
+
     return render_template('db_page.html', heading="Subjects"
-        , my_list=[18,19,20,21,22,23], title="Subjects", current_time=datetime.datetime.now())
-		
+        , data = info, data_length = len(info), title="Subjects", current_time=datetime.datetime.now())
+
 @app.route("/api/<endpoint>")
 def api(endpoint=None):
     data = '{"error":"not found"}'
