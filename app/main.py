@@ -3,6 +3,7 @@ from l2e_api import endpoints
 from github_info import getCommits, getIssues
 import datetime
 import json
+import urllib
 
 app = Flask(__name__)
 
@@ -116,7 +117,7 @@ jobs_dict = {
         'Related Subjects': 'Data & Analytics',
         'Related Courses': 'Artificial Intelligence: Reinforcement Learning in Python'
     },
-    'iOS (Objective-C/Swift) Developer for Reactive Native projects': {
+    'iOS (Objective-C-Swift) Developer for Reactive Native projects': {
         'keys': ['Provider','Company','Link','Description','Related Subjects','Related Courses'],
         'name': 'iOS (Objective-C/Swift) Developer for Reactive Native projects',
         'Provider': 'Authentic Jobs',

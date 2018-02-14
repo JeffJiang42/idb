@@ -18,13 +18,13 @@
 	    	{% if 'Link' not in key and 'Courses' not in key and 'Subjects' not in key and 'Related Jobs' not in key%}
 	    		<p class="card-text"><strong>{{key}}</strong>: {{pageData[key]}}</p>
 	    	{% elif 'Link' in key %}
-	    		<p class="card-text"><strong>{{key}}</strong>: <a href="https://{{pageData[key]}}">{{pageData[key]}}</a></p>
+	    		<p class="card-text"><strong>{{key}}</strong>: <a href="https://urlencode({{pageData[key]}})">{{pageData[key]}}</a></p>
 	    	{% elif 'Courses' in key %}
-	    		<p class="card-text"><strong>{{key}}</strong>: <a href="/Courses/{{pageData[key]}}">{{pageData[key]}}</a></p>
+	    		<p class="card-text"><strong>{{key}}</strong>: <a href="/Courses/urlencode({{pageData[key]}})">{{pageData[key]}}</a></p>
 	    	{% elif 'Subjects' in key %}
-	    		<p class="card-text"><strong>{{key}}</strong>: <a href="/Subjects/{{pageData[key]}}">{{pageData[key]}}</a></p>
+	    		<p class="card-text"><strong>{{key}}</strong>: <a href="/Subjects/urlencode({{pageData[key]}})">{{pageData[key]}}</a></p>
 	    	{% else %}
-	    		<p class="card-text"><strong>{{key}}</strong>: <a href="/Jobs/{{pageData[key]}}">{{pageData[key]}}</a></p>
+	    		<p class="card-text"><strong>{{key}}</strong>: <a href="/Jobs/urlencode({{pageData[key]}})">{{urlencode(pageData[key])}lmao</a></p>
 	    	{% endif %}
 	    {% endfor %}
 	  </div>
