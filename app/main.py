@@ -117,96 +117,125 @@ def jobs():
         , data = info, data_length = len(info), keys = ['Provider','Tier'],
         title="Jobs")
 
-@app.route("/Courses")
-def courses():
 
-    info = [{
-        'name': 'JavaScript: Understanding the Weird Parts',
-        'Provider': 'Udemy',
-        'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
-        'Tier': 'Paid'
-    }, {
-        'name': 'Artificial Intelligence: Reinforcement Learning in Python',
-        'Provider': 'Udemy',
-        'image': 'https://udemy-images.udemy.com/course/125_H/1080408_2645_3.jpg',
-        'Tier': 'Paid'
-    }, {
-        'name': 'Algorithms',
-        'Provider': 'Khan Academy',
-        'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/algorithms.png-a4492d-416.png',
-        'Tier': 'Free'
-    }]
-    return render_template('db_page.html', heading="Courses"
-        , data = info, data_length = len(info), keys = ['Provider','Tier'],
-        title="Courses")
-
-
-@app.route("/Subjects")
-def subjects():
-
-    info = [{
-        'name': 'JavaScript: Understanding the Weird Parts',
-        'Provider': 'Udemy',
-        'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
-        'Tier': 'Paid'
-    }, {
-        'name': 'Artificial Intelligence: Reinforcement Learning in Python',
-        'Provider': 'Udemy',
-        'image': 'https://udemy-images.udemy.com/course/125_H/1080408_2645_3.jpg',
-        'Tier': 'Paid'
-    }, {
-        'name': 'Algorithms',
-        'Provider': 'Khan Academy',
-        'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/algorithms.png-a4492d-416.png',
-        'Tier': 'Free'
-    }]
-
-    return render_template('db_page.html', heading="Subjects",
-        data = info, data_length = len(info), keys = ['Provider','Tier'],
-        title="Subjects")
-#below are functions that an instance of a category.
-subjects = {
+courses_dict = {
     'JavaScript: Understanding the Weird Parts': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description'],
+        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Price','Subjects'],
         'name': 'JavaScript: Understanding the Weird Parts',
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
         'Tier': 'Paid',
-        'Price': 174.99,
+        'Price': "$174.99",
         'Instructor': 'Anthony Alicea',
         'Link': 'udemy.com/understand-javascript/',
-        'Description': 'An advanced JavaScript course for everyone! Scope, closures, prototypes, \'this\', build your own framework, and more.'
+        'Description': 'An advanced JavaScript course for everyone! Scope, closures, prototypes, \'this\', build your own framework, and more.',
+        'Subjects': 'Web Development'
     },
     'Artificial Intelligence: Reinforcement Learning in Python': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description'],
+        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Subjects'],
         'name': 'Artificial Intelligence: Reinforcement Learning in Python',
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/1080408_2645_3.jpg',
         'Tier': 'Paid',
-        'Price': 179.99,
+        'Price': "$179.99",
         'Instructor': 'Lazy Programmer Inc.',
         'Link': 'udemy.com/artificial-intelligence-reinforcement-learning-in-python/',
-        'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning'
-
+        'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning',
+        'Subjects': 'Data & Analytics'
     },
     'Algorithms': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description'],
+        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Subjects'],
         'name': 'Algorithms',
         'Provider': 'Khan Academy',
         'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/algorithms.png-a4492d-416.png',
         'Tier': 'Free',
-        'Price': 0.0,
+        'Price': "$0.00",
         'Instructor': 'Tom Cormen and Devin Balkcom',
-        'Link': 'https://www.khanacademy.org/computing/computer-science/algorithms',
-        'Description': 'We\'ve partnered with Dartmouth college professors Tom Cormen and Devin Balkcom to teach introductory computer science algorithms, including searching, sorting, recursion, and graph theory. Learn with a combination of articles, visualizations, quizzes, and coding challenges.'
+        'Link': 'www.khanacademy.org/computing/computer-science/algorithms',
+        'Description': 'We\'ve partnered with Dartmouth college professors Tom Cormen and Devin Balkcom to teach introductory computer science algorithms, including searching, sorting, recursion, and graph theory. Learn with a combination of articles, visualizations, quizzes, and coding challenges.',
+        'Subjects': 'Computer science'
     }
 }
+
+@app.route("/Courses")
+def courses():
+
+    keys = ['Provider','Tier']
+
+    info = []
+
+    for course in courses_dict:
+        tmp = courses_dict[course]
+        curr = {'name':course,
+                'image': tmp['image'],
+                'Provider': tmp['Provider'],
+                'Tier': tmp['Tier'],
+        }
+        info.append(curr)
+
+    return render_template('db_page.html', heading="Courses"
+        , data = info, data_length = len(info), keys = keys,
+        title="Courses")
+
+subjects_dict = {
+    'Computer science': {
+        'keys': ['Provider','Link','Description','Courses'],
+        'name': 'Computer science',
+        'Provider': 'Khan Academy',
+        'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/computer_programming.png-7da73e-128c.png',
+        'Link': 'khanacademy.org/computing/computer-science',
+        'Description': 'Learn select topics from computer science - algorithms (how we solve common problems in computer science and measure the efficiency of our solutions), cryptography (how we protect secret information), and information theory (how we encode and compress information).',
+        'Courses': 'Algorithms',
+        '# Classes': 1
+    },
+    'Web Development': {
+        'keys': ['Provider','Link','Description','Courses'],
+        'name': 'Web Development',
+        'Provider': 'Udemy',
+        'image': 'https://udemy-images.udemy.com/course/480x270/1512962_9f57.jpg',
+        'Link': 'https://www.udemy.com/courses/development/web-development',
+        'Description': 'Learn web development from Udemy',
+        'Courses': 'JavaScript: Understanding the Weird Parts',
+        '# Classes': 1
+    },
+    'Data & Analytics': {
+        'keys': ['Provider','Link','Description','Courses'],
+        'name': 'Data & Analytics',
+        'Provider': 'Udemy',
+        'image': 'https://udemy-images.udemy.com/course/480x270/1499380_7a57_2.jpg',
+        'Link': 'https://www.udemy.com/courses/business/data-and-analytics/',
+        'Description': 'Learn data & analytics from Udemy',
+        'Courses': 'Artificial Intelligence: Reinforcement Learning in Python',
+        '# Classes': 1
+    }
+}
+
+@app.route("/Subjects")
+def subjects():
+
+    keys = ['Provider','# Classes']
+
+    info = []
+
+    for subject in subjects_dict:
+        tmp = subjects_dict[subject]
+        curr = {'name':subject,
+                'image': tmp['image'],
+                'Provider': tmp['Provider'],
+                '# Classes': tmp['# Classes'],
+        }
+        info.append(curr)
+
+    return render_template('db_page.html', heading="Subjects",
+        data = info, data_length = len(info), keys = keys,
+        title="Subjects")
+#below are functions that an instance of a category.
 
 @app.route("/Subjects/<page>")
 def subject_instance(page):
 
-    keys = subjects[page]['keys']
-    return render_template('data.html', pageData = subjects[page], pageKeys = keys)
+    keys = subjects_dict[page]['keys']
+    return render_template('data.html', pageData = subjects_dict[page], pageKeys = keys)
 
 jobs = {
     'JavaScript: Understanding the Weird Parts': {
@@ -251,49 +280,11 @@ def jobs_instance(page):
     keys = jobs[page]['keys']
     return render_template('data.html', pageData = jobs[page], pageKeys = keys)
 
-
-courses = {
-    'JavaScript: Understanding the Weird Parts': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Price'],
-        'name': 'JavaScript: Understanding the Weird Parts',
-        'Provider': 'Udemy',
-        'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
-        'Tier': 'Paid',
-        'Price': "$174.99",
-        'Instructor': 'Anthony Alicea',
-        'Link': 'udemy.com/understand-javascript/',
-        'Description': 'An advanced JavaScript course for everyone! Scope, closures, prototypes, \'this\', build your own framework, and more.'
-    },
-    'Artificial Intelligence: Reinforcement Learning in Python': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description'],
-        'name': 'Artificial Intelligence: Reinforcement Learning in Python',
-        'Provider': 'Udemy',
-        'image': 'https://udemy-images.udemy.com/course/125_H/1080408_2645_3.jpg',
-        'Tier': 'Paid',
-        'Price': "$179.99",
-        'Instructor': 'Lazy Programmer Inc.',
-        'Link': 'udemy.com/artificial-intelligence-reinforcement-learning-in-python/',
-        'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning'
-
-    },
-    'Algorithms': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description'],
-        'name': 'Algorithms',
-        'Provider': 'Khan Academy',
-        'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/algorithms.png-a4492d-416.png',
-        'Tier': 'Free',
-        'Price': "$0.00",
-        'Instructor': 'Tom Cormen and Devin Balkcom',
-        'Link': 'www.khanacademy.org/computing/computer-science/algorithms',
-        'Description': 'We\'ve partnered with Dartmouth college professors Tom Cormen and Devin Balkcom to teach introductory computer science algorithms, including searching, sorting, recursion, and graph theory. Learn with a combination of articles, visualizations, quizzes, and coding challenges.'
-    }
-}
-
 @app.route("/Courses/<page>")
 def courses_instance(page):
 
-    keys = courses[page]['keys']
-    return render_template('data.html', pageData = courses[page], pageKeys = keys)
+    keys = courses_dict[page]['keys']
+    return render_template('data.html', pageData = courses_dict[page], pageKeys = keys)
 
 
 @app.route("/api/<endpoint>")
