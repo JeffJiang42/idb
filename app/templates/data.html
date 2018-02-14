@@ -18,7 +18,7 @@
 	    	{% if 'Link' not in key %}
 	    		<p class="card-text"><strong>{{key}}</strong>: {{pageData[key]}}</p>
 	    	{% else %}
-	    		<p class="card-text"><strong>{{key}}</strong>: <a href="{{pageData[key]}}">{{pageData[key]}}</a></p>
+	    		<p class="card-text"><strong>{{key}}</strong>: <a href="https://{{pageData[key]}}">{{pageData[key]}}</a></p>
 	    	{% endif %}
 	    {% endfor %}
 	  </div>
