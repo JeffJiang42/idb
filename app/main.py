@@ -142,6 +142,19 @@ def subjects():
     return render_template('db_page.html', heading="Subjects"
         , data = info, data_length = len(info), title="Subjects", current_time=datetime.datetime.now())
 
+
+dataTemplate = {
+    'name': 'my name',
+    'description': 'your description',
+    'other information': 'his/her information',
+    'image': 'our image'
+}
+
+@app.route("/data")
+def data():
+    return render_template('data.html', pageData = dataTemplate) 
+
+
 @app.route("/api/<endpoint>")
 def api(endpoint=None):
     data = '{"error":"not found"}'

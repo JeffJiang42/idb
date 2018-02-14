@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}{{title}}{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block page %}{{title}}{% endblock %}
+{% block heading %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h3> This page is supposed to have stuff in it</h3>
+  <br>
+  <p>My string: {{pageData.name}}</p>
+  <p>Value from the list: {{pageData.description}}</p>
+  <br>
+  <p>Same list with a filter: {{pageData.otherInformation}}</p>
+  <h3> TThis page is depressing, innit?</h3>
+{% endblock %}
