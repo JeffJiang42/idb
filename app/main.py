@@ -21,12 +21,16 @@ def about():
     jeff_bio = "Jeffrey is a third year Math/CS Major at UT Austin. \
     His life is consumed by his interest in both subjects. In the rare \
     occasion he has free time, he spends it learning guitar."
+
     william_bio = "William is a CS Major."
+
     brandon_bio = "Brandon is a third year CS Major at UT Austin. \
     Brandon likes a lot of things, including but not limited to hiking, \
     video games, beer, soccer, anime, photography, piano, ultimate frisbee, \
     meeting people, etc."
+
     kurtis_bio = "Insert Bio"
+
     spencer_bio = "Insert Bio"
 
     info = [{
@@ -55,7 +59,7 @@ def about():
     'commits': 420,
     'issues': 57,
     'unit_tests': 0,
-    'image': 'https://i.imgur.com/DeF2saL.jpg',
+    'image': 'https://i.imgur.com/3LhRT5l.jpg',
     'bio': brandon_bio
     },{
     'name': 'Spencer Huff',
