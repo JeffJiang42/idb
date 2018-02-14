@@ -21,7 +21,7 @@ def about():
     jeff_bio = "Jeffrey is a third year Math/CS Major at UT Austin. \
     His life is consumed by his interest in both subjects. In the rare \
     occasion he has free time, he spends it learning guitar."
-    william_bio = "Insert Bio"
+    william_bio = "William is a CS Major."
     brandon_bio = "Insert Bio"
     kurtis_bio = "Insert Bio"
     spencer_bio = "Insert Bio"
@@ -42,7 +42,7 @@ def about():
     'bio': kurtis_bio
     },{
     'name': 'William Chia',
-    'commits': 420,
+    'commits': 'your mom',
     'issues': 57,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/DeF2saL.jpg',

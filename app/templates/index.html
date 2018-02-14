@@ -5,35 +5,62 @@
   <style type="text/css">
     .carousel {
       min-width: 100%;
-      height: 400px;
     }
-    .item {
-      min-height: 400px;
-	  background-size: contain;
+    .carousel-item {
+      min-height: 360px;
     }
-   .main-body {
-     padding-left: 10%;
-	 padding-right: 10%;
-   }
+    .main-body {
+      padding-left: 10%;
+	  padding-right: 10%;
+	  padding-top: 100px;
+	  padding-bottom: 100px;
+    }
+	.body-text {
+	  width: 100%;
+	  text-align: center;
+	}
   </style>
 {% endblock %}
 {% block page %}{{title}}{% endblock %}
 {% block content %}
-<div id="carouselStuff" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner">
-	<div class="item active" style="background: url(&quot;https://fthmb.tqn.com/pCuLnkKkjUFTZXF60YzhiZfIi-Y=/4200x2800/filters:no_upscale():fill(transparent,1)/young-professional-college-student-with-resume-at-job-interview-472097889-57e2eab53df78c690f3199b9.jpg&quot;);">
-	  <div class="carousel-caption">
-		<h3>Get Cash Fast!</h3>
-		<p>Get easy money, even with a low credit score!</p>
+<div class="row">
+  <div id="carouselStuff" class="carousel slide" data-ride="carousel">
+    <ul class="carousel-indicators">
+	  <li data-target="#carouselStuff" data-slide-to="0" class="active"></li>
+	  <li data-target="#carouselStuff" data-slide-to="1" class="active"></li>
+	  <li data-target="#carouselStuff" data-slide-to="2" class="active"></li>
+    </ul>
+    <div class="carousel-inner">
+	  <div class="carousel-item active" style="background: url(&quot;https://fthmb.tqn.com/pCuLnkKkjUFTZXF60YzhiZfIi-Y=/4200x2800/filters:no_upscale():fill(transparent,1)/young-professional-college-student-with-resume-at-job-interview-472097889-57e2eab53df78c690f3199b9.jpg&quot;); background-size: 100%; background-position: center -100px;">
+	    <div class="carousel-caption">
+		  <h1>Learning2Earn</h1>
+		  <p>The world's most questionable source for connecting learned course material to applicable jobs!</p>
+	    </div>
 	  </div>
-	</div>
-	<div class="item">
-	  <h3>Hey</h3>
-	</div>
+	  <div class="carousel-item" style="background: url(&quot;https://fthmb.tqn.com/b9pw1siS6Y6IPjFy3kxU8BU2hVU=/3865x2576/filters:no_upscale():fill(transparent,1)/college-student-interviews-at-job-fair-517533336-5898e8053df78caebcab2c9c.jpg&quot;); background-size: 100%; background-position: center -100px;">
+	    <div class="carousel-caption">
+		  <h2>Get Cash Now!</h2>
+		  <p>Get easy money, even with a low credit score!</p>
+	    </div>
+	  </div>
+	  <div class="carousel-item" style="background: url(&quot;https://fthmb.tqn.com/9yeXmraa0fGhjgubm04tgx2jgac=/2121x1414/filters:no_upscale():fill(transparent,1)/teen_interview-466049501-5a7509b63037130036b2035a.jpg&quot;); background-size: 100%; background-position: center -100px;">
+	    <div class="carousel-caption">
+		  <h3>20% off your first 30 days!</h3>
+		  <p>Lmao!</p>
+	    </div>
+	  </div>
+    </div>
   </div>
 </div>
-<div class="main-body">
-  <h1>Learning2Earn makes it easy</h1>
-  <p>With Learning2Earn, becoming rich and powerful from nothing is as easy as clicking a button!</p>
+<div class="row main-body">
+  <div class="body-text">
+    <p>
+	  <h1>Learning2Earn makes it easy!</h1>
+      With Learning2Earn, becoming rich and powerful from nothing is as easy as clicking a button!
+	</p>
+  </div>
+  <div class="body-text">
+    <button type="button" class="btn btn-outline-dark">Button</button>
+  </div>
 </div>
 {% endblock %}
