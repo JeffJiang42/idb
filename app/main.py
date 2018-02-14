@@ -29,7 +29,8 @@ def about():
     video games, beer, soccer, anime, photography, piano, ultimate frisbee, \
     meeting people, etc."
 
-    kurtis_bio = "Insert Bio"
+    kurtis_bio = "Kurtis is a third year CS/Math Major at UT Austin. \
+    He likes to play Super Smash Bros. Melee (Marth of course) in his spare time."
 
     spencer_bio = "Insert Bio"
 
@@ -152,7 +153,7 @@ dataTemplate = {
 
 @app.route("/data")
 def data():
-    return render_template('data.html', pageData = dataTemplate) 
+    return render_template('data.html', pageData = dataTemplate)
 
 
 @app.route("/api/<endpoint>")
