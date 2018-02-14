@@ -157,16 +157,16 @@ dataTemplate = {
 
 #below are functions that an instance of a category.
 
-@app.route("/Subjects/<a_subject>")
-def subject_instance(self):
+@app.route("/Subjects/<page>")
+def subject_instance(page):
     return render_template('data.html', pageData = dataTemplate)
 
-@app.route("/Jobs/<a_subject>")
-def jobs_instance(self):
+@app.route("/Jobs/<page>")
+def jobs_instance(page):
     return render_template('data.html', pageData = dataTemplate)
 
-@app.route("/Courses/<a_subject>")
-def courses_instance(self):
+@app.route("/Courses/<page>")
+def courses_instance(page):
     return render_template('data.html', pageData = dataTemplate)
 
 
