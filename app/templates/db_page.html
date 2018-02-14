@@ -12,35 +12,44 @@
   <h2 align="center" style = "padding-top: 25px;padding-bottom: 25px">{{ heading }}</h3>
 
   {% for i in range(0,data_length,3) %}
-    <div class="card-deck">
-      <div class="card h-100">
-        <img class="card-img-top" src="" alt="Card image cap">
+  <div class="row justify-content-center">
+    <div class="col-sm-3">
+      <div class="card h-100" style="height:250px" align="center">
+        <img class="card-img-top" src="{{data[i]['image']}}">
         <div class="card-block">
           <h4 class="card-title">
             <a href="{{heading + '/' + data[i]['name']}}">{{data[i]['name']}}</a>
           </h4>
-          <p class="card-text"># Subtopics: {{data[i]['subtopics']}}</p>
+          <p class="card-text">{{keys[0]}}: {{data[i][keys[0]]}}</p>
+          <p class="card-text">{{keys[1]}}: {{data[i][keys[1]]}}</p>
         </div>
       </div>
-      <div class="card h-100">
-        <img class="card-img-top" src="..." alt="Card image cap">
+    </div>
+    <div class="col-sm-3">
+      <div class="card h-100" style="height:250px" align="center">
+        <img class="card-img-top" src="{{data[i+1]['image']}}">
         <div class="card-block">
           <h4 class="card-title">
             <a href="{{heading + '/' + data[i+1]['name']}}">{{data[i+1]['name']}}</a>
           </h4>
-          <p class="card-text"># Subtopics: {{data[i+1]['subtopics']}}</p>
+          <p class="card-text">{{keys[0]}}: {{data[i+1][keys[0]]}}</p>
+          <p class="card-text">{{keys[1]}}: {{data[i+1][keys[1]]}}</p>
         </div>
       </div>
-      <div class="card h-100">
-        <img class="card-img-top" src="..." alt="Card image cap">
+    </div>
+    <div class="col-sm-3">
+      <div class="card h-100" style="height:250px"  align="center">
+        <img class="card-img-top" src="{{data[i+2]['image']}}">
         <div class="card-block">
           <h4 class="card-title">
             <a href="{{heading + '/' + data[i+2]['name']}}">{{data[i+2]['name']}}</a>
           </h4>
-          <p class="card-text"># Subtopics: {{data[i]['subtopics']}}</p>
+          <p class="card-text">{{keys[0]}}: {{data[i+2][keys[0]]}}</p>
+          <p class="card-text">{{keys[1]}}: {{data[i+2][keys[1]]}}</p>
         </div>
       </div>
     </div>
+  </div>
   {% endfor %}
   
 
