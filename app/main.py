@@ -23,7 +23,7 @@ def about():
     His life is consumed by his interest in both subjects. In the rare \
     occasion he has free time, he spends it learning guitar."
 
-    william_bio = "William is a CS Major."
+    william_bio = "William is a CS Major. That is all he has to say"
 
     brandon_bio = "Brandon is a third year CS Major at UT Austin. \
     Brandon likes a lot of things, including but not limited to hiking, \
@@ -33,13 +33,19 @@ def about():
     kurtis_bio = "Kurtis is a third year CS/Math Major at UT Austin. \
     He likes to play Super Smash Bros. Melee (Marth of course) in his spare time."
 
+    spencer_bio = "Spencer is a third year CS major. He likes to keep his bio minimal"
+
+    jeff_resp = "Frontend"
+    kurtis_resp = "Fronted + Backend"
+    william_resp = "Backend + API"
+    brandon_resp = "Frontend"
+    spencer_resp = "Backend"
+
     jeff_commits, kurtis_commits, william_commits, brandon_commits, spencer_commits = getCommits()
     jeff_issues, kurtis_issues, william_issues, brandon_issues, spencer_issues = getIssues()
 
     totals = [jeff_commits + kurtis_commits + william_commits + brandon_commits + spencer_commits, \
     jeff_issues + kurtis_issues + william_issues + brandon_issues + spencer_issues]
-
-    spencer_bio = "Insert Bio"
 
     info = [{
     'name': 'Jeffrey Jiang',
@@ -47,35 +53,40 @@ def about():
     'issues': jeff_issues,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/EA09WOz.jpg',
-    'bio': jeff_bio
+    'bio': jeff_bio,
+    'resp': jeff_resp
     }, {
     'name': 'Kurtis David',
     'commits': kurtis_commits,
     'issues': kurtis_issues,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/cUfxaZU.jpg',
-    'bio': kurtis_bio
+    'bio': kurtis_bio,
+    'resp':kurtis_resp
     },{
     'name': 'William Chia',
     'commits': william_commits,
     'issues': william_issues,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/0PUOsTj.jpg',
-    'bio': william_bio
+    'bio': william_bio,
+    'resp': william_resp
     },{
     'name': 'Brandon Chan',
     'commits': brandon_commits,
     'issues': brandon_issues,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/3LhRT5l.jpg',
-    'bio': brandon_bio
+    'bio': brandon_bio,
+    'resp': brandon_resp
     },{
     'name': 'Spencer Huff',
     'commits': spencer_commits,
     'issues': spencer_issues,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/1seLbaU.jpg',
-    'bio': spencer_bio
+    'bio': spencer_bio,
+    'resp': spencer_resp
     }]
 
     return render_template('about.html', heading="About learning2earn",

@@ -27,7 +27,7 @@
           <h4 class="card-title">{{data[i]['name']}}</h4>
           <div class="card-body">
           <p><b>Bio: </b>{{data[i]['bio']}}</p>
-          <p><b>Responsibilities: </b> Showing up to work</p>
+          <p><b>Responsibilities: </b> {{data[i]['resp']}}</p>
           <p><b># of Commits: </b> {{data[i]['commits']}}</p>
           <p><b># of Issues: </b> {{data[i]['issues']}}</p>
           <p><b># of Unit Tests: </b> {{data[i]['unit_tests']}}</p>
@@ -51,7 +51,7 @@
           <h4 class="card-title">{{data[i]['name']}}</h4>
           <div class="card-body">
           <p><b>Bio: </b>{{data[i]['bio']}}</p>
-          <p><b>Responsibilities: </b> Showing up to work</p>
+          <p><b>Responsibilities: </b>{{data[i]['resp']}}</p>
           <p><b># of Commits: </b> {{data[i]['commits']}}</p>
           <p><b># of Issues: </b> {{data[i]['issues']}}</p>
           <p><b># of Unit Tests: </b> {{data[i]['unit_tests']}}</p>
@@ -74,13 +74,23 @@
   <p align="center"><b>Total # of Unit Tests: </b>0<p>
 
   <h3 align="center">Tools</h3>
-  <p align="center">Our code is hosted on <a href="https://github.com"><b>Github</b></a><p>
+  <p align="center">Our code is hosted on <a href="https://github.com"><b>GitHub</b></a><p>
   <p align="center">We are using <a href="https://slack.com"><b>Slack</b></a> as our main method of communication<p>
   <p align="center">We are using <a href="http://flask.pocoo.org"><b>Flask</b></a> for our web framework<p>
   <p align="center">We are using <a href="https://getbootstrap.com"><b>Bootstrap</b></a> as a CSS framework<p>
+  <p align="center">We are using <a href="https://www.gitbook.com"><b>GitBook</b></a> to document our API and for our report<p>
+  <p align="center">We are using <a href="https://www.docker.com"><b>Docker</b></a> to deploy our website<p>
   <p align="center">Our project is hosted on <a href="https://aws.amazon.com"><b>Amazon Web Services</b></a><p>
 
   <h3 align="center">Data</h3>
+
+  <p align="center">For data on courses, we are using <a href="https://github.com/Khan/khan-api/wiki/Khan-Academy-API"><b>Khan Academy</b></a>
+    and <a href="https://www.udemy.com/developers/"><b>Udemy</b></a><p>
+  <p align="center">For data on jobs are using <a href="https://authenticjobs.com/api/documentation/"><b>AuthenticJobs</b></a><p>
+  <br>
+  <p align="center">We have made applications to other sites requesting access to their API.<p>
+  <p align="center">These sites include <a href="https://www.indeed.com/publisher"><b>Indeed</b></a>, <a href="https://developer.linkedin.com/#"><b>LinkedIn</b></a>
+  , and <a href="https://open.edx.org/open-edx-rest-apis"><b>edX</b></a> and are pending approval<p>
 
 
 {% endblock %}
