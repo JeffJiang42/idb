@@ -35,7 +35,8 @@ def about():
     kurtis_bio = "Kurtis is a third year CS/Math Major at UT Austin. \
     He likes to play Super Smash Bros. Melee (Marth of course) in his spare time."
 
-    spencer_bio = "Spencer is a third year CS major. He likes to keep his bio minimal"
+    spencer_bio = "Spencer is a third year CS major at UT Austin. He likes to cook \
+    and hang out with his cats in his free time."
 
     jeff_resp = "Frontend"
     kurtis_resp = "Frontend + Backend"
