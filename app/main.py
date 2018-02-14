@@ -93,28 +93,60 @@ def about():
     return render_template('about.html', heading="About learning2earn",
         data=info, total_stats=totals, title="About")
 
+jobs_dict = {
+    'Front-end Developer (WordPress)': {
+        'keys': ['Provider','Company','Link','Description','Related Subjects','Related Courses'],
+        'name': 'Front-end Developer (WordPress)',
+        'Provider': 'Authentic Jobs',
+        'image': 'https://authenticjobs.s3.amazonaws.com/uploads/logos/1408dcfca73e5380d8c35dee5e3c409b/thumb/logo_2.jpg',
+        'Company': 'Jacob Simon Design',
+        'Link': 'authenticjobs.com/jobs/30303/front-end-developer-wordpress',
+        'Description': "I'm looking for an experienced WordPress developer that has built custom-themed sites from the ground up. I get a plethora of work, but the majority of it is WordPress at the moment. If you have additional skillsets it's very possible they'll be called upon at some point.</p> <p>I prefer a very relaxed, stress-free outlook to the development process. That being said, delivering high quality work on time should be second nature for you. Projects will be supplied on a contract basis with a clear scope of work that leaves no question regarding expectations for each party involved.</p> <p><strong>Required Skills</strong></p> <ul> <li>WordPress custom theme development (front-end and back-end) and all things associated: Advanced Custom Fields, Custom Post Types, CMS training, etc.</li> <li>PHP, HTML5, Sass/LESS, MySQL, JavaScript (jQuery)</li> <li>Git + version control</li> <li>Comfortable with Sketch + Photoshop (design handoff)</li> <li>Effective communication + clear English</li> </ul> <p><strong>Bonus Skills</strong></p> <ul> <li>E-commerce (WooCommerce, Shopify)</li> <li>Other CMS platforms (Magento, Drupal)</li> <li>Accessibility best practices</li> <li>UX/Design experience (Sketch, Photoshop)</li> <li>Animation libraries (WebGL, GSAP) </li> <li>Mailchimp</li> </ul> <p><strong>When you apply</strong> please include your hourly rate and samples of your work.",
+        'Related Subjects': 'Web Development',
+        'Related Courses': 'JavaScript: Understanding the Weird Parts'
+    },
+    'Facebook Ads Manager': {
+        'keys': ['Provider','Company','Link','Description','Related Subjects','Related Courses'],
+        'name': 'Facebook Ads Manager',
+        'Provider': 'Authentic Jobs',
+        'image': 'http://www.emilyhirsh.com/theme/logo.png',
+        'Company': 'Emily Hirsh, Inc.',
+        'Link': 'authenticjobs.com/jobs/30248/facebook-ads-manager',
+        'Description': "We're looking for a rockstar Facebook Ads Manager to join our team.</p> <p>Emily Hirsh, Inc. is a leading digital advertising and sales funnel strategy agency, primarily working with entrepreneurs and infopreneurs to scale their business and increase their revenue by providing strategic planning and management of their digital media buying. </p> <p>We continue to grow rapidly and need another Facebook Ads Manager to help support our team.</p> <p>We are looking for someone who has...</p> <ul> <li>1-2 years experience creating and managing client campaigns in Facebook Ads Manager and/or Power Editor</li> <li>An ability to analyze and optimize client campaigns daily, including troubleshooting and issues and ideating new strategies</li> <li>Familiarity with Pixel placement and management </li> <li>Experience with client communication, including email correspondence and monthly strategy calls </li> <li>The ability to manage their time and priorities on a day to day basis</li> <li><strong>Excellent attention to detail </strong></li> </ul> <p>This is a remote position that requires 30-40 hours a week. We are looking for American or Canadian candidates who are available during US office hours and who are able to attend daily video meetings and accomodate monthly client calls.",
+        'Related Subjects': 'Data & Analytics',
+        'Related Courses': 'Artificial Intelligence: Reinforcement Learning in Python'
+    },
+    'iOS (Objective-C/Swift) Developer for Reactive Native projects': {
+        'keys': ['Provider','Company','Link','Description','Related Subjects','Related Courses'],
+        'name': 'iOS (Objective-C/Swift) Developer for Reactive Native projects',
+        'Provider': 'Authentic Jobs',
+        'image': 'http://64interactive.com/images/6b6956fc.logo.svg',
+        'Company': '64 Interactive, LLC',
+        'Link': 'authenticjobs.com/jobs/30225/ios-objective-c-swift-developer-for-reactive-native-projects',
+        'Description': "<strong>Overview</strong></p> <p>I'm a&nbsp;front-end developer who routinely has projects that require custom components in iOS.&nbsp;I'm looking for someone that I could contract out&nbsp;to build a native component&nbsp;that I can integrate into my Reactive Native view layer.</p> <p>I don't care if it's built in Swift or Objective-c - all I care is that&nbsp;I can pass in my parameters/props&nbsp;from React and&nbsp;your components&nbsp;can return the data I need.&nbsp;</p> <p><strong>About you</strong></p> <ul> <li>You speak fluent english</li> <li>You enjoy working with other developers</li> <li>You have lots of experience building apps in Xcode</li> <li>You have worked as a contractor before, understand how to manage yourself, and can deliver your work on time&nbsp;(based on your estimates)</li> </ul> <p><strong>Bonuses</strong></p> <ul> <li>You have worked with React Native and created custom components (https://facebook.github.io/react-native/docs/native-components-ios.html)</li> <li>You have experience in Javascript</li>",
+        'Related Subjects': 'Computer Science',
+        'Related Courses': 'Algorithms'
+    }
+}
+
 @app.route("/Jobs")
 def jobs():
 
-    info = [{
-        'name': 'JavaScript: Understanding the Weird Parts',
-        'Provider': 'Udemy',
-        'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
-        'Tier': 'Paid'
-    }, {
-        'name': 'Artificial Intelligence: Reinforcement Learning in Python',
-        'Provider': 'Udemy',
-        'image': 'https://udemy-images.udemy.com/course/125_H/1080408_2645_3.jpg',
-        'Tier': 'Paid'
-    }, {
-        'name': 'Algorithms',
-        'Provider': 'Khan Academy',
-        'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/algorithms.png-a4492d-416.png',
-        'Tier': 'Free'
-    }]
+    keys = ['Provider','Company']
+
+    info = []
+
+    for job in jobs_dict:
+        tmp = jobs_dict[job]
+        curr = {'name':job,
+                'image': tmp['image'],
+                'Provider': tmp['Provider'],
+                'Company': tmp['Company'],
+        }
+        info.append(curr)
 
     return render_template('db_page.html', heading="Jobs"
-        , data = info, data_length = len(info), keys = ['Provider','Tier'],
+        , data = info, data_length = len(info), keys = keys,
         title="Jobs")
 
 
@@ -237,48 +269,11 @@ def subject_instance(page):
     keys = subjects_dict[page]['keys']
     return render_template('data.html', pageData = subjects_dict[page], pageKeys = keys)
 
-jobs = {
-    'JavaScript: Understanding the Weird Parts': {
-        'keys': ['Provider','Tier','Instructor','Link','Description','Price'],
-        'name': 'JavaScript: Understanding the Weird Parts',
-        'Provider': 'Udemy',
-        'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
-        'Tier': 'Paid',
-        'Price': 174.99,
-        'Instructor': 'Anthony Alicea',
-        'Link': 'udemy.com/understand-javascript/',
-        'Description': 'An advanced JavaScript course for everyone! Scope, closures, prototypes, \'this\', build your own framework, and more.'
-    },
-    'Artificial Intelligence: Reinforcement Learning in Python': {
-        'keys': ['Provider','Tier','Instructor','Link','Description','Price'],
-        'name': 'Artificial Intelligence: Reinforcement Learning in Python',
-        'Provider': 'Udemy',
-        'image': 'https://udemy-images.udemy.com/course/125_H/1080408_2645_3.jpg',
-        'Tier': 'Paid',
-        'Price': 179.99,
-        'Instructor': 'Lazy Programmer Inc.',
-        'Link': 'udemy.com/artificial-intelligence-reinforcement-learning-in-python/',
-        'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning'
-
-    },
-    'Algorithms': {
-        'keys': ['Provider','Tier','Instructor','Link','Description','Price'],
-        'name': 'Algorithms',
-        'Provider': 'Khan Academy',
-        'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/algorithms.png-a4492d-416.png',
-        'Tier': 'Free',
-        'Price': 0.0,
-        'Instructor': 'Tom Cormen and Devin Balkcom',
-        'Link': 'https://www.khanacademy.org/computing/computer-science/algorithms',
-        'Description': 'We\'ve partnered with Dartmouth college professors Tom Cormen and Devin Balkcom to teach introductory computer science algorithms, including searching, sorting, recursion, and graph theory. Learn with a combination of articles, visualizations, quizzes, and coding challenges.'
-    }
-}
-
 @app.route("/Jobs/<page>")
 def jobs_instance(page):
 
-    keys = jobs[page]['keys']
-    return render_template('data.html', pageData = jobs[page], pageKeys = keys)
+    keys = jobs_dict[page]['keys']
+    return render_template('data.html', pageData = jobs_dict[page], pageKeys = keys)
 
 @app.route("/Courses/<page>")
 def courses_instance(page):
