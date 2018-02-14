@@ -22,7 +22,10 @@ def about():
     His life is consumed by his interest in both subjects. In the rare \
     occasion he has free time, he spends it learning guitar."
     william_bio = "William is a CS Major."
-    brandon_bio = "Insert Bio"
+    brandon_bio = "Brandon is a third year CS Major at UT Austin. \
+    Brandon likes a lot of things, including but not limited to hiking, \
+    video games, beer, soccer, anime, photography, piano, ultimate frisbee, \
+    meeting people, etc."
     kurtis_bio = "Insert Bio"
     spencer_bio = "Insert Bio"
 
