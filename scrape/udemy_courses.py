@@ -34,8 +34,11 @@ if __name__ == "__main__":
         'Link': [],
         'Image': []
     }
+    headers = {"Authorization": "Basic ak9uRVliaFh1eHlKeFl4UXl0WTEzcm1MWHF5a01ldk96QldqNFZiTjpTZUtienJESFdyd3UyUEEzaWI3UDgwanBZYlVZd2pCMGdHcDZ2OGowVmVjNmdVc3dGd1NvRkxHWjZRYVVFZHI2NldHdnhKdzZTdDFzbkRWRzA0aU9wb0NvbDVFbkxORE1wQWNlRkJ1bnl2OUJxQ3Z6NmJtRWthbGplOGJIakNIYw==",
+    "Accept": "application/json, text/plain, */*"}
     while True:
         try:
+            print(url)
             r = requests.get(url,headers = headers)
             soup= BeautifulSoup(r.text,'lxml')
             url = json.loads(soup.body.p.text)['next']
@@ -43,8 +46,9 @@ if __name__ == "__main__":
             for entry in results:
                 getUdemyInfo(entry,udemy_info)
         except Exception as e:
+            print(e)
             break
     
     df = pd.DataFrame.from_dict(udemy_info)
-    df.DataFrame.to_csv("udemy_courses.csv")
+    df.to_csv("udemy_courses.csv")
             
