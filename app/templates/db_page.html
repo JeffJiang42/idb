@@ -9,14 +9,22 @@
 {% endblock %}
 {% block content %}
 
+<style>
+.card-img-top {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+</style>
+
 
   <h2 align="center" style = "padding-top: 25px;padding-bottom: 25px">{{ heading }}</h3>
 
   {% for i in range(0,data_length,3) %}
   <div class="row justify-content-center">
     <div class="col-sm-3">
-      <div class="card h-100" style="height:250px" align="center">
-        <img class="card-img-top" style = "width: 100%;height: auto" src="{{data[i]['image']}}">
+      <div class="card" style="height:400px" align="center">
+        <img class="card-img-top" src="{{data[i]['image']}}">
         <div class="card-block">
           <h4 class="card-title">
             <a href="{{heading + '/' + data[i]['name']}}">{{data[i]['name']}}</a>
@@ -27,7 +35,7 @@
       </div>
     </div>
     <div class="col-sm-3">
-      <div class="card h-100" style="height:250px" align="center">
+      <div class="card" align="center">
         <img class="card-img-top" src="{{data[i+1]['image']}}">
         <div class="card-block">
           <h4 class="card-title">
@@ -39,7 +47,7 @@
       </div>
     </div>
     <div class="col-sm-3">
-      <div class="card h-100" style="height:250px"  align="center">
+      <div class="card"  align="center">
         <img class="card-img-top" src="{{data[i+2]['image']}}">
         <div class="card-block">
           <h4 class="card-title">
