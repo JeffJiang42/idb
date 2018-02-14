@@ -36,6 +36,9 @@ def about():
     jeff_commits, kurtis_commits, william_commits, brandon_commits, spencer_commits = getCommits()
     jeff_issues, kurtis_issues, william_issues, brandon_issues, spencer_issues = getIssues()
 
+    totals = [jeff_commits + kurtis_commits + william_commits + brandon_commits + spencer_commits, \
+    jeff_issues + kurtis_issues + william_issues + brandon_issues + spencer_issues]
+
     spencer_bio = "Insert Bio"
 
     info = [{
@@ -76,7 +79,7 @@ def about():
     }]
 
     return render_template('about.html', heading="About learning2earn",
-        data=info, data_length = len(info), title="About",current_time=datetime.datetime.now())
+        data=info, total_stats=totals, title="About")
 
 @app.route("/Jobs")
 def jobs():
@@ -111,7 +114,7 @@ def jobs():
     }]
 
     return render_template('db_page.html', heading="Jobs"
-        , data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link','Description','Price'], 
+        , data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link','Description','Price'],
         title="Jobs")
 
 @app.route("/Courses")
@@ -147,7 +150,7 @@ def courses():
     }]
 
     return render_template('db_page.html', heading="Courses"
-        , data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link','Description','Price'], 
+        , data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link','Description','Price'],
         title="Courses")
 
 @app.route("/Subjects")
@@ -182,8 +185,8 @@ def subjects():
         'Description': 'We\'ve partnered with Dartmouth college professors Tom Cormen and Devin Balkcom to teach introductory computer science algorithms, including searching, sorting, recursion, and graph theory. Learn with a combination of articles, visualizations, quizzes, and coding challenges.'
     }]
 
-    return render_template('db_page.html', heading="Subjects", 
-        data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link','Description','Price'], 
+    return render_template('db_page.html', heading="Subjects",
+        data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link','Description','Price'],
         title="Subjects")
 
 dataTemplate = {
