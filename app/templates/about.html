@@ -19,7 +19,7 @@
   <div class="row">
   {% for i in range(0,data_length) %}
     <div class="col-sm-2">
-      <div class="card">
+      <div class="card" style="height:800px">
         <img class="card-img-top" src="{{ data[i]['image'] }}" alt="Developer Image" style="width:225px;height:225px;">
         <div class="card-block">
           <h4 class="card-title">{{data[i]['name']}}</h4>
@@ -36,5 +36,14 @@
   {% endfor %}
   </div>
   </div>
+  <br>
+  <h3 align="center">Collective Statistics</h3>
+  <p align="center"><b>Total # of Commits: </b><p>
+  <p align="center"><b>Total # of Issues: </b><p>
+  <p align="center"><b>Total # of Unit Tests: </b><p>
+
+  <h3 align="center">Sources</h3>
+
+  <h3 align="center">Tools</h3>
 
 {% endblock %}
