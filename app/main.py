@@ -37,7 +37,7 @@ def about():
     spencer_bio = "Spencer is a third year CS major. He likes to keep his bio minimal"
 
     jeff_resp = "Frontend"
-    kurtis_resp = "Fronted + Backend"
+    kurtis_resp = "Frontend + Backend"
     william_resp = "Backend + API"
     brandon_resp = "Frontend"
     spencer_resp = "Backend"
@@ -114,7 +114,7 @@ def jobs():
     }]
 
     return render_template('db_page.html', heading="Jobs"
-        , data = info, data_length = len(info), keys = ['Provider','Tier'], 
+        , data = info, data_length = len(info), keys = ['Provider','Tier'],
         title="Jobs")
 
 @app.route("/Courses")
@@ -137,7 +137,7 @@ def courses():
         'Tier': 'Free'
     }]
     return render_template('db_page.html', heading="Courses"
-        , data = info, data_length = len(info), keys = ['Provider','Tier'], 
+        , data = info, data_length = len(info), keys = ['Provider','Tier'],
         title="Courses")
 
 
@@ -161,8 +161,8 @@ def subjects():
         'Tier': 'Free'
     }]
 
-    return render_template('db_page.html', heading="Subjects", 
-        data = info, data_length = len(info), keys = ['Provider','Tier'], 
+    return render_template('db_page.html', heading="Subjects",
+        data = info, data_length = len(info), keys = ['Provider','Tier'],
         title="Subjects")
 #below are functions that an instance of a category.
 subjects = {
@@ -187,7 +187,7 @@ subjects = {
         'Instructor': 'Lazy Programmer Inc.',
         'Link': 'udemy.com/artificial-intelligence-reinforcement-learning-in-python/',
         'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning'
-    
+
     },
     'Algorithms': {
         'keys': ['Provider','Tier','Price','Instructor','Link','Description'],
@@ -230,7 +230,7 @@ jobs = {
         'Instructor': 'Lazy Programmer Inc.',
         'Link': 'udemy.com/artificial-intelligence-reinforcement-learning-in-python/',
         'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning'
-    
+
     },
     'Algorithms': {
         'keys': ['Provider','Tier','Instructor','Link','Description','Price'],
@@ -274,7 +274,7 @@ courses = {
         'Instructor': 'Lazy Programmer Inc.',
         'Link': 'udemy.com/artificial-intelligence-reinforcement-learning-in-python/',
         'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning'
-    
+
     },
     'Algorithms': {
         'keys': ['Provider','Tier','Price','Instructor','Link','Description'],
