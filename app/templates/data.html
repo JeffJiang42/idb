@@ -8,11 +8,22 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-  <h3> This page is supposed to have stuff in it</h3>
-  <br>
-  <p>My string: {{pageData.name}}</p>
-  <p>Value from the list: {{pageData.description}}</p>
-  <br>
-  <p>Same list with a filter: {{pageData.otherInformation}}</p>
-  <h3> TThis page is depressing, innit?</h3>
+	<div class="container h-100">
+  	<div class="row h-100 justify-content-center align-items-center">
+	<div class="card h-100" align = "center" style = "width:600px">
+	  <img class="card-img-top" src="{{pageData['image']}}">
+	  <div class="card-body">
+	    <h4 class="card-title">{{pageData['name']}}</h4>
+	    {% for key in pageKeys %}
+	    	{% if 'Link' not in key %}
+	    		<p class="card-text"><strong>{{key}}</strong>: {{pageData[key]}}</p>
+	    	{% else %}
+	    		<p class="card-text"><strong>{{key}}</strong>: <a href="{{pageData[key]}}">{{pageData[key]}}</a></p>
+	    	{% endif %}
+	    {% endfor %}
+	  </div>
+	</div>
+	</div>
+	</div>
+
 {% endblock %}
