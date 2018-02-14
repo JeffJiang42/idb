@@ -1,6 +1,6 @@
 from flask import Flask, Response, render_template
 from l2e_api import endpoints
-from github_info import getCommits
+from github_info import getCommits, getIssues
 import datetime
 
 app = Flask(__name__)
@@ -34,41 +34,42 @@ def about():
     He likes to play Super Smash Bros. Melee (Marth of course) in his spare time."
 
     jeff_commits, kurtis_commits, william_commits, brandon_commits, spencer_commits = getCommits()
+    jeff_issues, kurtis_issues, william_issues, brandon_issues, spencer_issues = getIssues()
 
     spencer_bio = "Insert Bio"
 
     info = [{
     'name': 'Jeffrey Jiang',
     'commits': jeff_commits,
-    'issues': 57,
+    'issues': jeff_issues,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/EA09WOz.jpg',
     'bio': jeff_bio
     }, {
     'name': 'Kurtis David',
     'commits': kurtis_commits,
-    'issues': 57,
+    'issues': kurtis_issues,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/cUfxaZU.jpg',
     'bio': kurtis_bio
     },{
     'name': 'William Chia',
     'commits': william_commits,
-    'issues': 57,
+    'issues': william_issues,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/DeF2saL.jpg',
     'bio': william_bio
     },{
     'name': 'Brandon Chan',
     'commits': brandon_commits,
-    'issues': 57,
+    'issues': brandon_issues,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/3LhRT5l.jpg',
     'bio': brandon_bio
     },{
     'name': 'Spencer Huff',
     'commits': spencer_commits,
-    'issues': 57,
+    'issues': spencer_issues,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/DeF2saL.jpg',
     'bio': spencer_bio
