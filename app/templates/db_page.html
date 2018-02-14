@@ -17,7 +17,7 @@
         <img class="card-img-top" src="" alt="Card image cap">
         <div class="card-block">
           <h4 class="card-title">
-            <a href="/data">{{data[i]['name']}}</a>
+            <a href="{{heading + '/' + data[i]['name']}}">{{data[i]['name']}}</a>
           </h4>
           <p class="card-text"># Subtopics: {{data[i]['subtopics']}}</p>
         </div>
@@ -26,16 +26,16 @@
         <img class="card-img-top" src="..." alt="Card image cap">
         <div class="card-block">
           <h4 class="card-title">
-            <a href="/data">{{data[i+1]['name']}}</a>
+            <a href="{{heading + '/' + data[i+1]['name']}}">{{data[i+1]['name']}}</a>
           </h4>
-          <p class="card-text"># Subtopics: {{data[i]['subtopics']}}</p>
+          <p class="card-text"># Subtopics: {{data[i+1]['subtopics']}}</p>
         </div>
       </div>
       <div class="card h-100">
         <img class="card-img-top" src="..." alt="Card image cap">
         <div class="card-block">
           <h4 class="card-title">
-            <a href="/data">{{data[i+2]['name']}}</a>
+            <a href="{{heading + '/' + data[i+2]['name']}}">{{data[i+2]['name']}}</a>
           </h4>
           <p class="card-text"># Subtopics: {{data[i]['subtopics']}}</p>
         </div>

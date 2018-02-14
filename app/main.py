@@ -151,8 +151,18 @@ dataTemplate = {
     'image': 'our image'
 }
 
-@app.route("/data")
-def data():
+#below are functions that an instance of a category.
+
+@app.route("/Subjects/<a_subject>")
+def subject_instance(self):
+    return render_template('data.html', pageData = dataTemplate)
+
+@app.route("/Jobs/<a_subject>")
+def jobs_instance(self):
+    return render_template('data.html', pageData = dataTemplate)
+
+@app.route("/Courses/<a_subject>")
+def courses_instance(self):
     return render_template('data.html', pageData = dataTemplate)
 
 
