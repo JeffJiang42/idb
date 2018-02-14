@@ -57,6 +57,7 @@ if __name__ == "__main__":
     # api key (don't steal please)
     headers = {"Authorization": "Basic ak9uRVliaFh1eHlKeFl4UXl0WTEzcm1MWHF5a01ldk96QldqNFZiTjpTZUtienJESFdyd3UyUEEzaWI3UDgwanBZYlVZd2pCMGdHcDZ2OGowVmVjNmdVc3dGd1NvRkxHWjZRYVVFZHI2NldHdnhKdzZTdDFzbkRWRzA0aU9wb0NvbDVFbkxORE1wQWNlRkJ1bnl2OUJxQ3Z6NmJtRWthbGplOGJIakNIYw==",
     "Accept": "application/json, text/plain, */*"}
+    first = True
     while True:
         try:
             # progress
@@ -69,6 +70,11 @@ if __name__ == "__main__":
             # extract info
             for entry in results:
                 getUdemyInfo(entry,udemy_info)
+            # just use some data for IDB1
+            if first:
+                df = pd.DataFrame.from_dict(udemy_info)
+                df.to_csv("udemy_courses_temp.csv")
+                first = False
         except Exception as e:
             # uh oh
             print(e)
