@@ -57,7 +57,7 @@ def about():
     'commits': william_commits,
     'issues': william_issues,
     'unit_tests': 0,
-    'image': 'https://i.imgur.com/DeF2saL.jpg',
+    'image': 'https://i.imgur.com/0PUOsTj.jpg',
     'bio': william_bio
     },{
     'name': 'Brandon Chan',
@@ -71,7 +71,7 @@ def about():
     'commits': spencer_commits,
     'issues': spencer_issues,
     'unit_tests': 0,
-    'image': 'https://i.imgur.com/DeF2saL.jpg',
+    'image': 'https://i.imgur.com/1seLbaU.jpg',
     'bio': spencer_bio
     }]
 
