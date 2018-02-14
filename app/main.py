@@ -78,7 +78,7 @@ def about():
     return render_template('about.html', heading="About learning2earn",
         data=info, data_length = len(info), title="About",current_time=datetime.datetime.now())
 
-@app.route("/jobs")
+@app.route("/Jobs")
 def jobs():
 
     info = [{
@@ -86,6 +86,7 @@ def jobs():
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
         'Tier': 'Paid',
+        'Price': 174.99,
         'Instructor': 'Anthony Alicea',
         'Link': 'udemy.com/understand-javascript/',
         'Description': 'An advanced JavaScript course for everyone! Scope, closures, prototypes, \'this\', build your own framework, and more.'
@@ -94,6 +95,7 @@ def jobs():
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/1080408_2645_3.jpg',
         'Tier': 'Paid',
+        'Price': 179.99,
         'Instructor': 'Lazy Programmer Inc.',
         'Link': 'udemy.com/artificial-intelligence-reinforcement-learning-in-python/',
         'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning'
@@ -102,16 +104,17 @@ def jobs():
         'Provider': 'Khan Academy',
         'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/algorithms.png-a4492d-416.png',
         'Tier': 'Free',
+        'Price': 0.0,
         'Instructor': 'Tom Cormen and Devin Balkcom',
         'Link': 'https://www.khanacademy.org/computing/computer-science/algorithms',
         'Description': 'We\'ve partnered with Dartmouth college professors Tom Cormen and Devin Balkcom to teach introductory computer science algorithms, including searching, sorting, recursion, and graph theory. Learn with a combination of articles, visualizations, quizzes, and coding challenges.'
     }]
 
     return render_template('db_page.html', heading="Jobs"
-        , data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link'], 
+        , data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link','Description','Price'], 
         title="Jobs")
 
-@app.route("/courses")
+@app.route("/Courses")
 def courses():
 
     info = [{
@@ -119,6 +122,7 @@ def courses():
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
         'Tier': 'Paid',
+        'Price': 174.99,
         'Instructor': 'Anthony Alicea',
         'Link': 'udemy.com/understand-javascript/',
         'Description': 'An advanced JavaScript course for everyone! Scope, closures, prototypes, \'this\', build your own framework, and more.'
@@ -127,6 +131,7 @@ def courses():
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/1080408_2645_3.jpg',
         'Tier': 'Paid',
+        'Price': 179.99,
         'Instructor': 'Lazy Programmer Inc.',
         'Link': 'udemy.com/artificial-intelligence-reinforcement-learning-in-python/',
         'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning'
@@ -135,16 +140,17 @@ def courses():
         'Provider': 'Khan Academy',
         'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/algorithms.png-a4492d-416.png',
         'Tier': 'Free',
+        'Price': 0.0,
         'Instructor': 'Tom Cormen and Devin Balkcom',
         'Link': 'https://www.khanacademy.org/computing/computer-science/algorithms',
         'Description': 'We\'ve partnered with Dartmouth college professors Tom Cormen and Devin Balkcom to teach introductory computer science algorithms, including searching, sorting, recursion, and graph theory. Learn with a combination of articles, visualizations, quizzes, and coding challenges.'
     }]
 
     return render_template('db_page.html', heading="Courses"
-        , data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link'], 
+        , data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link','Description','Price'], 
         title="Courses")
 
-@app.route("/subjects")
+@app.route("/Subjects")
 def subjects():
 
     info = [{
@@ -152,6 +158,7 @@ def subjects():
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
         'Tier': 'Paid',
+        'Price': 174.99,
         'Instructor': 'Anthony Alicea',
         'Link': 'udemy.com/understand-javascript/',
         'Description': 'An advanced JavaScript course for everyone! Scope, closures, prototypes, \'this\', build your own framework, and more.'
@@ -160,6 +167,7 @@ def subjects():
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/1080408_2645_3.jpg',
         'Tier': 'Paid',
+        'Price': 179.99,
         'Instructor': 'Lazy Programmer Inc.',
         'Link': 'udemy.com/artificial-intelligence-reinforcement-learning-in-python/',
         'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning'
@@ -168,13 +176,14 @@ def subjects():
         'Provider': 'Khan Academy',
         'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/algorithms.png-a4492d-416.png',
         'Tier': 'Free',
+        'Price': 0.0,
         'Instructor': 'Tom Cormen and Devin Balkcom',
         'Link': 'https://www.khanacademy.org/computing/computer-science/algorithms',
         'Description': 'We\'ve partnered with Dartmouth college professors Tom Cormen and Devin Balkcom to teach introductory computer science algorithms, including searching, sorting, recursion, and graph theory. Learn with a combination of articles, visualizations, quizzes, and coding challenges.'
     }]
 
     return render_template('db_page.html', heading="Subjects", 
-        data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link'], 
+        data = info, data_length = len(info), keys = ['Provider','Tier','Instructor','Link','Description','Price'], 
         title="Subjects")
 
 dataTemplate = {
