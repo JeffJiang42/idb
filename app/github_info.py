@@ -30,7 +30,7 @@ def getCommits():
         return jeff_commits, kurtis_commits, william_commits, brandon_commits, spencer_commits
 
 def getIssues():
-    url = "https://api.github.com/repos/JeffJiang42/idb/issues"
+    url = "https://api.github.com/repos/JeffJiang42/idb/issues?state=all"
     r = requests.get(url)
 
     if r.status_code == 200:
