@@ -127,7 +127,7 @@ jobs_dict = {
         'Company': '64 Interactive, LLC',
         'Link': 'authenticjobs.com/jobs/30225/ios-objective-c-swift-developer-for-reactive-native-projects',
         'Description': "<strong>Overview</strong></p> <p>I'm a&nbsp;front-end developer who routinely has projects that require custom components in iOS.&nbsp;I'm looking for someone that I could contract out&nbsp;to build a native component&nbsp;that I can integrate into my Reactive Native view layer.</p> <p>I don't care if it's built in Swift or Objective-c - all I care is that&nbsp;I can pass in my parameters/props&nbsp;from React and&nbsp;your components&nbsp;can return the data I need.&nbsp;</p> <p><strong>About you</strong></p> <ul> <li>You speak fluent english</li> <li>You enjoy working with other developers</li> <li>You have lots of experience building apps in Xcode</li> <li>You have worked as a contractor before, understand how to manage yourself, and can deliver your work on time&nbsp;(based on your estimates)</li> </ul> <p><strong>Bonuses</strong></p> <ul> <li>You have worked with React Native and created custom components (https://facebook.github.io/react-native/docs/native-components-ios.html)</li> <li>You have experience in Javascript</li>",
-        'Related Subjects': 'Computer Science',
+        'Related Subjects': 'Computer science',
         'Related Courses': 'Algorithms'
     }
 }
@@ -155,7 +155,7 @@ def jobs():
 
 courses_dict = {
     'JavaScript: Understanding the Weird Parts': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Price','Subjects'],
+        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Price','Subjects','Related Jobs'],
         'name': 'JavaScript: Understanding the Weird Parts',
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
@@ -164,10 +164,11 @@ courses_dict = {
         'Instructor': 'Anthony Alicea',
         'Link': 'udemy.com/understand-javascript/',
         'Description': 'An advanced JavaScript course for everyone! Scope, closures, prototypes, \'this\', build your own framework, and more.',
-        'Subjects': 'Web Development'
+        'Subjects': 'Web Development',
+        'Related Jobs': 'Front-end Developer (WordPress)'
     },
     'Artificial Intelligence: Reinforcement Learning in Python': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Subjects'],
+        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Subjects','Related Jobs'],
         'name': 'Artificial Intelligence: Reinforcement Learning in Python',
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/1080408_2645_3.jpg',
@@ -176,10 +177,11 @@ courses_dict = {
         'Instructor': 'Lazy Programmer Inc.',
         'Link': 'udemy.com/artificial-intelligence-reinforcement-learning-in-python/',
         'Description': 'Complete guide to artificial intelligence and machine learning, prep for deep reinforcement learning',
-        'Subjects': 'Data & Analytics'
+        'Subjects': 'Data & Analytics',
+        'Related Jobs': 'Facebook Ads Manager'
     },
     'Algorithms': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Subjects'],
+        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Subjects','Related Jobs'],
         'name': 'Algorithms',
         'Provider': 'Khan Academy',
         'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/algorithms.png-a4492d-416.png',
@@ -188,7 +190,8 @@ courses_dict = {
         'Instructor': 'Tom Cormen and Devin Balkcom',
         'Link': 'www.khanacademy.org/computing/computer-science/algorithms',
         'Description': 'We\'ve partnered with Dartmouth college professors Tom Cormen and Devin Balkcom to teach introductory computer science algorithms, including searching, sorting, recursion, and graph theory. Learn with a combination of articles, visualizations, quizzes, and coding challenges.',
-        'Subjects': 'Computer science'
+        'Subjects': 'Computer science',
+        'Related Jobs': 'iOS (Objective-C/Swift) Developer for Reactive Native projects'
     }
 }
 
@@ -214,41 +217,44 @@ def courses():
 
 subjects_dict = {
     'Computer science': {
-        'keys': ['Provider','Link','Description','Courses'],
+        'keys': ['Provider','Link','Description','# Courses','Courses','Related Jobs'],
         'name': 'Computer science',
         'Provider': 'Khan Academy',
         'image': 'https://cdn.kastatic.org/genfiles/topic-icons/icons/computer_programming.png-7da73e-128c.png',
         'Link': 'khanacademy.org/computing/computer-science',
         'Description': 'Learn select topics from computer science - algorithms (how we solve common problems in computer science and measure the efficiency of our solutions), cryptography (how we protect secret information), and information theory (how we encode and compress information).',
         'Courses': 'Algorithms',
-        '# Classes': 1
+        '# Courses': 1,
+        'Related Jobs': 'iOS (Objective-C/Swift) Developer for Reactive Native projects'
     },
     'Web Development': {
-        'keys': ['Provider','Link','Description','Courses'],
+        'keys': ['Provider','Link','Description','# Courses','Courses','Related Jobs'],
         'name': 'Web Development',
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/480x270/1512962_9f57.jpg',
-        'Link': 'https://www.udemy.com/courses/development/web-development',
+        'Link': 'www.udemy.com/courses/development/web-development',
         'Description': 'Learn web development from Udemy',
         'Courses': 'JavaScript: Understanding the Weird Parts',
-        '# Classes': 1
+        '# Courses': 1,
+        'Related Jobs': 'Front-end Developer (WordPress)'
     },
     'Data & Analytics': {
-        'keys': ['Provider','Link','Description','Courses'],
+        'keys': ['Provider','Link','Description','# Courses','Courses','Related Jobs'],
         'name': 'Data & Analytics',
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/480x270/1499380_7a57_2.jpg',
-        'Link': 'https://www.udemy.com/courses/business/data-and-analytics/',
+        'Link': 'www.udemy.com/courses/business/data-and-analytics/',
         'Description': 'Learn data & analytics from Udemy',
         'Courses': 'Artificial Intelligence: Reinforcement Learning in Python',
-        '# Classes': 1
+        '# Courses': 1,
+        'Related Jobs': 'Facebook Ads Manager'
     }
 }
 
 @app.route("/Subjects")
 def subjects():
 
-    keys = ['Provider','# Classes']
+    keys = ['Provider','# Courses']
 
     info = []
 
@@ -257,7 +263,7 @@ def subjects():
         curr = {'name':subject,
                 'image': tmp['image'],
                 'Provider': tmp['Provider'],
-                '# Classes': tmp['# Classes'],
+                '# Courses': tmp['# Courses'],
         }
         info.append(curr)
 

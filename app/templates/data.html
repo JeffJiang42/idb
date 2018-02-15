@@ -15,7 +15,7 @@
 	  <div class="card-body">
 	    <h4 class="card-title">{{pageData['name']}}</h4>
 	    {% for key in pageKeys %}
-	    	{% if 'Link' not in key and 'Courses' not in key and 'Subjects' not in key and 'Related Jobs' not in key%}
+	    	{% if 'Link' not in key and ( ('Courses' not in key) or ('# Courses' in key) ) and 'Subjects' not in key and 'Related Jobs' not in key%}
 	    		<p class="card-text"><strong>{{key}}</strong>: {{pageData[key]}}</p>
 	    	{% elif 'Link' in key %}
 	    		<p class="card-text"><strong>{{key}}</strong>: <a href="https://{{pageData[key]}}">{{pageData[key]}}</a></p>
