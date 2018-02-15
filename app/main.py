@@ -121,7 +121,7 @@ jobs_dict = {
     },
     'iOS (Objective-C-Swift) Developer for Reactive Native projects': {
         'keys': ['Provider','Company','Link','Description','Related Subjects','Related Courses'],
-        'name': 'iOS (Objective-C/Swift) Developer for Reactive Native projects',
+        'name': 'iOS (Objective-C-Swift) Developer for Reactive Native projects',
         'Provider': 'Authentic Jobs',
         'image': 'http://64interactive.com/images/6b6956fc.logo.svg',
         'Company': '64 Interactive, LLC',
@@ -155,7 +155,7 @@ def jobs():
 
 courses_dict = {
     'JavaScript: Understanding the Weird Parts': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Price','Subjects','Related Jobs'],
+        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Subjects','Related Jobs'],
         'name': 'JavaScript: Understanding the Weird Parts',
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
@@ -191,7 +191,7 @@ courses_dict = {
         'Link': 'www.khanacademy.org/computing/computer-science/algorithms',
         'Description': 'We\'ve partnered with Dartmouth college professors Tom Cormen and Devin Balkcom to teach introductory computer science algorithms, including searching, sorting, recursion, and graph theory. Learn with a combination of articles, visualizations, quizzes, and coding challenges.',
         'Subjects': 'Computer science',
-        'Related Jobs': 'iOS (Objective-C/Swift) Developer for Reactive Native projects'
+        'Related Jobs': 'iOS (Objective-C-Swift) Developer for Reactive Native projects'
     }
 }
 
@@ -225,7 +225,7 @@ subjects_dict = {
         'Description': 'Learn select topics from computer science - algorithms (how we solve common problems in computer science and measure the efficiency of our solutions), cryptography (how we protect secret information), and information theory (how we encode and compress information).',
         'Courses': 'Algorithms',
         '# Courses': 1,
-        'Related Jobs': 'iOS (Objective-C/Swift) Developer for Reactive Native projects'
+        'Related Jobs': 'iOS (Objective-C-Swift) Developer for Reactive Native projects'
     },
     'Web Development': {
         'keys': ['Provider','Link','Description','# Courses','Courses','Related Jobs'],
