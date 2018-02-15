@@ -3,7 +3,6 @@ from l2e_api import endpoints
 from github_info import getCommits, getIssues
 import datetime
 import json
-import urllib
 
 app = Flask(__name__)
 
