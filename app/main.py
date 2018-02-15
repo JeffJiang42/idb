@@ -25,7 +25,8 @@ def about():
     His life is consumed by his interest in both subjects. In the rare \
     occasion he has free time, he spends it learning guitar."
 
-    william_bio = "William is a CS Major. That is all he has to say"
+    william_bio = "William is a third year CS Major. \
+    He likes playing piano and guitar, cooking, and also plays some Melee." 
 
     brandon_bio = "Brandon is a third year CS Major at UT Austin. \
     Brandon likes a lot of things, including but not limited to hiking, \
@@ -35,12 +36,12 @@ def about():
     kurtis_bio = "Kurtis is a third year CS/Math Major at UT Austin. \
     He likes to play Super Smash Bros. Melee (Marth of course) in his spare time."
 
-    spencer_bio = "Spencer is a third year CS major at UT Austin. He likes to cook \
+    spencer_bio = "Spencer is a junior CS major at UT Austin. He likes to cook \
     and hang out with his cats in his free time."
 
     jeff_resp = "Frontend"
-    kurtis_resp = "Frontend + Backend"
-    william_resp = "Backend + API"
+    kurtis_resp = "Frontend + Backend = Full Stack"
+    william_resp = "Backend + API + Full Stack"
     brandon_resp = "Frontend"
     spencer_resp = "Backend"
 
