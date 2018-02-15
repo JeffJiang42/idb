@@ -1,5 +1,6 @@
 from flask import Flask, Response, render_template
 from l2e_api import endpoints
+from bs4 import BeautifulSoup
 from github_info import getCommits, getIssues
 import datetime
 import json
@@ -103,7 +104,7 @@ jobs_dict = {
         'image': 'https://authenticjobs.s3.amazonaws.com/uploads/logos/1408dcfca73e5380d8c35dee5e3c409b/thumb/logo_2.jpg',
         'Company': 'Jacob Simon Design',
         'Link': 'authenticjobs.com/jobs/30303/front-end-developer-wordpress',
-        'Description': "I'm looking for an experienced WordPress developer that has built custom-themed sites from the ground up. I get a plethora of work, but the majority of it is WordPress at the moment. If you have additional skillsets it's very possible they'll be called upon at some point.</p> <p>I prefer a very relaxed, stress-free outlook to the development process. That being said, delivering high quality work on time should be second nature for you. Projects will be supplied on a contract basis with a clear scope of work that leaves no question regarding expectations for each party involved.</p> <p><strong>Required Skills</strong></p> <ul> <li>WordPress custom theme development (front-end and back-end) and all things associated: Advanced Custom Fields, Custom Post Types, CMS training, etc.</li> <li>PHP, HTML5, Sass/LESS, MySQL, JavaScript (jQuery)</li> <li>Git + version control</li> <li>Comfortable with Sketch + Photoshop (design handoff)</li> <li>Effective communication + clear English</li> </ul> <p><strong>Bonus Skills</strong></p> <ul> <li>E-commerce (WooCommerce, Shopify)</li> <li>Other CMS platforms (Magento, Drupal)</li> <li>Accessibility best practices</li> <li>UX/Design experience (Sketch, Photoshop)</li> <li>Animation libraries (WebGL, GSAP) </li> <li>Mailchimp</li> </ul> <p><strong>When you apply</strong> please include your hourly rate and samples of your work.",
+        'Description': "I'm looking for an experienced WordPress developer that has built custom-themed sites from the ground up. I get a plethora of work, but the majority of it is WordPress at the moment. If you have additional skillsets it's very possible they'll be called upon at some point.  I prefer a very relaxed, stress-free outlook to the development process. That being said, delivering high quality work on time should be second nature for you. Projects will be supplied on a contract basis with a clear scope of work that leaves no question regarding expectations for each party involved.  Required Skills   WordPress custom theme development (front-end and back-end) and all things associated: Advanced Custom Fields, Custom Post Types, CMS training, etc. PHP, HTML5, Sass/LESS, MySQL, JavaScript (jQuery) Git + version controlComfortable with Sketch + Photoshop (design handoff). Effective communication + clear English. Bonus Skills.  E-commerce (WooCommerce, Shopify)  Other CMS platforms (Magento, Drupal)  Accessibility best practices    UX/Design experience (Sketch, Photoshop)    Animation libraries (WebGL, GSAP)     Mailchimp   </ul>    When you apply   please include your hourly rate and samples of your work.",
         'Related Subjects': 'Web Development',
         'Related Courses': 'JavaScript: Understanding the Weird Parts'
     },
@@ -114,7 +115,7 @@ jobs_dict = {
         'image': 'http://www.emilyhirsh.com/theme/logo.png',
         'Company': 'Emily Hirsh, Inc.',
         'Link': 'authenticjobs.com/jobs/30248/facebook-ads-manager',
-        'Description': "We're looking for a rockstar Facebook Ads Manager to join our team.</p> <p>Emily Hirsh, Inc. is a leading digital advertising and sales funnel strategy agency, primarily working with entrepreneurs and infopreneurs to scale their business and increase their revenue by providing strategic planning and management of their digital media buying. </p> <p>We continue to grow rapidly and need another Facebook Ads Manager to help support our team.</p> <p>We are looking for someone who has...</p> <ul> <li>1-2 years experience creating and managing client campaigns in Facebook Ads Manager and/or Power Editor</li> <li>An ability to analyze and optimize client campaigns daily, including troubleshooting and issues and ideating new strategies</li> <li>Familiarity with Pixel placement and management </li> <li>Experience with client communication, including email correspondence and monthly strategy calls </li> <li>The ability to manage their time and priorities on a day to day basis</li> <li><strong>Excellent attention to detail </strong></li> </ul> <p>This is a remote position that requires 30-40 hours a week. We are looking for American or Canadian candidates who are available during US office hours and who are able to attend daily video meetings and accomodate monthly client calls.",
+        'Description': "We're looking for a rockstar Facebook Ads Manager to join our team. Emily Hirsh, Inc. is a leading digital advertising and sales funnel strategy agency, primarily working with entrepreneurs and infopreneurs to scale their business and increase their revenue by providing strategic planning and management of their digital media buying. We continue to grow rapidly and need another Facebook Ads Manager to help support our team. We are looking for someone who has...1-2 years experience creating and managing client campaigns in Facebook Ads Manager and/or Power Editor. An ability to analyze and optimize client campaigns daily, including troubleshooting and issues and ideating new strategies. Familiarity with Pixel placement and management. Experience with client communication, including email correspondence and monthly strategy calls The ability to manage their time and priorities on a day to day basis. Excellent attention to detail.  This is a remote position that requires 30-40 hours a week. We are looking for American or Canadian candidates who are available during US office hours and who are able to attend daily video meetings and accomodate monthly client calls.",
         'Related Subjects': 'Data & Analytics',
         'Related Courses': 'Artificial Intelligence: Reinforcement Learning in Python'
     },
@@ -125,8 +126,8 @@ jobs_dict = {
         'image': 'http://64interactive.com/images/6b6956fc.logo.svg',
         'Company': '64 Interactive, LLC',
         'Link': 'authenticjobs.com/jobs/30225/ios-objective-c-swift-developer-for-reactive-native-projects',
-        'Description': "<strong>Overview</strong></p> <p>I'm a&nbsp;front-end developer who routinely has projects that require custom components in iOS.&nbsp;I'm looking for someone that I could contract out&nbsp;to build a native component&nbsp;that I can integrate into my Reactive Native view layer.</p> <p>I don't care if it's built in Swift or Objective-c - all I care is that&nbsp;I can pass in my parameters/props&nbsp;from React and&nbsp;your components&nbsp;can return the data I need.&nbsp;</p> <p><strong>About you</strong></p> <ul> <li>You speak fluent english</li> <li>You enjoy working with other developers</li> <li>You have lots of experience building apps in Xcode</li> <li>You have worked as a contractor before, understand how to manage yourself, and can deliver your work on time&nbsp;(based on your estimates)</li> </ul> <p><strong>Bonuses</strong></p> <ul> <li>You have worked with React Native and created custom components (https://facebook.github.io/react-native/docs/native-components-ios.html)</li> <li>You have experience in Javascript</li>",
-        'Related Subjects': 'Computer science',
+        'Description': "Overview: I'm a&nbsp;front-end developer who routinely has projects that require custom components in iOS.&nbsp;I'm looking for someone that I could contract out&nbsp;to build a native component&nbsp;that I can integrate into my Reactive Native view layer. I don't care if it's built in Swift or Objective-c - all I care is that&nbsp;I can pass in my parameters/props&nbsp;from React and&nbsp;your components&nbsp;can return the data I need.&nbsp; About you You speak fluent english    You enjoy working with other developers. You have lots of experience building apps in Xcode    You have worked as a contractor before, understand how to manage yourself, and can deliver your work on time&nbsp;(based on your estimates). Bonuses You have worked with React Native and created custom components (https://facebook.github.io/react-native/docs/native-components-ios.html)  You have experience in Javascript",
+        'Related Subjects': 'Computer Science',
         'Related Courses': 'Algorithms'
     }
 }
@@ -289,6 +290,11 @@ def courses_instance(page):
     keys = courses_dict[page]['keys']
     return render_template('data.html', pageData = courses_dict[page], pageKeys = keys)
 
+def clean_up_text(text):
+    markup = text
+    soup = BeautifulSoup(markup)
+    soup.get_text()
+    return soup.i.get_text()
 
 @app.route("/api/<endpoint>")
 def api(endpoint=None):
