@@ -127,7 +127,7 @@ jobs_dict = {
         'Company': '64 Interactive, LLC',
         'Link': 'authenticjobs.com/jobs/30225/ios-objective-c-swift-developer-for-reactive-native-projects',
         'Description': "Overview: I'm a front-end developer who routinely has projects that require custom components in iOS. I'm looking for someone that I could contract out to build a native component that I can integrate into my Reactive Native view layer. I don't care if it's built in Swift or Objective-c - all I care is that I can pass in my parameters/props from React and your components can return the data I need. About you You speak fluent english    You enjoy working with other developers. You have lots of experience building apps in Xcode    You have worked as a contractor before, understand how to manage yourself, and can deliver your work on time (based on your estimates). Bonuses You have worked with React Native and created custom components (https://facebook.github.io/react-native/docs/native-components-ios.html)  You have experience in Javascript",
-        'Related Subjects': 'Computer Science',
+        'Related Subjects': 'Computer science',
         'Related Courses': 'Algorithms'
     }
 }
