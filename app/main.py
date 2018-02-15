@@ -154,7 +154,7 @@ def jobs():
 
 courses_dict = {
     'JavaScript: Understanding the Weird Parts': {
-        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Price','Subjects','Related Jobs'],
+        'keys': ['Provider','Tier','Price','Instructor','Link','Description','Subjects','Related Jobs'],
         'name': 'JavaScript: Understanding the Weird Parts',
         'Provider': 'Udemy',
         'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
