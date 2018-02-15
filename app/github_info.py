@@ -2,32 +2,44 @@ import requests
 import json
 
 def getCommits():
-    url = "https://api.github.com/repos/JeffJiang42/idb/contributors"
+    url = "https://api.github.com/repos/JeffJiang42/idb/stats/contributors"
     r = requests.get(url)
 
     if r.status_code == 200:
         #successful call
 
-        jeff_commits = 0
-        kurtis_commits = 0
-        william_commits = 0
-        brandon_commits = 0
-        spencer_commits = 0
-
         info = r.json()
         for contributor in info:
-            if contributor['login'] == 'JeffJiang42':
-                jeff_commits = contributor['contributions']
-            if contributor['login'] == 'kurtisdavid':
-                kurtis_commits = contributor['contributions']
-            if contributor['login'] == 'Acciaccatura':
-                william_commits = contributor['contributions']
-            if contributor['login'] == 'bchan565':
-                brandon_commits = contributor['contributions']
-            if contributor['login'] == 'spencerhuff':
-                spencer_commits = contributor['contributions']
+            jeff_commits = 0
+            kurtis_commits = 0
+            william_commits = 0
+            brandon_commits = 0
+            spencer_commits = 0
 
-        return jeff_commits, kurtis_commits, william_commits, brandon_commits, spencer_commits
+            info = r.json()
+            for contributor in info:
+                if contributor['author']['login'] == 'JeffJiang42':
+                    for week  in contributor['weeks']:
+                        jeff_commits += week['c']
+
+                if contributor['author']['login'] == 'kurtisdavid':
+                    for week in contributor['weeks']:
+                        kurtis_commits += week['c']
+
+                if contributor['author']['login'] == 'Acciaccatura':
+                    for week in contributor['weeks']:
+                        william_commits += week['c']
+
+                if contributor['author']['login'] == 'bchan565':
+                    for week in contributor['weeks']:
+                        brandon_commits += week['c']
+
+                if contributor['author']['login'] == 'spencerhuff':
+                    for week in contributor['weeks']:
+                        spencer_commits += week['c']
+
+    total = jeff_commits + kurtis_commits + william_commits + brandon_commits + spencer_commits
+    return jeff_commits, kurtis_commits, william_commits, brandon_commits, spencer_commits, total
 
 def getIssues():
     url = "https://api.github.com/repos/JeffJiang42/idb/issues?state=all"
@@ -55,4 +67,5 @@ def getIssues():
                 brandon_issues = brandon_issues + 1
             if creator == 'spencerhuff':
                 spencer_issues += 1
-        return jeff_issues, kurtis_issues, william_issues, brandon_issues, spencer_issues
+        total = jeff_issues + kurtis_issues + william_issues + brandon_issues + spencer_issues
+        return jeff_issues, kurtis_issues, william_issues, brandon_issues, spencer_issues, total

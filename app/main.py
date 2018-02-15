@@ -45,11 +45,10 @@ def about():
     brandon_resp = "Frontend"
     spencer_resp = "Backend"
 
-    jeff_commits, kurtis_commits, william_commits, brandon_commits, spencer_commits = getCommits()
-    jeff_issues, kurtis_issues, william_issues, brandon_issues, spencer_issues = getIssues()
+    jeff_commits, kurtis_commits, william_commits, brandon_commits, spencer_commits, total_commits = getCommits()
+    jeff_issues, kurtis_issues, william_issues, brandon_issues, spencer_issues, total_issues = getIssues()
 
-    totals = [jeff_commits + kurtis_commits + william_commits + brandon_commits + spencer_commits, \
-    jeff_issues + kurtis_issues + william_issues + brandon_issues + spencer_issues]
+    totals = [total_commits, total_issues]
 
     info = [{
     'name': 'Jeffrey Jiang',
