@@ -29,7 +29,9 @@ def about():
     He likes playing piano and guitar, cooking, and also plays some Melee."
 
     brandon_bio = "Brandon is a third year CS Major at UT Austin. \
-    Brandon likes a lot of things."
+    Brandon likes a lot of things, including but not limited to hiking, \
+    video games, beer, soccer, anime, photography, piano, ultimate frisbee, \
+    meeting people, etc."
 
     kurtis_bio = "Kurtis is a third year CS/Math Major at UT Austin. \
     He likes to play Super Smash Bros. Melee (Marth of course) in his spare time."
