@@ -26,7 +26,7 @@ def about():
     occasion he has free time, he spends it learning guitar."
 
     william_bio = "William is a third year CS Major. \
-    He likes playing piano and guitar, cooking, and also plays some Melee." 
+    He likes playing piano and guitar, cooking, and also plays some Melee."
 
     brandon_bio = "Brandon is a third year CS Major at UT Austin. \
     Brandon likes a lot of things, including but not limited to hiking, \
@@ -126,7 +126,7 @@ jobs_dict = {
         'image': 'http://64interactive.com/images/6b6956fc.logo.svg',
         'Company': '64 Interactive, LLC',
         'Link': 'authenticjobs.com/jobs/30225/ios-objective-c-swift-developer-for-reactive-native-projects',
-        'Description': "Overview: I'm a&nbsp;front-end developer who routinely has projects that require custom components in iOS.&nbsp;I'm looking for someone that I could contract out&nbsp;to build a native component&nbsp;that I can integrate into my Reactive Native view layer. I don't care if it's built in Swift or Objective-c - all I care is that&nbsp;I can pass in my parameters/props&nbsp;from React and&nbsp;your components&nbsp;can return the data I need.&nbsp; About you You speak fluent english    You enjoy working with other developers. You have lots of experience building apps in Xcode    You have worked as a contractor before, understand how to manage yourself, and can deliver your work on time&nbsp;(based on your estimates). Bonuses You have worked with React Native and created custom components (https://facebook.github.io/react-native/docs/native-components-ios.html)  You have experience in Javascript",
+        'Description': "Overview: I'm a front-end developer who routinely has projects that require custom components in iOS. I'm looking for someone that I could contract out to build a native component that I can integrate into my Reactive Native view layer. I don't care if it's built in Swift or Objective-c - all I care is that I can pass in my parameters/props from React and your components can return the data I need. About you You speak fluent english    You enjoy working with other developers. You have lots of experience building apps in Xcode    You have worked as a contractor before, understand how to manage yourself, and can deliver your work on time (based on your estimates). Bonuses You have worked with React Native and created custom components (https://facebook.github.io/react-native/docs/native-components-ios.html)  You have experience in Javascript",
         'Related Subjects': 'Computer Science',
         'Related Courses': 'Algorithms'
     }
