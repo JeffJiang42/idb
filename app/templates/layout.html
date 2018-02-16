@@ -9,10 +9,14 @@
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="{{ url_for('static',filename='stylesheet.css') }}">
   </head>
+  <style>
+  .navbar{
+    background-color: #1d76fc
+  }
+  </style>
   <body>
-
     <header>
-      <nav class="navbar navbar-expand-md navbar-dark static-top bg-dark">
+      <nav class="navbar navbar-expand-md navbar-dark static-top">
         <a class="navbar-brand" href="/"><img src="https://i.imgur.com/g16hr23.png" alt="logo" style="width:60px;height:40px; margin-right: 10px;"/>Learning2Earn</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
