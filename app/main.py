@@ -23,7 +23,7 @@ def about():
 
     jeff_bio = "Jeffrey is a third year Math/CS Major at UT Austin. \
     His life is consumed by his interest in both subjects. In the rare \
-    occasion he has free time, he spends it learning guitar."
+    occasion he has free time, he plays guitar."
 
     william_bio = "William is a third year CS Major. \
     He likes playing piano and guitar, cooking, and also plays some Melee."

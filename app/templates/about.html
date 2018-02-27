@@ -9,20 +9,27 @@
 {% endblock %}
 {% block content %}
 
-  <h2 align="center" style = "padding-top: 25px;padding-bottom: 25px">{{ heading }}</h3>
+<style>
+.card {
+    height: 100%;
+    background-color: inherit;
+    overflow-y: scroll;
+}
+.row{
+  padding: 25px;
+}
+.row-about{
+  border-radius: 50px;
+  padding: 35px;
+}
+</style>
 
-  <p align="center">learning2earn is a place to find both work and knowledge. With
-  the growing popularity of online courses, we aim to connect these courses to
-  relevant job opportinuties. Our users will be able to see the applicability
-  of specific courses and subjects, and conversely, be able to identify and obtain the
-  necessary skills for their desired work.</p>
-
-  <h3 align="center">Meet the Team</h3>
+  <h3 align="center" style = "padding-top: 25px;">Meet the Team</h3>
   <div class="container-fluid">
   <div class="row justify-content-center">
   {% for i in range(0,3) %}
     <div class="col-sm-3" align="center">
-      <div class="card" style="height:720px">
+      <div class="card" style="height:750px">
         <br>
         <img class="img-thumbnail" src="{{ data[i]['image'] }}" alt="Developer Image" style="width:256px;height:256px;">
         <div class="card-block">
@@ -46,7 +53,7 @@
   <div class="row justify-content-center">
   {% for i in range(3,5) %}
     <div class="col-sm-3" align="center">
-      <div class="card" style="height:700px">
+      <div class="card" style="height:750px">
         <br>
         <img class="img-thumbnail" src="{{ data[i]['image'] }}" alt="Developer Image" style="width:256px;height:256px;">
         <div class="card-block">
@@ -65,6 +72,16 @@
   {% endfor %}
   </div>
   </div>
+  <br>
+  <div class="container-rounded justify-content-center">
+  <div class="row-about">
+  <h2 align="center" style = "padding-top: 25px;padding-bottom: 25px">{{ heading }}</h3>
+
+  <p align="center">learning2earn is a place to find both work and knowledge. With
+  the growing popularity of online courses, we aim to connect these courses to
+  relevant job opportinuties. Our users will be able to see the applicability
+  of specific courses and subjects, and conversely, be able to identify and obtain the
+  necessary skills for their desired work.</p>
 
   <br>
   <h3 align="center">Collective Statistics</h3>
@@ -102,4 +119,6 @@
 
   <br>
   <br>
+</div>
+</div>
 {% endblock %}
