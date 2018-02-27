@@ -41,7 +41,7 @@ def about():
 
     jeff_resp = "Frontend"
     kurtis_resp = "Frontend + Backend = Full Stack"
-    william_resp = "Frontend + Backend + API + Full Stack"
+    william_resp = "API + Full Stack"
     brandon_resp = "Frontend"
     spencer_resp = "Backend"
 
