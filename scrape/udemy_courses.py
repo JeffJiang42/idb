@@ -3,22 +3,28 @@ import json
 from bs4 import BeautifulSoup
 import pandas as pd
 
-def getUdemyDescription(url):
+# api key (don't steal please)
+headers = {"Authorization": "Basic ak9uRVliaFh1eHlKeFl4UXl0WTEzcm1MWHF5a01ldk96QldqNFZiTjpTZUtienJESFdyd3UyUEEzaWI3UDgwanBZYlVZd2pCMGdHcDZ2OGowVmVjNmdVc3dGd1NvRkxHWjZRYVVFZHI2NldHdnhKdzZTdDFzbkRWRzA0aU9wb0NvbDVFbkxORE1wQWNlRkJ1bnl2OUJxQ3Z6NmJtRWthbGplOGJIakNIYw==",
+"Accept": "application/json, text/plain, */*"}
+course_fields = "?fields[course]=headline,avg_rating,primary_category,primary_subcategory"
+
+def getUdemyCourse(id_):
     '''
-    Scrape the description not found in api
+    Scrape specific course info from api
     Param:
-        url - url of the udemy course
+        id_ - unique pk of udemy course
     Return:
-        description - extracted headline
+        info - dict containing additional info from api
     '''
-    # pretend we're not robots
-    user_header = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'}
-    url = 'http://udemy.com' + url
-    req = requests.get(url,headers = user_header)
-    soup = BeautifulSoup(req.text,'lxml')
-    # steal the headline as description
-    description = soup.body.find("div",class_ = "clp-lead__headline").text
-    return description.strip()
+    url = "https://www.udemy.com/api-2.0/courses/" + str(id_) + course_fields
+    r = requests.get(url,headers = headers)
+    soup = BeautifulSoup(r.text,'lxml')
+    info = json.loads(soup.body.p.text)
+    info['primary_category_id'] = info['primary_category']['id']
+    info['primary_category'] = info['primary_category']['title']
+    info['primary_subcategory_id'] = info['primary_subcategory']['id']
+    info['primary_subcategory'] = info['primary_subcategory']['title']
+    return info
     
 
 def getUdemyInfo(entry,udemy_info):
@@ -40,7 +46,14 @@ def getUdemyInfo(entry,udemy_info):
     if len(entry['visible_instructors']) != 0:
         udemy_info['Instructor'].append(entry['visible_instructors'][0]['title'])
     udemy_info['Image'].append(entry['image_125_H'])
-    udemy_info['Description'].append(getUdemyDescription(entry['url']))
+    info = getUdemyCourse(entry['id'])
+    udemy_info['Description'].append(info['headline'])
+    udemy_info['Rating'].append(info['avg_rating'])
+    udemy_info['PrimaryCategory'].append(info['primary_category'])
+    udemy_info['PrimaryCategoryID'].append(info['primary_category_id'])
+    udemy_info['PrimarySubcategory'].append(info['primary_subcategory'])
+    udemy_info['PrimarySubcategoryID'].append(info['primary_subcategory_id'])
+
     
 if __name__ == "__main__":
     # max entries 100 / page
@@ -52,12 +65,14 @@ if __name__ == "__main__":
         'Description': [],
         'Instructor': [],
         'Link': [],
-        'Image': []
+        'Image': [],
+        'Rating': [],
+        'PrimaryCategory': [],
+        'PrimaryCategoryID': [],
+        'PrimarySubcategory': [],
+        'PrimarySubcategoryID': []
     }
-    # api key (don't steal please)
-    headers = {"Authorization": "Basic ak9uRVliaFh1eHlKeFl4UXl0WTEzcm1MWHF5a01ldk96QldqNFZiTjpTZUtienJESFdyd3UyUEEzaWI3UDgwanBZYlVZd2pCMGdHcDZ2OGowVmVjNmdVc3dGd1NvRkxHWjZRYVVFZHI2NldHdnhKdzZTdDFzbkRWRzA0aU9wb0NvbDVFbkxORE1wQWNlRkJ1bnl2OUJxQ3Z6NmJtRWthbGplOGJIakNIYw==",
-    "Accept": "application/json, text/plain, */*"}
-    first = True
+    it = 1
     while True:
         try:
             # progress
@@ -70,11 +85,11 @@ if __name__ == "__main__":
             # extract info
             for entry in results:
                 getUdemyInfo(entry,udemy_info)
-            # just use some data for IDB1
-            if first:
+            # save occasionally
+            if it % 10 == 0:
                 df = pd.DataFrame.from_dict(udemy_info)
                 df.to_csv("udemy_courses_temp.csv")
-                first = False
+            it += 1
         except Exception as e:
             # uh oh
             print(e)
@@ -82,4 +97,3 @@ if __name__ == "__main__":
     # save to csv
     df = pd.DataFrame.from_dict(udemy_info)
     df.to_csv("udemy_courses.csv")
-            
