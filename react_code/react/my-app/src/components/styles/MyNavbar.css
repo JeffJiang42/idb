@@ -1,0 +1,44 @@
+ul.nav.navbar-nav.navbar-right {
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.brand-align {
+  padding-left: 20px;
+  display: flex;
+  justify-content: left;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.brand-align >navbar-brand {
+  display: flex;
+  align-items: left;
+}
+
+.navbar-brand > img{
+  height: 40px;
+  width: 60px;
+}
+.brand-align {
+  padding-left: 20px;
+  display: flex;
+  justify-content: left;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.brand-align >navbar-brand {
+  display: flex;
+  align-items: left;
+}
+
+.navbar-brand > img{
+  height: 40px;
+  width: 60px;
+}
