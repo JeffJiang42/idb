@@ -22,6 +22,12 @@ class Tools extends Component{
         <p>We are using <a href="https://www.docker.com"><b>Docker</b></a> to deploy our website</p>
         <p>Our project is hosted on <a href="https://aws.amazon.com"><b>Amazon Web Services</b></a></p>
       </div>
+      <div className="data">
+        <p>For data on courses, we are using APIs from <a href="https://www.udemy.com/developers/">
+          <b>Udemy</b></a>, <a href="https://github.com/Khan/khan-api/wiki/Khan-Academy-API"><b>KhanAcademy</b></a>
+          and <a herf="https://open.edx.org/open-edx-rest-apis"><b>edX</b></a></p>
+        <p>For data  on jobs, we are using APIs from <a href="https://jobs.github.com/api"><b>GitHubJobs</b></a> and <a href="https://authenticjobs.com/api/documentation/"><b>AuthenticJobs</b></a></p>
+      </div>
     </div>
     )
   }
