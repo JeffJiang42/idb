@@ -3,9 +3,9 @@ import { BrowserRouter as Router,Route } from 'react-router-dom';
 import Home from './components/Home.jsx';
 import About from './components/About.jsx';
 import MyNavbar from './components/MyNavbar.jsx';
-import JobPage from './components/JobPage.jsx';
-import CoursePage from './components/CoursePage.jsx';
-import SubjectPage from './components/SubjectPage.jsx';
+import Jobs from './components/Jobs.jsx';
+import Courses from './components/Courses.jsx';
+import Subjects from './components/Subjects.jsx';
 
 
 class App extends Component {
@@ -16,9 +16,9 @@ class App extends Component {
           <MyNavbar/>
           <Route exact path='/' component={Home} />
           <Route exact path='/about' component={About} />
-          <Route exact path='/jobs' component={JobPage} />
-          <Route exact path='/courses' component={CoursePage} />
-          <Route exact path='/subjects' component={SubjectPage} />
+          <Route exact path='/jobs' component={Jobs} />
+          <Route exact path='/courses' component={Courses} />
+          <Route exact path='/subjects' component={Subjects} />
 
         </div>
       </Router>
