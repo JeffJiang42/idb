@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Row, Col, Thumbnail } from 'react-bootstrap';
 import './styles/Team.css';
+import _ from 'lodash'
+
+const commits_url = "https://api.github.com/repos/JeffJiang42/idb/stats/contributors";
+const issues_url = "https://api.github.com/repos/JeffJiang42/idb/issues?state=all";
 
 const jeff_bio = "Jeffrey is a third year Math/CS Major at UT Austin. \
   His life is consumed by his interest in both subjects. In the rare \
@@ -27,96 +31,148 @@ const william_resp = "API + Full Stack"
 const brandon_resp = "Frontend"
 const spencer_resp = "Backend"
 
-var jeff_commits = 0;
-var jeff_issues = 1;
-
-var kurtis_commits = 2;
-var kurtis_issues = 3;
-
-var william_commits = 4;
-var william_issues = 5;
-
-var brandon_commits = 6;
-var brandon_issues = 7;
-
-var spencer_commits = 8;
-var spencer_issues = 9;
-
 var info = [{
     'name': 'Jeffrey Jiang',
-    'commits': jeff_commits,
-    'issues': jeff_issues,
+    'commits': 0,
+    'issues': 0,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/EA09WOz.jpg',
     'bio': jeff_bio,
     'resp': jeff_resp
     }, {
     'name': 'Kurtis David',
-    'commits': kurtis_commits,
-    'issues': kurtis_issues,
+    'commits': 0,
+    'issues': 0,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/cUfxaZU.jpg',
     'bio': kurtis_bio,
     'resp':kurtis_resp
     },{
     'name': 'William Chia',
-    'commits': william_commits,
-    'issues': william_issues,
+    'commits': 0,
+    'issues': 0,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/0PUOsTj.jpg',
     'bio': william_bio,
     'resp': william_resp
     },{
     'name': 'Brandon Chan',
-    'commits': brandon_commits,
-    'issues': brandon_issues,
+    'commits': 0,
+    'issues': 0,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/3LhRT5l.jpg',
     'bio': brandon_bio,
     'resp': brandon_resp
     },{
     'name': 'Spencer Huff',
-    'commits': spencer_commits,
-    'issues': spencer_issues,
+    'commits': 0,
+    'issues': 0,
     'unit_tests': 0,
     'image': 'https://i.imgur.com/1seLbaU.jpg',
     'bio': spencer_bio,
     'resp': spencer_resp
     }]
 
-
-const teamCards_1 = info.slice(0,3).map((person,i)=>
-  <div key={"member_" + i}>
-    <Col xs={6} md={4}>
-      <Thumbnail src={person.image} >
-      <h4>{person.name}</h4>
-      <p>{person.bio}</p>
-      <p><b>Responsibilities: </b>{person.resp}</p>
-      <p><b># of Commits: </b>{person.commits}</p>
-      <p><b># of Issues: </b>{person.issues}</p>
-      <p><b># of Unit Tests: </b>{person.unit_tests}</p>
-      </Thumbnail>
-    </Col>
-  </div>
-);
-
-const teamCards_2 = info.slice(3).map((person,i)=>
-  <div key={"member_" + i}>
-    <Col xs={6} md={6}>
-      <Thumbnail src={person.image}>
-      <h4>{person.name}</h4>
-      <p>{person.bio}</p>
-      <p><b>Responsibilities: </b>{person.resp}</p>
-      <p><b># of Commits: </b>{person.commits}</p>
-      <p><b># of Issues: </b>{person.issues}</p>
-      <p><b># of Unit Tests: </b>{person.unit_tests}</p>
-      </Thumbnail>
-    </Col>
-  </div>
-);
-
 class Team extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      commits:[100,200,300,400,500],
+      issues: [600,700,800,900,1000]
+    };
+  }
+
+  componentDidMount(){
+    fetch(commits_url)
+      .then((response) => {return response.json()})
+      .then((commitsJson) => {
+        var commits = [0,0,0,0,0];
+        for (let contributor of commitsJson){
+          if (contributor.author.login === 'JeffJiang42'){
+            commits[0] = contributor.total;
+          }
+          if (contributor.author.login === 'kurtisdavid'){
+            commits[1] = contributor.total;
+          }
+          if (contributor.author.login === 'Acciaccatura'){
+            commits[2] = contributor.total;
+          }
+          if (contributor.author.login === 'bchan565'){
+            commits[3] = contributor.total;
+          }
+          if (contributor.author.login === 'spencerhuff'){
+            commits[4] = contributor.total;
+          }
+        }
+        return commits;
+      })
+      .then((data) => this.setState({commits: data}))
+
+      fetch(issues_url)
+        .then((response) => {return response.json()})
+        .then((issuesJson) => {
+          var issues = [0,0,0,0,0];
+          for (let issue of issuesJson){
+            var creator = issue.user.login;
+            if (creator === 'JeffJiang42'){
+              issues[0] += 1;
+            }
+            if (creator === 'kurtisdavid'){
+              issues[1] += 1;
+            }
+            if (creator === 'Acciaccatura'){
+              issues[2] += 1;
+            }
+            if (creator === 'iambrandonchan'){
+              issues[3] += 1;
+            }
+            if (creator === 'spencerhuff'){
+              issues[4] += 1;
+            }
+          }
+          return issues;
+        })
+        .then((data) => this.setState({issues: data}))
+
+  }
+
   render(){
+    const stats = this.state;
+    for (let i of _.range(5)){
+      info[i].commits = stats.commits[i];
+      info[i].issues = stats.issues[i];
+    }
+    const teamCards_1 = info.slice(0,3).map((person,i)=>
+      <div key={"member_" + i}>
+        <Col xs={6} md={4}>
+          <Thumbnail src={person.image} >
+          <h4>{person.name}</h4>
+          <p>{person.bio}</p>
+          <p><b>Responsibilities: </b>{person.resp}</p>
+          <p><b># of Commits: </b>{person.commits}</p>
+          <p><b># of Issues: </b>{person.issues}</p>
+          <p><b># of Unit Tests: </b>{person.unit_tests}</p>
+          </Thumbnail>
+        </Col>
+      </div>
+    );
+
+    const teamCards_2 = info.slice(3).map((person,i)=>
+      <div key={"member_" + i}>
+        <Col xs={6} md={6}>
+          <Thumbnail src={person.image}>
+          <h4>{person.name}</h4>
+          <p>{person.bio}</p>
+          <p><b>Responsibilities: </b>{person.resp}</p>
+          <p><b># of Commits: </b>{person.commits}</p>
+          <p><b># of Issues: </b>{person.issues}</p>
+          <p><b># of Unit Tests: </b>{person.unit_tests}</p>
+          </Thumbnail>
+        </Col>
+      </div>
+    );
+
     return(
       <Grid>
         {teamCards_1}

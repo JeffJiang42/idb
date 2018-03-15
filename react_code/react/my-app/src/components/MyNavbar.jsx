@@ -8,7 +8,7 @@ class MyNavbar extends Component{
     return (
       <Navbar inverse fluid>
         <Navbar.Header>
-          <div class="brand-align">
+          <div className="brand-align">
           <Navbar.Brand>
             <Link to="/"><Image src="https://i.imgur.com/g16hr23.png"/></Link>
           </Navbar.Brand>
