@@ -23,13 +23,13 @@ class MyNavbar extends Component{
             <NavItem eventKey={2} componentClass={Link} href="/about" to="/about">
               About
             </NavItem>
-            <NavItem eventKey={2} componentClass={Link} href="/" to="/subjects">
+            <NavItem eventKey={2} componentClass={Link} href="/courses" to="/courses">
               Courses
             </NavItem>
-            <NavItem eventKey={2} componentClass={Link} href="/" to="/courses">
+            <NavItem eventKey={2} componentClass={Link} href="/"subjects to="/subjects">
               Subjects
             </NavItem>
-            <NavItem eventKey={2} componentClass={Link} href="/" to="/jobs">
+            <NavItem eventKey={2} componentClass={Link} href="/jobs" to="/jobs">
               Jobs
             </NavItem>
           </Nav>
