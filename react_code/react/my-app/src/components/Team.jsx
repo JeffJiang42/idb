@@ -26,7 +26,7 @@ const spencer_bio = "Spencer is a junior CS major at UT Austin. He likes to cook
     and hang out with his cats in his free time."
 
 const jeff_resp = "Frontend"
-const kurtis_resp = "Frontend + Backend = Full Stack"
+const kurtis_resp = "Frontend + Backend"
 const william_resp = "API + Full Stack"
 const brandon_resp = "Frontend"
 const spencer_resp = "Backend"
@@ -78,8 +78,8 @@ class Team extends Component{
   constructor(props){
     super(props);
     this.state = {
-      commits:[100,200,300,400,500],
-      issues: [600,700,800,900,1000]
+      commits:[0],
+      issues: [0]
     };
   }
 
@@ -177,6 +177,21 @@ class Team extends Component{
       <Grid>
         {teamCards_1}
         {teamCards_2}
+        <div className="stats">
+        <h3>Collective Statistics</h3>
+        <p><b>Total # of Commits: </b>{this.state.commits.reduce((a,b) => {return a + b})}</p>
+        <p><b>Total # of Issues: </b>{this.state.issues.reduce((a,b) => {return a + b})}</p>
+        <p><b>Total # of Unit Tests: </b>0</p>
+        </div>
+        <div className="statement">
+          <h3>About Learning2Earn</h3>
+          <p>Learning2Earn is a place to find both work and knowledge.
+            With the growing popularity of online courses, we aim to
+            connect these courses to relevant job opportinuties.
+            Our users will be able to see the applicability of specific
+            courses and subjects, and conversely, be able to identify
+            and obtain the necessary skills for their desired work.</p>
+        </div>
       </Grid>
     );
   }
