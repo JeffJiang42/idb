@@ -6,6 +6,7 @@ import MyNavbar from './components/MyNavbar.jsx';
 import Jobs from './components/Jobs.jsx';
 import Courses from './components/Courses.jsx';
 import Subjects from './components/Subjects.jsx';
+import blah from './components/JobData.jsx';
 
 
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
           <Route exact path='/jobs' component={Jobs} />
           <Route exact path='/courses' component={Courses} />
           <Route exact path='/subjects' component={Subjects} />
+          <Route exact path='/blah' component={blah} />
 
         </div>
       </Router>
