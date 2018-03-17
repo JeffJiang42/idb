@@ -9,24 +9,9 @@ class Jobs extends Component{
   render(){
     return(
     	<p>
-    	<JobCard provider={"insert provider"} company={"insert company"} position={"janitor"} image={"insert image"}/>
+    	<JobCard provider={"insert provider"} company={"insert company"} positionRoute={"janitor"} positionName={"janitor"} image={"insert image"}/>
     	</p>
     );
   }
 }
 export default Jobs;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

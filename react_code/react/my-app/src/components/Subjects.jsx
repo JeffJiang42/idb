@@ -8,7 +8,7 @@ class Subjects extends Component{
   render(){
     return(
     	<p>
-    	<SubjectCard provider={"insert provider"} totalCourses={"insert number of courses"} subject={"Janitorology: the study of janitors"} image={"insert image"}/>
+    	<SubjectCard provider={"insert provider"} totalCourses={"insert number of courses"} subjectRoute ={"Janitorology"} subjectName={"Janitorology: The study of Janitors"} image={"insert image"}/>
 
     	</p>
     );
@@ -16,5 +16,3 @@ class Subjects extends Component{
 }
 
 export default Subjects;
-
-

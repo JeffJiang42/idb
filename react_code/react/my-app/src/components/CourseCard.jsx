@@ -20,7 +20,7 @@ class CourseCard extends Component{
 			    <img class="card-img-top" src={this.props.image}/>
 			    <div class="card-block">
 			      <h4 class="card-title">
-			        <a href={this.props.course}> {this.props.course}</a>
+			        <a href={this.props.courseRoute}> {this.props.courseName}</a>
 			      </h4>
 			      <p class="card-text">Provider: {this.props.provider}</p>
 			      <p class="card-text">Tier: {this.props.tier}</p>
@@ -31,9 +31,3 @@ class CourseCard extends Component{
 	}
 }
 export default CourseCard;
-
-
-
-
-
-

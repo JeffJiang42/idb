@@ -20,7 +20,7 @@ class JobCard extends Component{
 			    <img class="card-img-top" src={this.props.image}/>
 			    <div class="card-block">
 			      <h4 class="card-title">
-			        <a href={this.props.position}> {this.props.position}</a>
+			        <a href={this.props.positionRoute}> {this.props.positionName}</a>
 			      </h4>
 			      <p class="card-text">Provider: {this.props.provider}</p>
 			      <p class="card-text">Company: {this.props.company}</p>
@@ -31,9 +31,3 @@ class JobCard extends Component{
 	}
 }
 export default JobCard;
-
-
-
-
-
-

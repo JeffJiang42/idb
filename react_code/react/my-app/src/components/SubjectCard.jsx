@@ -20,7 +20,7 @@ class SubjectCard extends Component{
 			    <img class="card-img-top" src={this.props.image}/>
 			    <div class="card-block">
 			      <h4 class="card-title">
-			        <a href={this.props.subject}> {this.props.subject}</a>
+			        <a href={this.props.subjectRoute}> {this.props.subjectName}</a>
 			      </h4>
 			      <p class="card-text">Provider: {this.props.provider}</p>
 			      <p class="card-text"># of Courses: {this.props.totalCourses}</p>
@@ -31,9 +31,3 @@ class SubjectCard extends Component{
 	}
 }
 export default SubjectCard;
-
-
-
-
-
-

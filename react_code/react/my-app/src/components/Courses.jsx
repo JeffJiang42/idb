@@ -9,7 +9,7 @@ class Courses extends Component{
   render(){
     return(
     	<p>
-    	<CourseCard provider={"insert provider"} tier={"insert tier"} course={"janitor101"} image={"insert image"}/>
+    	<CourseCard provider={"insert provider"} tier={"insert tier"} courseRoute={"janitor_101"} courseName={"janitor 101"} image={"insert image"}/>
     	</p>
     );
   }
