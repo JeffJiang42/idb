@@ -35,7 +35,7 @@ var info = [{
     'name': 'Jeffrey Jiang',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 0,
+    'unit_tests': 1,
     'image': 'https://i.imgur.com/EA09WOz.jpg',
     'bio': jeff_bio,
     'resp': jeff_resp
@@ -160,7 +160,7 @@ class Team extends Component{
 
     const teamCards_2 = info.slice(3).map((person,i)=>
       <div key={"member_" + i}>
-        <Col xs={6} md={6}>
+        <Col xs={6} md={4}>
           <Thumbnail src={person.image}>
           <h4>{person.name}</h4>
           <p>{person.bio}</p>
@@ -177,11 +177,14 @@ class Team extends Component{
       <Grid>
         {teamCards_1}
         {teamCards_2}
+        <br/>
+        <Row></Row>
         <div className="stats">
         <h3>Collective Statistics</h3>
         <p><b>Total # of Commits: </b>{this.state.commits.reduce((a,b) => {return a + b})}</p>
         <p><b>Total # of Issues: </b>{this.state.issues.reduce((a,b) => {return a + b})}</p>
-        <p><b>Total # of Unit Tests: </b>0</p>
+        <p><b>Total # of Unit Tests: </b>1</p>
+        <br/>
         </div>
         <div className="statement">
           <h3>About Learning2Earn</h3>
@@ -191,6 +194,7 @@ class Team extends Component{
             Our users will be able to see the applicability of specific
             courses and subjects, and conversely, be able to identify
             and obtain the necessary skills for their desired work.</p>
+          <br/>
         </div>
       </Grid>
     );
