@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Row, Col, Thumbnail } from 'react-bootstrap';
 import './styles/Team.css';
 import _ from 'lodash'
+import "isomorphic-fetch"
 
 const commits_url = "https://api.github.com/repos/JeffJiang42/idb/stats/contributors";
 const issues_url = "https://api.github.com/repos/JeffJiang42/idb/issues?state=all";

@@ -5,6 +5,8 @@
   "dependencies": {
     "boostrap": "^2.0.0",
     "bootstrap": "^4.0.0",
+    "es6-promise": "^4.2.4",
+    "isomorphic-fetch": "^2.2.1",
     "npm": "^5.7.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
