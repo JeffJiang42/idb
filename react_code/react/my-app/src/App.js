@@ -6,6 +6,7 @@ import MyNavbar from './components/MyNavbar.jsx';
 import Jobs from './components/Jobs.jsx';
 import Courses from './components/Courses.jsx';
 import Subjects from './components/Subjects.jsx';
+import blah from './components/JobData.jsx';
 
 
 class App extends Component {
