@@ -60,7 +60,7 @@ var info = [{
     'name': 'Brandon Chan',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 0,
+    'unit_tests': 2,
     'image': 'https://i.imgur.com/3LhRT5l.jpg',
     'bio': brandon_bio,
     'resp': brandon_resp
@@ -79,8 +79,8 @@ class Team extends Component{
   constructor(props){
     super(props);
     this.state = {
-      commits:[0],
-      issues: [0]
+      commits:[0,0,0,0,0],
+      issues: [0,0,0,0,0]
     };
   }
 
@@ -108,6 +108,9 @@ class Team extends Component{
         }
         return commits;
       })
+      .catch(() => {
+        return [0,0,0,0,0];
+      })
       .then((data) => this.setState({commits: data}))
 
       fetch(issues_url)
@@ -134,6 +137,9 @@ class Team extends Component{
           }
           return issues;
         })
+        .catch( () => {
+          return [0,0,0,0,0];
+        })
         .then((data) => this.setState({issues: data}))
 
   }
@@ -145,7 +151,7 @@ class Team extends Component{
       info[i].issues = stats.issues[i];
     }
     const teamCards_1 = info.slice(0,3).map((person,i)=>
-      <div key={"member_" + i}>
+      <div className="memberCard" key={"member_" + i}>
         <Col xs={6} md={4}>
           <Thumbnail src={person.image} >
           <h4>{person.name}</h4>
@@ -160,7 +166,7 @@ class Team extends Component{
     );
 
     const teamCards_2 = info.slice(3).map((person,i)=>
-      <div key={"member_" + i}>
+      <div className="memberCard" key={"member_" + i}>
         <Col xs={6} md={4}>
           <Thumbnail src={person.image}>
           <h4>{person.name}</h4>
@@ -184,7 +190,7 @@ class Team extends Component{
         <h3>Collective Statistics</h3>
         <p><b>Total # of Commits: </b>{this.state.commits.reduce((a,b) => {return a + b})}</p>
         <p><b>Total # of Issues: </b>{this.state.issues.reduce((a,b) => {return a + b})}</p>
-        <p><b>Total # of Unit Tests: </b>1</p>
+        <p><b>Total # of Unit Tests: </b>3</p>
         <br/>
         </div>
         <div className="statement">

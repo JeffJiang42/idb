@@ -22,7 +22,7 @@ class MyNavbar extends Component{
             <NavItem eventKey={2} href="/courses" to="/courses">
               Courses
             </NavItem>
-            <NavItem eventKey={2} href="/"subjects to="/subjects">
+            <NavItem eventKey={2} href="/subjects" to="/subjects">
               Subjects
             </NavItem>
             <NavItem eventKey={2} href="/jobs" to="/jobs">

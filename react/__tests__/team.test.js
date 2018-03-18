@@ -8,9 +8,9 @@ Enzyme.configure({ adapter: new Adapter() });
 import Team from '../src/components/Team';
 
 describe('Team Component', () => {
-  it('contains a Team Component', () => {
+  it('contains a card for each member', () => {
     const team = mount(<Team />)
-    expect(team.find('teamCards_1')).to.have.length(5)
+    expect(team.find('.memberCard')).to.have.length(5)
   })
 
 })
