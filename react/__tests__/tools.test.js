@@ -10,29 +10,18 @@ import Tools from '../src/components/Tools';
 describe('Tools Component', () => {
 
 	it('contains links to our repos', () => {
-	    const tools = mount(<Tools />)
-	    expect(tools.contains(<h3>Project Links</h3>)).to.equal(true);
+	    const tools = shallow(<Tools />)
+	    expect(tools.find('.project')).to.have.length(1);
   	})
 
   	it('contains links to our tools', () => {
-	    const tools = mount(<Tools />)
-	    expect(tools.contains(<h3>Our Tools</h3>)).to.equal(true);
+	    const tools = shallow(<Tools />)
+	    expect(tools.find('.tools')).to.have.length(1);
   	})
 
-	//cant get these to work :(
-  // it('contains links to our repos', () => {
-  //   const tools = mount(<Tools />)
-  //   expect(tools.contains(<div className="project"/>)).to.equal(true);
-  // })
-
-  // it('contains a list of tools/libraries we use', () => {
-  //   const tools = mount(<Tools />)
-  //   expect(tools.contains(<div className="tools" />)).to.equal(true);
-  // })
-
-  // it('contains a list sites where we scraped data from', () => {
-  //   const tools = mount(<Tools />)
-  //   expect(tools.contains(<div className="data" />)).to.equal(true);
-  // })
+   it('contains a list sites where we scraped data from', () => {
+     const tools = shallow(<Tools />)
+     expect(tools.find('.data')).to.have.length(1);
+   })
 
 })
