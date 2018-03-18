@@ -13,4 +13,9 @@ describe('Team Component', () => {
     expect(team.find('.memberCard')).to.have.length(5)
   })
 
+  it('has a description of the project', () => {
+    const team = mount(<Team />)
+    expect(team.find('.statement')).to.have.length(1)
+  })
+
 })

@@ -9,11 +9,12 @@ import About from '../src/components/About';
 
 describe('About Component', () => {
   it('contains a Team Component', () => {
-    const about = mount(<About />)
+    const about = shallow(<About />)
     expect(about.find('Team'))
   })
     it('contains a Tool Component', () => {
-    const about = mount(<About />)
+    const about = shallow(<About />)
     expect(about.find('Tool'))
   })
+  
 })
