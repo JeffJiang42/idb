@@ -7,15 +7,15 @@ class FrontStats extends Component{
     return(
       <div className="test">
         <Row>
-        <div class="col statistic">
+        <div className="col statistic">
           <h3>Number of Courses</h3>
           <h4>3</h4>
         </div>
-        <div class="col statistic">
+        <div className="col statistic">
           <h3>Number of Subjects</h3>
           <h4>3</h4>
         </div>
-        <div class="col statistic">
+        <div className="col statistic">
           <h3>Number of Jobs</h3>
           <h4>3</h4>
         </div>

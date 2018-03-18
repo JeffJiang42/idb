@@ -15,15 +15,15 @@ class JobCard extends Component{
 
 	render(){
 	 	return(
-    		<div class="col-sm-3">
-			  <div class="card"  align="center">
-			    <img class="card-img-top" src={this.props.image}/>
-			    <div class="card-block">
-			      <h4 class="card-title">
+    		<div className="col-sm-3">
+			  <div className="card"  align="center">
+			    <img className="card-img-top" src={this.props.image}/>
+			    <div className="card-block">
+			      <h4 className="card-title">
 			        <a href={this.props.positionRoute}> {this.props.positionName}</a>
 			      </h4>
-			      <p class="card-text">Provider: {this.props.provider}</p>
-			      <p class="card-text">Company: {this.props.company}</p>
+			      <p className="card-text">Provider: {this.props.provider}</p>
+			      <p className="card-text">Company: {this.props.company}</p>
 			    </div>
 			  </div>
 			</div>
