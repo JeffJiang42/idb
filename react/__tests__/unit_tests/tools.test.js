@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
 
-import Tools from '../src/components/Tools';
+import Tools from '../../src/components/Tools';
 
 describe('Tools Component', () => {
 

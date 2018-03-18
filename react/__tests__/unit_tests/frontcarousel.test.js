@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
 
-import FrontCarousel from '../src/components/FrontCarousel';
+import FrontCarousel from '../../src/components/FrontCarousel';
 import CarouselItem from 'react-bootstrap';
 
 

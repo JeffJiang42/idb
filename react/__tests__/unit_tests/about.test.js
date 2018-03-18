@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
 
-import About from '../src/components/About';
+import About from '../../src/components/About';
 
 describe('About Component', () => {
   it('contains a Team Component', () => {

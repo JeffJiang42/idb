@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
 
-import Team from '../src/components/Team';
+import Team from '../../src/components/Team';
 
 describe('Team Component', () => {
   it('contains a card for each member', () => {

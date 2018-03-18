@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
 
-import Home from '../src/components/Home';
+import Home from '../../src/components/Home';
 
 describe('Home Component', () => {
   it('contains a FrontCarousel component', () => {

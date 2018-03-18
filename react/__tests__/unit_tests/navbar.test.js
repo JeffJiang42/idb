@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
 
-import MyNavbar from '../src/components/MyNavbar';
+import MyNavbar from '../../src/components/MyNavbar';
 import NavItem from 'react-bootstrap';
 
 describe('Navigation Component', () => {

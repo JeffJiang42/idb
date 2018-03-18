@@ -18,7 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "mocha --require ignore-styles --require babel-polyfill --require babel-core -w __tests__/testBoilerplate.js \"__tests__/*.test.js\"",
+    "test": "mocha --require ignore-styles --require babel-polyfill --require babel-core -w __tests__/unit_tests/testBoilerplate.js \"__tests__/unit_tests/*.test.js\"",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
