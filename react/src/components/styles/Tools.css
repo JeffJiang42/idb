@@ -1,0 +1,29 @@
+.project > h3 {
+  text-align: center;
+  font-size: 35px;
+}
+
+.project > p {
+  text-align: center;
+  font-size: 20px;
+}
+
+.tools > h3 {
+  text-align: center;
+  font-size: 35px;
+}
+
+.tools > p {
+  text-align: center;
+  font-size: 20px;
+}
+
+.data > h3 {
+  text-align: center;
+  font-size: 35px;
+}
+
+.data > p {
+  text-align: center;
+  font-size: 20px;
+}
