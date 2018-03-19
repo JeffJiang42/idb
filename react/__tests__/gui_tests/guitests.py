@@ -2,26 +2,30 @@
 #need to pip install selenium
 #right now it is throwing errors
 
+# dependencies required: 
+# pip install pyvirtualdisplay selenium  
+from unittest import main, TestCase
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-import unittest, time, re
+from pyvirtualdisplay import Display
 
-class WebdriverTest1(unittest.TestCase):
-    def setUp(self):
-        self.driver = webdriver.Firefox()
-        self.driver.implicitly_wait(30)
-        self.base_url = "http://en.wikipedia.org"
-       
-    def test_Wikipedia(self):
-        driver = self.driver
-        driver.get(self.base_url + "/wiki/Main_Page")
-        driver.find_element_by_id("searchInput").clear()
-        driver.find_element_by_id("searchInput").send_keys("India")
-        driver.find_element_by_id("searchButton").click()    
-   
-    def tearDown(self):
-        self.driver.quit()       
+class HomePageTest(TestCase):
+	def setUp(self):
+		self.display = Display(visible=0, size=(1920, 1080))
+		self.display.start()
+		self.driver = webdriver.Chrome("../chromedriver 2")
+		self.driver.get('http://localhost:3000')
+
+	def test_home_page_browser_tab_title(self):
+		# self.navigate_to_site()
+		self.assertEqual(self.driver.title, "learning2earn")
+
+	def tearDown(self):
+		self.driver.quit()
+		self.assertEqual([], self.verificationErrors)
 
 if __name__ == "__main__":
-    unittest.main()
+	main()
+
+
+
+# apt-get install xvfb xserver-xephyr 
