@@ -13,7 +13,7 @@ class HomePageTest(TestCase):
 	def setUp(self):
 		self.display = Display(visible=0, size=(1920, 1080))
 		self.display.start()
-		self.driver = webdriver.Chrome("../chromedriver 2")
+		self.driver = webdriver.Chrome("../chromedriver2")
 		self.driver.get('http://localhost:3000')
 
 	def test_home_page_browser_tab_title(self):
