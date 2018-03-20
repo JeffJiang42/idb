@@ -1,9 +1,9 @@
 #python guitests.py to run
 #be sure you run npm start in /react first.
-
 #need to pip install selenium
 #right now it is throwing errors
-# dependencies required: 
+
+# dependencies required:
 # pip install pyvirtualdisplay selenium
 from unittest import main, TestCase
 from selenium import webdriver
@@ -29,4 +29,4 @@ if __name__ == "__main__":
 
 
 
-# apt-get install xvfb xserver-xephyr 
+# apt-get install xvfb xserver-xephyr
