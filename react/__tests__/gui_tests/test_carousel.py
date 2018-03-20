@@ -9,27 +9,21 @@ import unittest, time, re
 
 class UntitledTestCase(unittest.TestCase):
     def setUp(self):
-		self.driver = webdriver.Chrome("../chromedriver2")
-		self.driver.implicitly_wait(30)
-		self.base_url = "https://www.katalon.com/"
-		self.verificationErrors = []
-		self.accept_next_alert = True
+        self.driver = webdriver.Chrome("../chromedriver2")
+        self.driver.implicitly_wait(30)
+        self.base_url = "https://www.katalon.com/"
+        self.verificationErrors = []
+        self.accept_next_alert = True
     
     def test_untitled_test_case(self):
         driver = self.driver
         driver.get("http://localhost:3000/")
-        driver.find_element_by_link_text("About").click()
-        driver.find_element_by_link_text("Courses").click()
-        driver.find_element_by_link_text("Subjects").click()
-        driver.find_element_by_link_text("Jobs").click()
-        driver.find_element_by_xpath("//img[contains(@src,'https://i.imgur.com/g16hr23.png')]").click()
-        driver.find_element_by_link_text("About").click()
-        driver.find_element_by_link_text("Courses").click()
-        driver.find_element_by_link_text("Subjects").click()
-        driver.find_element_by_link_text("Jobs").click()
-        driver.find_element_by_link_text("About").click()
-        driver.find_element_by_link_text("Courses").click()
-        driver.find_element_by_xpath("//img[contains(@src,'https://i.imgur.com/g16hr23.png')]").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/a[2]/span").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/a[2]/span").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/a[2]/span").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/a/span").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/a/span").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/a/span").click()
     
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)
