@@ -3,7 +3,7 @@ import os
 import json
 from flask import Flask, request, Response
 
-SUBJECT_FIELDS = ('id', 'subject', 'provider', 'image')
+SUBJECT_FIELDS = ('id', 'subject', 'provider', 'image', 'course-ids', 'job-ids')
 
 app = Flask(__name__)
 
@@ -17,6 +17,11 @@ def process_subjects(pg_result):
         sub = {}
         for k, v in zip(SUBJECT_FIELDS, res):
             sub[k] = v
+            if k == 'course-ids' or k == 'job-ids':
+                if v:
+                    sub[k] = [int(x) for x in v.split(',')]
+                else:
+                    sub[k] = []
         results.append(sub)
     return json.dumps(results)
 
@@ -72,7 +77,7 @@ def subjects():
     elif 'courseId' in request.args:
         try:
             courseId = int(request.args['courseId'])
-            res = execute('SELECT Subject.id, Subject.subject, Subject.provider, Subject.image FROM Subject JOIN Course ON subject_id = Subject.id WHERE Course.id = %s ' + limitQuery, (courseId))
+            res = execute('SELECT Subject.id, Subject.subject, Subject.provider, Subject.image, Subject.courses, Subject.jobs FROM Subject JOIN Course ON subject_id = Subject.id WHERE Course.id = %s ' + limitQuery, (courseId))
             resp.data = process_subjects(res)
             return resp
         except ValueError:
@@ -80,7 +85,7 @@ def subjects():
     elif 'jobId' in request.args:
         try:
             jobId = int(request.args['jobId'])
-            res = execute('SELECT * FROM Subject JOIN Subject_Job ON Subject.id = Subject_Job.job_id WHERE job_id = %s ' + limitQuery, (jobId))
+            res = execute('SELECT Subject.id, Subject.subject, Subject.provider, Subject.image, Subject.courses, Subject.jobs FROM Subject JOIN Subject_Job ON Subject.id = Subject_Job.subject_id WHERE job_id = %s ' + limitQuery, (jobId))
             resp.data = process_subjects(res)
             return resp
         except ValueError:
