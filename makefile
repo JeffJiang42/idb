@@ -5,4 +5,6 @@ gui_testing:
 
 travis:
 	cd react/__tests__/gui_tests; make travis
+	cd react/; npm install
+	cd react/; npm test
 	@echo

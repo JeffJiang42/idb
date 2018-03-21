@@ -12,8 +12,8 @@ from pyvirtualdisplay import Display
 class test_navbar(unittest.TestCase):
     def setUp(self):
 		self.display = Display(visible=0, size=(1920, 1080))
-        self.display.start()
-        self.driver = webdriver.Chrome("../linux_chrome")
+		self.display.start()
+		self.driver = webdriver.Chrome("../linux_chrome")
 		self.driver.implicitly_wait(30)
 		self.base_url = "https://www.katalon.com/"
 		self.verificationErrors = []
