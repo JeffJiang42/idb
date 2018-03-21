@@ -2,17 +2,15 @@ import psycopg2
 import os
 import json
 from flask import Flask, request, Response
-from flask_cors import CORS
 
 SUBJECT_FIELDS = ('id', 'subject', 'provider', 'image', 'course-ids', 'job-ids')
 # need to add provider to gitbook
-COURSE_FIELDS = ('id', 'course', 'desc', 'image', 'instructor', 'link', 'price', 'subject', 'provider', 'job-ids', 'subject-id')
-JOB_FIELDS = ('id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'courses', 'subject_ids')
+COURSE_FIELDS = ('id', 'course', 'desription', 'image', 'instructor', 'link', 'price', 'subject', 'provider', 'job-ids', 'subject-id')
+JOB_FIELDS = ('id', 'name', 'company', 'description', 'image', 'link', 'provider', 'courses', 'subject_ids')
 
 FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
 
 app = Flask(__name__)
-CORS(app)
 
 best_cache = {}
 
@@ -28,7 +26,7 @@ def process_results(pg_result,type_):
     returns a serialized JSON string baby
     """
     results = []
-    type_fields = FIELDS[type_]
+    type_fields = FIELDS[type_] 
     for res in pg_result:
         sub = {}
         for k, v in zip(type_fields, res):
@@ -57,7 +55,7 @@ def execute(statement, *formatted):
         except psycopg2.OperationalError:
             print('error - reconnecting...')
             conn = psycopg2.connect('host=learning2earn.c9dnk6wbtbst.us-east-2.rds.amazonaws.com user=postgres dbname=learning2earn password=cs373spring2018')
-    return [('error',)]
+    return [('error',)]            
 
 @app.route('/')
 def default():
@@ -132,7 +130,7 @@ def courses():
             return resp
     if 'courseId' in request.args:
         try:
-            courseId = int(request.args['courseId'])
+            courseId = int(request.args['subjectId'])
             res = execute('SELECT * FROM Course WHERE Course.id = %s ' + limitQuery, (courseId))
             resp.data = process_results(res,1)
             return resp
@@ -151,7 +149,7 @@ def courses():
             jobId = int(request.args['jobId'])
             res = execute('SELECT Course.id, Course.course, Course.description, Course.image, \
                 Course.instructor, Course.link, Course.price, Course.subject, Course.provider, \
-                Course.jobs, Course.subject_id FROM Course JOIN Course_Job ON Course.id = Course_Job.course_id WHERE Course.job_id = %s ' + limitQuery, (jobId))
+                Course.jobs, Course.subject_id FROM Course JOIN Course_Job ON Course.id = Course_Job.course_id WHERE Course_Job.job_id = %s ' + limitQuery, (jobId))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
@@ -208,6 +206,6 @@ def jobs():
         res = execute('SELECT * FROM Job ' + limitQuery)
         resp.data = process_results(res,2)
         return resp
-
+        
 if __name__ == '__main__':
     app.run(use_reloader=True, port=5000, threaded=True)
