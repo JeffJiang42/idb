@@ -22,7 +22,7 @@ class UntitledTestCase(unittest.TestCase):
     
     def test_untitled_test_case(self):
         driver = self.driver
-        driver.get("http://localhost:3000/")
+        driver.get("http://learning2earn.me/")
         driver.find_element_by_xpath("//div[@id='root']/div/div/div/a[2]/span").click()
         driver.find_element_by_xpath("//div[@id='root']/div/div/div/a[2]/span").click()
         driver.find_element_by_xpath("//div[@id='root']/div/div/div/a[2]/span").click()
