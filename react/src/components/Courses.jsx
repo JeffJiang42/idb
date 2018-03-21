@@ -2,7 +2,6 @@ import CourseCard from './CourseCard.jsx';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import _ from 'lodash'
-import CourseData from './CourseData.jsx'
 
 
 
@@ -11,27 +10,39 @@ class Courses extends Component{
   constructor(props){
     super(props);
     this.state = {
-      courseList: []
+      courseList: [],
+      page: 1,
+      pageSize: 30
     };
+    this.handlePageChange = this.handlePageChange.bind(this);
+  }
+
+  handlePageChange(event){
+    this.setState({page: Number(event.target.id)})
   }
 
   componentDidMount(){
-    var data = [];
-    for (let i of _.range(10)){
-      var course = {"provider":"provider" + i, "tier": "tier " + i,"courseName":"name " + i, "image":"https://i.imgur.com/g16hr23.png"};
-      data.push(course);
-    }
-    for (let course of data){
-      course['courseRoute'] = encodeURIComponent(course["courseName"]);
-    }
-    this.setState({courseList: data});
+    const url = 'http://api.learning2earn.me/courses';
+
+    fetch(url)
+      .then((response) => {return response.json()})
+      .catch((error) => { this.setState({courseList: error.message})})
+      .then((courseJson) =>{
+        return courseJson
+      })
+      .catch(() => {return []})
+      .then((info) => {this.setState({courseList: info})})
+
   }
 
   render(){
-    var courseCards = this.state.courseList.map((course) =>
+    var {courseList, page, pageSize} = this.state
+    var courseArr = courseList.slice(0,this.state.pageSize)
+    var courseCards = courseArr.map((course) =>
       <p>
-        <CourseCard provider={course["provider"]} tier={course["tier"]} courseRoute={course["courseRoute"]} courseName={course["courseName"]} image={course["image"]}/>
+        <CourseCard provider={course["provider"]} price={course["price"]} courseId={course["id"]} courseName={course["course"]} image={course["image"]}/>
       </p>);
+
     return(
       <div>
     	{courseCards}
