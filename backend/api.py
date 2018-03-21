@@ -5,7 +5,7 @@ from flask import Flask, request, Response
 
 SUBJECT_FIELDS = ('id', 'subject', 'provider', 'image', 'course-ids', 'job-ids')
 # need to add provider to gitbook
-COURSE_FIELDS = ('id', 'course', 'desription', 'image', 'instructor', 'link', 'price', 'subject', 'provider', 'job-ids', 'subject-id')
+COURSE_FIELDS = ('id', 'course', 'description', 'image', 'instructor', 'link', 'price', 'subject', 'provider', 'job-ids', 'subject-id')
 JOB_FIELDS = ('id', 'name', 'company', 'description', 'image', 'link', 'provider', 'courses', 'subject_ids')
 
 FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
