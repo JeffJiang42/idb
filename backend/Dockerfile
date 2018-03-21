@@ -7,6 +7,7 @@ RUN pip install --upgrade pip && \
     pip install requests      && \
     pip install bs4	          && \
     pip install pandas        && \
+    pip install -U flask_cors && \
 	pip install psycopg2
 
 COPY . .
