@@ -1,7 +1,8 @@
 import CourseCard from './CourseCard.jsx';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import _ from 'lodash'
+import CourseData from './CourseData.jsx'
 
 
 
@@ -17,7 +18,7 @@ class Courses extends Component{
   componentDidMount(){
     var data = [];
     for (let i of _.range(10)){
-      var course = {"provider":"provider" + i, "tier": "tier " + i, "courseName":"name " + i, "image":"https://i.imgur.com/g16hr23.png"};
+      var course = {"provider":"provider" + i, "tier": "tier " + i,"courseName":"name " + i, "image":"https://i.imgur.com/g16hr23.png"};
       data.push(course);
     }
     for (let course of data){
