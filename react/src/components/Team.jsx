@@ -182,10 +182,11 @@ class Team extends Component{
 
     return(
       <Grid>
-        {teamCards_1}
-        {teamCards_2}
+        <Row>
+          {teamCards_1}
+          {teamCards_2}
+        </Row>
         <br/>
-        <Row></Row>
         <div className="stats">
         <h3>Collective Statistics</h3>
         <p><b>Total # of Commits: </b>{this.state.commits.reduce((a,b) => {return a + b})}</p>
