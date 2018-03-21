@@ -38,5 +38,4 @@ travis:
 	ls -al
 	chmod +x ../linux_chrome
 	make run
-	python test_carousel.py
 	ls -al
