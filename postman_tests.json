@@ -6,363 +6,1456 @@
 	},
 	"item": [
 		{
-			"name": "GET Subject - SubjectID",
-			"event": [
+			"name": "Subject Requests",
+			"description": "",
+			"item": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"id": "53f8f028-8c14-4b53-95c8-8d85f53313bc",
-						"type": "text/javascript",
-						"exec": [
-							"pm.environment.set(\"subjectSchema\", JSON.stringify({ \t",
-							"\t\"required\": [\"id\",\"subject\", \"provider\",\"image\",\"course-ids\",\"job-ids\"],",
-							"  \t\"properties\": {",
-							"       \"id\": {",
-							"           \"type\": \"integer\",",
-							"           \"minimum\": 0",
-							"        },",
-							"        \"subject\": {",
-							"            \"type\": \"string\",",
-							"            \"minLength\": 1",
-							"        },",
-							"        \"provider\": {",
-							"        \t\"type\": \"string\",",
-							"        \t\"minLength\": 1",
-							"        },",
-							"        \"image\": {",
-							"        \t\"type\": \"string\",",
-							"        \t\"minLength\": 1",
-							"        },",
-							"        \"course-ids\": {",
-							"        \t\"type\": \"array\"",
-							"        },",
-							"        \"job-ids\": {",
-							"        \t\"type\": \"array\"",
-							"        }",
-							"\t}",
-							"}));"
-						]
-					}
+					"name": "Subject - SubjectID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b383f4ef-9b23-49e3-9710-6b7b997b3fa9",
+								"type": "text/javascript",
+								"exec": [
+									"schema = { \t",
+									"\t\"required\": [\"id\",\"subject\", \"provider\",\"image\",\"course-ids\",\"job-ids\"],",
+									"  \t\"properties\": {",
+									"       \"id\": {",
+									"           \"type\": \"integer\",",
+									"           \"minimum\": 0",
+									"        },",
+									"        \"subject\": {",
+									"            \"type\": \"string\",",
+									"            \"minLength\": 1",
+									"        },",
+									"        \"provider\": {",
+									"        \t\"type\": \"string\",",
+									"        \t\"minLength\": 1",
+									"        },",
+									"        \"image\": {",
+									"        \t\"type\": \"string\",",
+									"        \t\"minLength\": 1",
+									"        },",
+									"        \"course-ids\": {",
+									"        \t\"type\": \"array\",",
+									"        \t\"items\": {",
+									"        \t    \"type\": \"integer\"",
+									"        \t}",
+									"        },",
+									"        \"job-ids\": {",
+									"        \t\"type\": \"array\",",
+									"        \t\"items\": {",
+									"        \t    \"type\": \"integer\"",
+									"        \t}",
+									"        }",
+									"\t}",
+									"};",
+									"pm.globals.set(\"subjectSchema\", JSON.stringify(schema));"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "c7ce38e9-7f60-4a3f-b244-2a2229a5be1d",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"});",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+									"    ",
+									"    for (let subject of jsonData){",
+									"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+									"    }",
+									"});",
+									"    ",
+									"pm.test(\"Single Check\", function () {",
+									"   let jsonData = pm.response.json();",
+									"   pm.expect(jsonData.length).to.equal(1); ",
+									"});",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/subjects?{{sid}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "{{sid}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"listen": "test",
-					"script": {
-						"id": "6ce53957-56e7-46e8-9222-302f02b12786",
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Response Check\", function () {",
-							"        pm.response.to.be.ok;",
-							"});",
-							"",
-							"// does most of our tests in one",
-							"pm.test(\"Schema Check\", function() {",
-							"    const subject = pm.response.json();",
-							"    const schema = JSON.parse(pm.environment.get(\"subjectSchema\"));",
-							"    ",
-							"    pm.expect(tv4.validate(subject,schema)).to.be.true;",
-							"});",
-							"    ",
-							"pm.test(\"Single Check\", function () {",
-							"   let jsonData = pm.response.json();",
-							"   pm.expect(jsonData.length).to.equal(1); ",
-							"});",
-							"",
-							"",
-							""
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/subjects?{{sid}}",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"subjects"
-					],
-					"query": [
+					"name": "Subject - CourseID",
+					"event": [
 						{
-							"key": "{{sid}}",
-							"value": null
+							"listen": "test",
+							"script": {
+								"id": "5a32ec2b-a6c2-4102-a80e-17cfb382bcb1",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"    });",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+									"    ",
+									"    for (let subject of jsonData){",
+									"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Valid Join\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    for (let x of jsonData) {",
+									"        pm.expect(x['course-ids']).to.include.members([42]);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Unique Results\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let seen = [];",
+									"    for (let x of jsonData) {",
+									"        pm.expect(seen).to.not.include.members([x['id']]);",
+									"        seen.push(x['id']);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Limit Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.at.most(5);",
+									"});",
+									""
+								]
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/subjects?{{cid}}&{{limit}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "{{cid}}",
+									"value": null
+								},
+								{
+									"key": "{{limit}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subject - JobID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "32b07458-b916-486d-a3e5-539889f145a5",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"    });",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+									"    ",
+									"    for (let subject of jsonData){",
+									"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Valid Join\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    for (let x of jsonData) {",
+									"        pm.expect(x['job-ids']).to.include.members([42]);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Unique Results\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let seen = [];",
+									"    for (let x of jsonData) {",
+									"        pm.expect(seen).to.not.include.members([x['id']]);",
+									"        seen.push(x['id']);",
+									"    }",
+									"})",
+									"",
+									"pm.test(\"Limit Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.at.most(5);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/subjects?{{jid}}&{{limit}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "{{jid}}",
+									"value": null
+								},
+								{
+									"key": "{{limit}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subject - Invalid SID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1563031d-f5c8-4719-9771-14b5701d2d5c",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"subject_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/subjects?subjectId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "subjectId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subject - Invalid JID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bf2dd749-9c75-42f3-bc7e-64db064b5293",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"job_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/subjects?jobId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "jobId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subject - Invalid CID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "adbb46c0-97b7-40fe-9e72-258eea753975",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"course_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/subjects?courseId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "courseId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subject - Invalid Limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e7bd25c2-20e9-4f25-9a3c-247641c2fcac",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"limit_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/subjects?{{cid}}&limit={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "{{cid}}",
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subject - Negative Limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0536f450-5beb-4a55-a669-95c335f3df38",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"limit_less_than_one\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/subjects?{{cid}}&limit=-5",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "{{cid}}",
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": "-5"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "GET Subject - CourseID",
-			"event": [
+			"name": "Course Requests",
+			"description": "",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "e95d88ea-832d-435e-abbc-e644054116f6",
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Response Check\", function () {",
-							"        pm.response.to.be.ok;",
-							"    });",
-							"",
-							"// does most of our tests in one",
-							"pm.test(\"Schema Check\", function() {",
-							"    const subject = pm.response.json();",
-							"    const schema = JSON.parse(pm.environment.get(\"subjectSchema\"));",
-							"    ",
-							"    pm.expect(tv4.validate(subject,schema)).to.be.true;",
-							"});",
-							"",
-							"pm.test(\"Valid Join\", function() {",
-							"    let jsonData = pm.response.json();",
-							"    for (let x of jsonData) {",
-							"        pm.expect(x['course-ids']).to.include.members([42]);",
-							"    }",
-							"});",
-							"",
-							"pm.test(\"Unique Results\", function() {",
-							"    let jsonData = pm.response.json();",
-							"    let seen = [];",
-							"    for (let x of jsonData) {",
-							"        pm.expect(seen).to.not.include.members([x['course-ids']]);",
-							"        seen.push(x['course-ids']);",
-							"    }",
-							"});",
-							"",
-							"pm.test(\"Limit Check\", function() {",
-							"    let jsonData = pm.response.json();",
-							"    pm.expect(jsonData.length).to.be.at.most(5);",
-							"});",
-							""
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/subjects?{{cid}}&{{limit}}",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"subjects"
-					],
-					"query": [
+					"name": "Course - CourseID",
+					"event": [
 						{
-							"key": "{{cid}}",
-							"value": null
+							"listen": "test",
+							"script": {
+								"id": "5af1fc27-8a03-4fbb-b990-10500bb9421a",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"    });",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+									"    ",
+									"    for (let course of jsonData) {",
+									"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+									"    }",
+									"    ",
+									"});",
+									"",
+									"pm.test(\"Single Check\", function () {",
+									"   let jsonData = pm.response.json();",
+									"   pm.expect(jsonData.length).to.equal(1); ",
+									"});"
+								]
+							}
 						},
 						{
-							"key": "{{limit}}",
-							"value": null
+							"listen": "prerequest",
+							"script": {
+								"id": "919ddcae-3dba-47c0-8716-e18d08da9600",
+								"type": "text/javascript",
+								"exec": [
+									"var schema = {",
+									"    \t\"required\": ['id', 'course', 'desc', 'image', 'instructor', 'link', 'price', 'provider', 'job-ids', 'subject-id'],",
+									"      \t\"properties\": {",
+									"           \"id\": {",
+									"               \"type\": \"integer\",",
+									"               \"minimum\": 0",
+									"            },",
+									"            \"course\": {",
+									"                \"type\": \"string\",",
+									"                \"minLength\": 1",
+									"            },",
+									"            \"desc\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"image\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"instructor\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"link\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"price\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"provider\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"job-ids\": {",
+									"            \t\"type\": \"array\",",
+									"            \t\"items\": {",
+									"            \t    \"type\": \"integer\"",
+									"            \t}",
+									"            },",
+									"            \"subject-id\": {",
+									"            \t\"type\": \"integer\",",
+									"            \t\"minimum\": 0",
+									"            }",
+									"    \t}",
+									"};",
+									"pm.globals.set(\"courseSchema\", JSON.stringify(schema));"
+								]
+							}
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET Subject - JobID",
-			"event": [
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?{{cid}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "{{cid}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"id": "a31b7247-c37c-4a9f-a449-02e71d38446f",
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Response Check\", function () {",
-							"        pm.response.to.be.ok;",
-							"    });",
-							"",
-							"// does most of our tests in one",
-							"pm.test(\"Schema Check\", function() {",
-							"    const subject = pm.response.json();",
-							"    const schema = JSON.parse(pm.environment.get(\"subjectSchema\"));",
-							"    ",
-							"    pm.expect(tv4.validate(subject,schema)).to.be.true;",
-							"});",
-							"",
-							"pm.test(\"Valid Join\", function() {",
-							"    let jsonData = pm.response.json();",
-							"    for (let x of jsonData) {",
-							"        pm.expect(x['job-ids']).to.include.members([42]);",
-							"    }",
-							"});",
-							"",
-							"pm.test(\"Unique Results\", function() {",
-							"    let jsonData = pm.response.json();",
-							"    let seen = [];",
-							"    for (let x of jsonData) {",
-							"        pm.expect(seen).to.not.include.members([x['course-ids']]);",
-							"        seen.push(x['course-ids']);",
-							"    }",
-							"})",
-							"",
-							"pm.test(\"Limit Check\", function() {",
-							"    let jsonData = pm.response.json();",
-							"    pm.expect(jsonData.length).to.be.at.most(5);",
-							"});"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/subjects?{{jid}}&{{limit}}",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"subjects"
-					],
-					"query": [
+					"name": "Course - SubjectID",
+					"event": [
 						{
-							"key": "{{jid}}",
-							"value": null
+							"listen": "prerequest",
+							"script": {
+								"id": "9c481e7a-1e82-47b1-ae8f-5883ddf2c696",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						},
 						{
-							"key": "{{limit}}",
-							"value": null
+							"listen": "test",
+							"script": {
+								"id": "e077547d-5c68-4b07-97af-218e3d41c847",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"});",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+									"    ",
+									"    for (let course of jsonData) {",
+									"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+									"    }",
+									"    ",
+									"});",
+									"",
+									"pm.test(\"Valid Join\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    for (let x of jsonData) {",
+									"        pm.expect(x['subject-id']).to.be.equal(42);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Unique Results\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let seen = [];",
+									"    for (let x of jsonData) {",
+									"        pm.expect(seen).to.not.include.members([x['id']]);",
+									"        seen.push(x['id']);",
+									"    }",
+									"})",
+									"",
+									"pm.test(\"Limit Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.at.most(5);",
+									"});",
+									"",
+									""
+								]
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?{{sid}}&{{limit}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "{{sid}}",
+									"value": null
+								},
+								{
+									"key": "{{limit}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course - JobID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "781f8687-4765-40e3-89b0-8b66a340365e",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"    });",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    const subject = pm.response.json();",
+									"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+									"    ",
+									"    pm.expect(tv4.validate(subject,schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Valid Join\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    for (let x of jsonData) {",
+									"        pm.expect(x['job-ids']).to.include.members([42]);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Unique Results\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let seen = [];",
+									"    for (let x of jsonData) {",
+									"        pm.expect(seen).to.not.include.members([x['id']]);",
+									"        seen.push(x['id']);",
+									"    }",
+									"})",
+									"",
+									"pm.test(\"Limit Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.at.most(5);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?{{jid}}&{{limit}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "{{jid}}",
+									"value": null
+								},
+								{
+									"key": "{{limit}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course - Invalid CID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "adbb46c0-97b7-40fe-9e72-258eea753975",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"course_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?courseId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "courseId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course - Invalid SID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1563031d-f5c8-4719-9771-14b5701d2d5c",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"subject_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?subjectId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "subjectId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course - Invalid JID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bf2dd749-9c75-42f3-bc7e-64db064b5293",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"job_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?jobId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "jobId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course - Invalid Limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e7bd25c2-20e9-4f25-9a3c-247641c2fcac",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"limit_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?{{sid}}&limit={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "{{sid}}",
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course - Negative Limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0536f450-5beb-4a55-a669-95c335f3df38",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"limit_less_than_one\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?{{sid}}&limit=-5",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "{{sid}}",
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": "-5"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "GET Subject - Invalid SID",
-			"event": [
+			"name": "Job Requests",
+			"description": "",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "1563031d-f5c8-4719-9771-14b5701d2d5c",
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Response Check\", function () {",
-							"    pm.response.to.be.ok;",
-							"});",
-							"",
-							"pm.test(\"Error Check\", function() {",
-							"    pm.expect(pm.response.json().error).to.eql(\"subject_id_not_integer\")",
-							"})"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/subjects?subjectId={{bad_id}}",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"subjects"
-					],
-					"query": [
+					"name": "Job - JobID",
+					"event": [
 						{
-							"key": "subjectId",
-							"value": "{{bad_id}}"
+							"listen": "test",
+							"script": {
+								"id": "a3e4385d-0f1e-4817-8df6-78a2fbcf650f",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"});",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+									"    ",
+									"    for (let course of jsonData) {",
+									"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+									"    }",
+									"    ",
+									"});",
+									"",
+									"pm.test(\"Single Check\", function () {",
+									"   let jsonData = pm.response.json();",
+									"   pm.expect(jsonData.length).to.equal(1); ",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "41fa2345-860f-471b-bf3e-dca1a6afde3d",
+								"type": "text/javascript",
+								"exec": [
+									"var schema = {",
+									"    \t\"required\": ['id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'course-ids', 'subject-ids'],",
+									"      \t\"properties\": {",
+									"           \"id\": {",
+									"               \"type\": \"integer\",",
+									"               \"minimum\": 0",
+									"            },",
+									"            \"name\": {",
+									"                \"type\": \"string\",",
+									"                \"minLength\": 1",
+									"            },",
+									"            \"company\": {",
+									"                \"type\": \"string\",",
+									"                \"minLength\": 1",
+									"            },",
+									"            \"desc\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"image\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"link\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"provider\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"course-ids\": {",
+									"            \t\"type\": \"array\",",
+									"            \t\"items\": {",
+									"            \t    \"type\": \"integer\"",
+									"            \t}",
+									"            },",
+									"            \"subject-ids\": {",
+									"            \t\"type\": \"array\",",
+									"            \t\"items\": {",
+									"            \t    \"type\": \"integer\"",
+									"            \t}",
+									"            }",
+									"    \t}",
+									"};",
+									"pm.globals.set(\"jobSchema\", JSON.stringify(schema));"
+								]
+							}
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET Subject - Invalid CID",
-			"event": [
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/jobs?{{jid}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "{{jid}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"id": "adbb46c0-97b7-40fe-9e72-258eea753975",
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Response Check\", function () {",
-							"    pm.response.to.be.ok;",
-							"});",
-							"",
-							"pm.test(\"Error Check\", function() {",
-							"    pm.expect(pm.response.json().error).to.eql(\"course_id_not_integer\")",
-							"})"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/subjects?courseId={{bad_id}}",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"subjects"
-					],
-					"query": [
+					"name": "Job - SubjectID",
+					"event": [
 						{
-							"key": "courseId",
-							"value": "{{bad_id}}"
+							"listen": "prerequest",
+							"script": {
+								"id": "9c481e7a-1e82-47b1-ae8f-5883ddf2c696",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "748c1abd-b3b3-4584-9c40-c99fecd69083",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"});",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+									"    ",
+									"    for (let course of jsonData) {",
+									"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+									"    }",
+									"    ",
+									"});",
+									"",
+									"pm.test(\"Valid Join\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    for (let x of jsonData) {",
+									"        pm.expect(x['subject-id']).to.be.equal(42);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Unique Results\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let seen = [];",
+									"    for (let x of jsonData) {",
+									"        pm.expect(seen).to.not.include.members([x['id']]);",
+									"        seen.push(x['id']);",
+									"    }",
+									"})",
+									"",
+									"pm.test(\"Limit Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.at.most(5);",
+									"});",
+									"",
+									""
+								]
+							}
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET Subject - Invalid JID",
-			"event": [
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/jobs?{{sid}}&{{limit}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "{{sid}}",
+									"value": null
+								},
+								{
+									"key": "{{limit}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"id": "bf2dd749-9c75-42f3-bc7e-64db064b5293",
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Response Check\", function () {",
-							"    pm.response.to.be.ok;",
-							"});",
-							"",
-							"pm.test(\"Error Check\", function() {",
-							"    pm.expect(pm.response.json().error).to.eql(\"job_id_not_integer\")",
-							"})"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/subjects?jobId={{bad_id}}",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"subjects"
-					],
-					"query": [
+					"name": "Job - CourseID",
+					"event": [
 						{
-							"key": "jobId",
-							"value": "{{bad_id}}"
+							"listen": "test",
+							"script": {
+								"id": "ef9423eb-a46a-43dc-a5b9-dd9ced1181de",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"    });",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    const subject = pm.response.json();",
+									"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+									"    ",
+									"    pm.expect(tv4.validate(subject,schema)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Valid Join\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    for (let x of jsonData) {",
+									"        pm.expect(x['course-ids']).to.include.members([42]);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Unique Results\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let seen = [];",
+									"    for (let x of jsonData) {",
+									"        pm.expect(seen).to.not.include.members([x['id']]);",
+									"        seen.push(x['id']);",
+									"    }",
+									"})",
+									"",
+									"pm.test(\"Limit Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.at.most(5);",
+									"});"
+								]
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/jobs?{{cid}}&{{limit}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "{{cid}}",
+									"value": null
+								},
+								{
+									"key": "{{limit}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job - Invalid CID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "adbb46c0-97b7-40fe-9e72-258eea753975",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"course_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/jobs?courseId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "courseId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job - Invalid SID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1563031d-f5c8-4719-9771-14b5701d2d5c",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"subject_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/jobs?subjectId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "subjectId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job - Invalid JID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bf2dd749-9c75-42f3-bc7e-64db064b5293",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"job_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/jobs?jobId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "jobId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job - Invalid Limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e7bd25c2-20e9-4f25-9a3c-247641c2fcac",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"limit_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/jobs?{{cid}}&limit={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "{{cid}}",
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job - Negative Limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0536f450-5beb-4a55-a669-95c335f3df38",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"limit_less_than_one\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/jobs?{{cid}}&limit=-5",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "{{cid}}",
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": "-5"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }
