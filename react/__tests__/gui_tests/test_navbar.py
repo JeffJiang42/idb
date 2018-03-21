@@ -18,7 +18,7 @@ class test_navbar(unittest.TestCase):
 		self.base_url = "https://www.katalon.com/"
 		self.verificationErrors = []
 		# self.accept_next_alert = True
-    
+
     def navbar(self):
         driver = self.driver
         driver.get("http://www.learning2earn.me/")
