@@ -12,7 +12,6 @@ CREATE TABLE Job (
 	image VARCHAR(256),
 	link VARCHAR(256),
 	provider VARCHAR(256),
-    subjects VARCHAR(2048),
     courses VARCHAR(2048),
     subjects_ids VARCHAR(2048)
 );
