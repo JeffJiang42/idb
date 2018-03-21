@@ -2,7 +2,8 @@ import SubjectCard from './SubjectCard.jsx';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash'
-import { Grid, Pagination } from 'react-bootstrap'
+import { Row, Grid, Pagination } from 'react-bootstrap'
+import ReactPaginate from 'react-paginate'
 
 
 
@@ -21,7 +22,7 @@ class Subjects extends Component{
   }
 
   handlePageChange(event){
-    this.setState({page: Number(event.target.id)})
+    this.setState({page: Number(event.selected+1)})
   }
 
   prevPage(event){
@@ -65,22 +66,29 @@ class Subjects extends Component{
       var firstInd = lastInd - pageSize
       var subjectArr = subjectList.slice(firstInd,lastInd)
       var subjectCards = subjectArr.map((sub) =>
-        <p>
+        <div className='col-sm-4'>
+          <div className='card'>
           <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length}/>
-        </p>);
+          </div>
+      </div>
+      );
 
       return(
         <div className='box'>
-        <div>
+        <Row className-='cards'>
       	{subjectCards}
-        </div >
-        <div className='pages'>
-        <Pagination bsSize="large">
-          <Pagination.Prev onClick={this.prevPage}/>
-          {pageItems}
-          <Pagination.Next onClick={this.nextPage}/>
-        </Pagination>
-        </div>
+        </Row>
+        <ReactPaginate previousLabel={"previous"}
+                    nextLabel={"next"}
+                    breakLabel={<a href="">...</a>}
+                    breakClassName={"break-me"}
+                    pageCount={this.state.maxPage}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageChange}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"} />
         </div>
       );
     }

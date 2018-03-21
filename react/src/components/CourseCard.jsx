@@ -14,7 +14,6 @@ class CourseCard extends Component{
 	render(){
 		const { match } = this.props;
 	 	return(
-    		<div className="col-sm-4">
 			  <div className="card"  align="center">
 			    <img className="card-img-top" src={this.props.image}/>
 			    <div className="card-block">
@@ -25,7 +24,6 @@ class CourseCard extends Component{
 			      <p className="card-text">Price: {this.props.price}</p>
 			    </div>
 			  </div>
-			</div>
 	    );
 	}
 }

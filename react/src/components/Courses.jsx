@@ -1,9 +1,10 @@
 import CourseCard from './CourseCard.jsx';
 import './styles/ModelGrid.css';
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import _ from 'lodash'
-import { Grid, Pagination } from 'react-bootstrap'
+import { Row, Grid, Pagination } from 'react-bootstrap'
+import ReactPaginate from 'react-paginate'
 
 
 
@@ -14,7 +15,7 @@ class Courses extends Component{
     this.state = {
       courseList: [],
       page: 1,
-      pageSize: 30,
+      pageSize: 60,
       maxPage: 10
     };
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -23,7 +24,7 @@ class Courses extends Component{
   }
 
   handlePageChange(event){
-    this.setState({page: Number(event.target.id)})
+    this.setState({page: Number(event.selected+1)})
   }
 
   prevPage(event){
@@ -51,7 +52,7 @@ class Courses extends Component{
         return courseJson
       })
       .catch(() => {return []})
-      .then((info) => {this.setState({courseList: info})})
+      .then((info) => {this.setState({courseList: info, maxPage: Math.ceil(info.length / this.state.pageSize)})})
 
   }
 
@@ -67,22 +68,31 @@ class Courses extends Component{
     var firstInd = lastInd - pageSize
     var courseArr = courseList.slice(firstInd,lastInd)
     var courseCards = courseArr.map((course) =>
-      <p>
+      <div className="col-sm-4">
+      <div className='card'>
         <CourseCard provider={course["provider"]} price={course["price"]} courseId={course["id"]} courseName={course["course"]} image={course["image"]}/>
-      </p>);
+      </div>
+      </div>
+    );
 
     return(
       <div className='box'>
-      <div>
-    	{courseCards}
-      </div >
-      <div className='pages'>
-      <Pagination bsSize="large">
-        <Pagination.Prev onClick={this.prevPage}/>
-        {pageItems}
-        <Pagination.Next onClick={this.nextPage}/>
-      </Pagination>
-      </div>
+        <Row className='cards'>
+    	     {courseCards}
+         </Row>
+         <div className='pages' >
+         <ReactPaginate previousLabel={"previous"}
+                     nextLabel={"next"}
+                     breakLabel={<a href="">...</a>}
+                     breakClassName={"break-me"}
+                     pageCount={this.state.maxPage}
+                     marginPagesDisplayed={2}
+                     pageRangeDisplayed={5}
+                     onPageChange={this.handlePageChange}
+                     containerClassName={"pagination"}
+                     subContainerClassName={"pages pagination"}
+                     activeClassName={"active"} />
+          </div>
       </div>
     );
   }

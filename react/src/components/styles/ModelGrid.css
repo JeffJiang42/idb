@@ -2,8 +2,15 @@
   position: relative;
 }
 
-.pages{
+.card {
+  display: inline-block;
+  height: 400px;
+  width: 450px;
+}
+
+
+.pagination{
   position: absolute;
-  top: 3600px;
-  left: 34.5%;
+  margin-bottom: 0;
+  margin-left: 35%
 }
