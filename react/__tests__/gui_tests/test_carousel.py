@@ -6,10 +6,11 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
+import os
 
 class UntitledTestCase(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome("../chromedriver2")
+        self.driver = webdriver.Chrome(os.getcwd() + '/react/__tests__/chromedriver2')
         self.driver.implicitly_wait(30)
         self.base_url = "https://www.katalon.com/"
         self.verificationErrors = []

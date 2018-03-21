@@ -20,7 +20,7 @@ FILES1 :=                                 \
 	# pylint --disable=locally-disabled --reports=no --generate-rcfile > $@
 
 gui-tests:
-	python react/__tests__/gui_tests/guitests.py
+	python react/__tests__/gui_tests/test_carousel.py
 
 # Collatz.html: Collatz.py
 # 	-pydoc -w Collatz

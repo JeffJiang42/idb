@@ -17,7 +17,7 @@ class UntitledTestCase(unittest.TestCase):
     
     def test_untitled_test_case(self):
         driver = self.driver
-        driver.get("http://localhost:3000/")
+        driver.get("http://www.learning2earn.me/")
         driver.find_element_by_link_text("About").click()
         driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/div/p/a/b").click()
         driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/div/p[2]/a/b").click()
