@@ -10,14 +10,6 @@ PFILES :=                   \
 	-jshint $<
 	istanbul cover _mocha -- $<
 
-.pylintrc:
-	pylint --disable=locally-disabled --reports=no --generate-rcfile > $@
-
-%.pyx: %.py .pylintrc
-	-mypy     $<
-	-pylint   $<
-	-coverage run    --branch $<
-	-coverage report -m --omit="*/lib/*"
 
 all:
 
@@ -29,7 +21,6 @@ clean:
 #docker:
 #	docker run -it -v $(PWD):/usr/cs373 -w /usr/cs373 gpdowning/gcc
 
-run: $(PFILES:=.pyx)
 
 #$(JSFILES:=.jsx) 
 
@@ -37,5 +28,5 @@ travis:
 	make clean
 	ls -al
 	chmod +x ../linux_chrome
-	make run
+	python test_carousel.py
 	ls -al
