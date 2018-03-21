@@ -11,6 +11,8 @@ before_install:
     # - pip --version
     - sudo apt-get install docker.io
     - npm update -g
+    - sudo apt-get update
+    - sudo apt-get install google-chrome-stable
     - make gui_testing
     - chmod +x react/__tests__/linux_chrome
 
