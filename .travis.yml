@@ -21,6 +21,7 @@ install:
     - npm install -g jshint
     - npm install -g mocha
     - npm install lodash
+    - npm install newman
     - pip install mypy
     - pip install numpy
     - pip install requests
@@ -45,3 +46,4 @@ before_script:
 
 script:
    - make travis
+   - node_modules/.bin/newman run postman_tests.json
