@@ -2,6 +2,9 @@
 
 PFILES :=                   \
     test_carousel 			\
+    test_about				\
+    test_navbar				\
+
 
 %.jsx: %.js
 	-jshint $<
