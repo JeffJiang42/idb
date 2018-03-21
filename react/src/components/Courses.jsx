@@ -47,7 +47,6 @@ class Courses extends Component{
 
     fetch(url)
       .then((response) => {return response.json()})
-      .catch((error) => { this.setState({courseList: error.message})})
       .then((courseJson) =>{
         return courseJson
       })

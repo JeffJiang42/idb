@@ -3,23 +3,89 @@ import { Link } from 'react-router-dom';
 
 
 class CourseData extends Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      subject:'',
+      jobs:[],
+      info: {}
+    }
+    this.getSubject = this.getSubject.bind(this);
+    this.getJobs = this.getJobs.bind(this);
+  }
+
+  componentWillMount(){
+    var id = this.props.match.params.id
+    this.setState({courseId: Number(id)})
+    var courseUrl= 'http://api.learning2earn.me/courses?courseId='+ id
+    fetch(courseUrl)
+      .then((response) => { return response.json() })
+      .then( (courseJson) => {
+        this.setState({info: courseJson[0]})
+        this.getSubject()
+        this.getJobs()
+      })
+  }
+
+  getSubject(){
+    var sid = this.state.info['subject-id']
+    var subjectUrl = 'http://api.learning2earn.me/subjects?subjectId=' + sid
+    fetch(subjectUrl)
+      .then((response) => {return response.json()})
+      .then((subjectJson) => {
+        return subjectJson[0]
+      })
+      .then((sub) => {this.setState({subject:sub.subject})})
+  }
+
+  getJobs(){
+    var jids = this.state.info['job-ids']
+    if (jids.length == 0){
+      return;
+    }
+    var jobUrls = []
+    for (let jid of jids){
+      jobUrls.push('http://api.learning2earn.me/jobs?jobID=' + jid)
+    }
+    for (let url of jobUrls){
+      fetch(url)
+        .then((response) => {return response.json()})
+        .then((jobJson) => {
+          var temp = this.state.jobs
+          temp.push(jobJson[0])
+          this.setState({jobs: temp})
+        })
+    }
+  }
+
+
   render(){
+    var course = this.state.info
+    var jobTemp = []
+    if (this.state.jobs.length == 0){
+      jobTemp.push(<p>No relevant jobs for this course</p>)
+    }
+    else{
+      for (let job of this.state.jobs){
+        jobTemp.push(
+          <Link to={`/jobs/${job.id}`}>{job.name}</Link>
+        )
+      }
+    }
     return(
 	<div className="container h-100">
 	  	<div className="row h-100 justify-content-center align-items-center">
 			<div className="card h-100" align = "center">
-				<img className="card-img-top" src="https://i.ytimg.com/vi/cDu-2h8ZDhI/maxresdefault.jpg" />
+				<img className="card-img-top" src={course.image} />
 				<div className="card-body">
-				<h4 className="card-title">title</h4>
-				<p className="card-text"><strong>Provider</strong>: insert provider</p>
-				<p className="card-text"><strong>Tier</strong>: Tier</p>
-				<p className="card-text"><strong>Price</strong>: Price</p>
-				<p className="card-text"><strong>Instructor</strong>: Instructor</p>
-				<p className="card-text"><strong>Link</strong>: <a href="link to whatever">link</a></p>
-				<p className="card-text"><strong>Description</strong>: description</p>
-				<p className="card-text"><strong>Related Subjects</strong>: subjects</p>
-				<p className="card-text"><strong>Related Jobs</strong>: jobs</p>
-
+				<h4 className="card-title">{course.course}</h4>
+				<p className="card-text"><strong>Provider</strong>: {course.provider}</p>
+				<p className="card-text"><strong>Price</strong>: {course.price}</p>
+				<p className="card-text"><strong>Instructor</strong>: {course.instructor}</p>
+				<p className="card-text"><strong>Link</strong>: <a href={course.link}>{course.link}</a></p>
+				<p className="card-text"><strong>Description</strong>: {course.desc}</p>
+				<p className="card-text"><strong>Related Subjects</strong>: <Link to={`/subjects/${course['subject-id']}`} >{this.state.subject}</Link></p>
+				<p className="card-text"><strong>Related Jobs</strong>: {jobTemp}</p>
 			  </div>
 			</div>
 		</div>
