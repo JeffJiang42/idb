@@ -1,0 +1,63 @@
+{
+  "id": "8edd3e21-39d7-470c-8387-252e2df53d12",
+  "values": [
+    {
+      "key": "url",
+      "value": "api.learning2earn.me",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "sid",
+      "value": "subjectId=42",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "cid",
+      "value": "courseId=42",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "jid",
+      "value": "jobId=42",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "limit",
+      "value": "limit=5",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "bad_id",
+      "value": "hello",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "courseSchema",
+      "value": "{\"required\":[\"id\",\"course\",\"desc\",\"image\",\"instructor\",\"link\",\"price\",\"provider\",\"job-ids\",\"subject-id\"],\"properties\":{\"id\":{\"type\":\"integer\",\"minimum\":0},\"course\":{\"type\":\"string\",\"minLength\":1},\"desc\":{\"type\":\"string\",\"minLength\":1},\"image\":{\"type\":\"string\",\"minLength\":1},\"instructor\":{\"type\":\"string\",\"minLength\":1},\"link\":{\"type\":\"string\",\"minLength\":1},\"price\":{\"type\":\"string\",\"minLength\":1},\"provider\":{\"type\":\"string\",\"minLength\":1},\"job-ids\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"subject-id\":{\"type\":\"integer\",\"minimum\":0}}}",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "subjectSchema",
+      "value": "{\"required\":[\"id\",\"subject\",\"provider\",\"image\",\"course-ids\",\"job-ids\"],\"properties\":{\"id\":{\"type\":\"integer\",\"minimum\":0},\"subject\":{\"type\":\"string\",\"minLength\":1},\"provider\":{\"type\":\"string\",\"minLength\":1},\"image\":{\"type\":\"string\",\"minLength\":1},\"course-ids\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"job-ids\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}}}}",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "jobSchema",
+      "value": "{\"required\":[\"id\",\"name\",\"company\",\"desc\",\"image\",\"link\",\"provider\",\"course-ids\",\"subject-ids\"],\"properties\":{\"id\":{\"type\":\"integer\",\"minimum\":0},\"name\":{\"type\":\"string\",\"minLength\":1},\"company\":{\"type\":\"string\",\"minLength\":1},\"desc\":{\"type\":\"string\",\"minLength\":1},\"image\":{\"type\":\"string\",\"minLength\":1},\"link\":{\"type\":\"string\",\"minLength\":1},\"provider\":{\"type\":\"string\",\"minLength\":1},\"course-ids\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"subject-ids\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}}}}",
+      "enabled": true,
+      "type": "text"
+    }
+  ],
+  "name": "My Workspace Globals",
+  "_postman_variable_scope": "globals",
+  "_postman_exported_at": "2018-03-21T23:48:43.687Z",
+  "_postman_exported_using": "Postman/6.0.10"
+}
