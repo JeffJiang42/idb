@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Router, Route, Link } from 'react-router-dom';
 import './styles/Card.css';
-import CourseData from './CourseData.jsx'
 
 class CourseCard extends Component{
 

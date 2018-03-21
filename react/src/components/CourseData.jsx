@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import './styles/ModelData.css';
 
 class CourseData extends Component{
   constructor(props){
@@ -45,7 +45,7 @@ class CourseData extends Component{
     }
     var jobUrls = []
     for (let jid of jids){
-      jobUrls.push('http://api.learning2earn.me/jobs?jobID=' + jid)
+      jobUrls.push('http://api.learning2earn.me/jobs?jobId=' + jid)
     }
     for (let url of jobUrls){
       fetch(url)
@@ -63,14 +63,23 @@ class CourseData extends Component{
     var course = this.state.info
     var jobTemp = []
     if (this.state.jobs.length == 0){
-      jobTemp.push(<p>No relevant jobs for this course</p>)
+      jobTemp = <p>No relevant jobs for this course</p>
     }
     else{
       for (let job of this.state.jobs){
         jobTemp.push(
-          <Link to={`/jobs/${job.id}`}>{job.name}</Link>
+          <li><Link to={`/jobs/${job.id}`}>{job.name}</Link></li>
         )
       }
+    }
+    if (jobTemp.constructor === Array){
+      jobTemp = <div>
+        <p className="card-text"><strong>Related Jobs:</strong></p>
+        <ul className='jobList'> {jobTemp} </ul>
+      </div>
+    }
+    else{
+      jobTemp = <p className="card-text"><strong>Related Jobs:</strong> {jobTemp}</p>
     }
     return(
 	<div className="container h-100">
@@ -85,7 +94,7 @@ class CourseData extends Component{
 				<p className="card-text"><strong>Link</strong>: <a href={course.link}>{course.link}</a></p>
 				<p className="card-text"><strong>Description</strong>: {course.desc}</p>
 				<p className="card-text"><strong>Related Subjects</strong>: <Link to={`/subjects/${course['subject-id']}`} >{this.state.subject}</Link></p>
-				<p className="card-text"><strong>Related Jobs</strong>: {jobTemp}</p>
+				{jobTemp}
 			  </div>
 			</div>
 		</div>
