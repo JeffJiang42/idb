@@ -2,7 +2,7 @@
 .DEFAULT_GOAL := all
 
 PFILES :=                   \
-    react/__tests__/test_carousel.py 			\
+    /home/travis/build/iambrandonchan/learning2earn/react/__tests__/test_carousel.py 			\
 
 %.jsx: %.js
 	-jshint $<
