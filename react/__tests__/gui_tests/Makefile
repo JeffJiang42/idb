@@ -29,4 +29,7 @@ travis:
 	ls -al
 	chmod +x ../linux_chrome
 	python test_carousel.py
+	python test_about.py
+	python test_navbar.py
+	python test_subjects.py
 	ls -al

@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
 from pyvirtualdisplay import Display
 
-class UntitledTestCase(unittest.TestCase):
+class test_about(unittest.TestCase):
     def setUp(self):
         self.display = Display(visible=0, size=(1920, 1080))
         self.display.start()
@@ -18,7 +18,7 @@ class UntitledTestCase(unittest.TestCase):
         self.verificationErrors = []
         # self.accept_next_alert = True
     
-    def test_untitled_test_case(self):
+    def about(self):
         driver = self.driver
         driver.get("http://www.learning2earn.me/")
         driver.find_element_by_link_text("About").click()

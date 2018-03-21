@@ -21,11 +21,8 @@ install:
     - npm install -g jshint
     - npm install -g mocha
     - npm install lodash
-    - pip install autopep8
-    - pip install coverage
     - pip install mypy
     - pip install numpy
-    - pip install pylint
     - pip install requests
     - pip list
 

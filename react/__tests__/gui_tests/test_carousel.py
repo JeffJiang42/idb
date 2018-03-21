@@ -9,7 +9,7 @@ import unittest, time, re
 from pyvirtualdisplay import Display
 
 
-class UntitledTestCase(unittest.TestCase):
+class test_carousel(unittest.TestCase):
     def setUp(self):
         self.display = Display(visible=0, size=(1920, 1080))
         self.display.start()
@@ -19,7 +19,7 @@ class UntitledTestCase(unittest.TestCase):
         self.verificationErrors = []
         # self.accept_next_alert = True
     
-    def test_untitled_test_case(self):
+    def carousel(self):
         driver = self.driver
         driver.get("http://learning2earn.me/")
         driver.find_element_by_xpath("//div[@id='root']/div/div/div/a[2]/span").click()
