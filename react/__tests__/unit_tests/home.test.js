@@ -15,7 +15,7 @@ describe('Home Component', () => {
 
   it('contains a FrontStats component', () => {
     const home = mount(<Home />);
-    expect(home.find('FrontStats')).to.be.a('number');
+    expect(home.find('FrontStats')).to.have.length(1);
   })
 
 })
