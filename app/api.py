@@ -138,7 +138,7 @@ def courses():
             return '{"error": "course_id_not_integer"}'
     elif 'subjectId' in request.args:
         try:
-            subjectId = int(request.args['courseId'])
+            subjectId = int(request.args['subjectId'])
             res = execute('SELECT * FROM Course WHERE Course.subject_id = %s ' + limitQuery, (subjectId))
             resp.data = process_results(res,1)
             return resp
