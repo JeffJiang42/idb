@@ -132,7 +132,7 @@ def courses():
             return resp
     if 'courseId' in request.args:
         try:
-            courseId = int(request.args['subjectId'])
+            courseId = int(request.args['courseId'])
             res = execute('SELECT * FROM Course WHERE Course.id = %s ' + limitQuery, (courseId))
             resp.data = process_results(res,1)
             return resp
