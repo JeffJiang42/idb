@@ -2,6 +2,7 @@ import psycopg2
 import os
 import json
 from flask import Flask, request, Response
+from flask_cors import CORS
 
 SUBJECT_FIELDS = ('id', 'subject', 'provider', 'image', 'course-ids', 'job-ids')
 # need to add provider to gitbook
@@ -11,6 +12,7 @@ JOB_FIELDS = ('id', 'name', 'company', 'description', 'image', 'link', 'provider
 FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
 
 app = Flask(__name__)
+CORS(app)
 
 best_cache = {}
 
@@ -26,7 +28,7 @@ def process_results(pg_result,type_):
     returns a serialized JSON string baby
     """
     results = []
-    type_fields = FIELDS[type_] 
+    type_fields = FIELDS[type_]
     for res in pg_result:
         sub = {}
         for k, v in zip(type_fields, res):
@@ -55,7 +57,7 @@ def execute(statement, *formatted):
         except psycopg2.OperationalError:
             print('error - reconnecting...')
             conn = psycopg2.connect('host=learning2earn.c9dnk6wbtbst.us-east-2.rds.amazonaws.com user=postgres dbname=learning2earn password=cs373spring2018')
-    return [('error',)]            
+    return [('error',)]
 
 @app.route('/')
 def default():
@@ -206,6 +208,6 @@ def jobs():
         res = execute('SELECT * FROM Job ' + limitQuery)
         resp.data = process_results(res,2)
         return resp
-        
+
 if __name__ == '__main__':
     app.run(use_reloader=True, port=5000, threaded=True)
