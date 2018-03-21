@@ -1,0 +1,9 @@
+.box{
+  position: relative;
+}
+
+.pages{
+  position: absolute;
+  top: 3600px;
+  left: 34.5%;
+}
