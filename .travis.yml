@@ -4,7 +4,7 @@ language: python
 
 python:
    - "3.6"
-   
+
 addons:
   chrome: stable
 
@@ -12,6 +12,8 @@ before_install:
     - cat .travis.yml
     - pip install --upgrade pip
     - pip --version
+    - wget https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip
+    - unzip chromedriver_linux64.zip -d /home/travis/build/iambrandonchan/learning2earn/react/__tests__/
 
 install:
     - pip install autopep8
