@@ -7,9 +7,13 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
 import os
+from pyvirtualdisplay import Display
+
 
 class UntitledTestCase(unittest.TestCase):
     def setUp(self):
+        self.display = Display(visible=0, size=(1920, 1080))
+        self.display.start()
         self.driver = webdriver.Chrome(os.getcwd() + '/react/__tests__/chromedriver2')
         self.driver.implicitly_wait(30)
         self.base_url = "https://www.katalon.com/"
