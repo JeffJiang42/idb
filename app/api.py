@@ -4,6 +4,11 @@ import json
 from flask import Flask, request, Response
 
 SUBJECT_FIELDS = ('id', 'subject', 'provider', 'image', 'course-ids', 'job-ids')
+# need to add provider to gitbook
+COURSE_FIELDS = ('id', 'course', 'image', 'link', 'price', 'instructor', 'desc', 'provider', 'subject-id', 'job-ids')
+JOB_FIELDS = ('id', 'name', 'company', 'provider', 'image', 'link', 'desc', 'course-ids', 'subject-ids')
+
+FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
 
 app = Flask(__name__)
 
@@ -11,13 +16,14 @@ best_cache = {}
 
 conn = psycopg2.connect('host=learning2earn.c9dnk6wbtbst.us-east-2.rds.amazonaws.com user=postgres dbname=learning2earn password=cs373spring2018')
 
-def process_subjects(pg_result):
+def process_results(pg_result,type_):
     results = []
+    type_fields = FIELDS(type_) 
     for res in pg_result:
         sub = {}
-        for k, v in zip(SUBJECT_FIELDS, res):
+        for k, v in zip(type_fields, res):
             sub[k] = v
-            if k == 'course-ids' or k == 'job-ids':
+            if k == 'course-ids' or k == 'job-ids' or k == 'subject-ids':
                 if v:
                     sub[k] = [int(x) for x in v.split(',')]
                 else:
@@ -70,7 +76,7 @@ def subjects():
         try:
             subjectId = int(request.args['subjectId'])
             res = execute('SELECT * FROM Subject WHERE Subject.id = %s ' + limitQuery, (subjectId))
-            resp.data = process_subjects(res)
+            resp.data = process_results(res,0)
             return resp
         except ValueError:
             return '{"error": "subject_id_not_integer"}'
@@ -78,7 +84,7 @@ def subjects():
         try:
             courseId = int(request.args['courseId'])
             res = execute('SELECT Subject.id, Subject.subject, Subject.provider, Subject.image, Subject.courses, Subject.jobs FROM Subject JOIN Course ON subject_id = Subject.id WHERE Course.id = %s ' + limitQuery, (courseId))
-            resp.data = process_subjects(res)
+            resp.data = process_results(res,0)
             return resp
         except ValueError:
             return '{"error": "course_id_not_integer"}'
@@ -86,13 +92,13 @@ def subjects():
         try:
             jobId = int(request.args['jobId'])
             res = execute('SELECT Subject.id, Subject.subject, Subject.provider, Subject.image, Subject.courses, Subject.jobs FROM Subject JOIN Subject_Job ON Subject.id = Subject_Job.subject_id WHERE job_id = %s ' + limitQuery, (jobId))
-            resp.data = process_subjects(res)
+            resp.data = process_results(res,0)
             return resp
         except ValueError:
             return '{"error": "job_id_not_integer"}'
     else:
         res = execute('SELECT * FROM Subject ' + limitQuery)
-        resp.data = process_subjects(res)
+        resp.data = process_results(res,0)
         return resp
 
 if __name__ == '__main__':
