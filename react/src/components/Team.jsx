@@ -145,12 +145,12 @@ class Team extends Component{
   }
 
   render(){
-    const stats = this.state;
+    var stats = this.state;
     for (let i of _.range(5)){
       info[i].commits = stats.commits[i];
       info[i].issues = stats.issues[i];
     }
-    const teamCards_1 = info.slice(0,3).map((person,i)=>
+    var teamCards_1 = info.slice(0,3).map((person,i)=>
       <div className="memberCard" key={"member_" + i}>
         <Col xs={6} md={4}>
           <Thumbnail src={person.image} >
@@ -165,7 +165,7 @@ class Team extends Component{
       </div>
     );
 
-    const teamCards_2 = info.slice(3).map((person,i)=>
+    var teamCards_2 = info.slice(3).map((person,i)=>
       <div className="memberCard" key={"member_" + i}>
         <Col xs={6} md={4}>
           <Thumbnail src={person.image}>
@@ -182,10 +182,11 @@ class Team extends Component{
 
     return(
       <Grid>
-        {teamCards_1}
-        {teamCards_2}
+        <Row>
+          {teamCards_1}
+          {teamCards_2}
+        </Row>
         <br/>
-        <Row></Row>
         <div className="stats">
         <h3>Collective Statistics</h3>
         <p><b>Total # of Commits: </b>{this.state.commits.reduce((a,b) => {return a + b})}</p>

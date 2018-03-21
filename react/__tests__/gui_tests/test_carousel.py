@@ -6,10 +6,15 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
+import os
+from pyvirtualdisplay import Display
+
 
 class UntitledTestCase(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome("../chromedriver2")
+        self.display = Display(visible=0, size=(1920, 1080))
+        self.display.start()
+        self.driver = webdriver.Chrome(os.getcwd() + '/react/__tests__/linux_chrome')
         self.driver.implicitly_wait(30)
         self.base_url = "https://www.katalon.com/"
         self.verificationErrors = []
@@ -17,7 +22,7 @@ class UntitledTestCase(unittest.TestCase):
     
     def test_untitled_test_case(self):
         driver = self.driver
-        driver.get("http://localhost:3000/")
+        driver.get("http://learning2earn.me/")
         driver.find_element_by_xpath("//div[@id='root']/div/div/div/a[2]/span").click()
         driver.find_element_by_xpath("//div[@id='root']/div/div/div/a[2]/span").click()
         driver.find_element_by_xpath("//div[@id='root']/div/div/div/a[2]/span").click()
