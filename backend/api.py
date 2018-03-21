@@ -149,7 +149,7 @@ def courses():
             jobId = int(request.args['jobId'])
             res = execute('SELECT Course.id, Course.course, Course.description, Course.image, \
                 Course.instructor, Course.link, Course.price, Course.subject, Course.provider, \
-                Course.jobs, Course.subject_id FROM Course JOIN Course_Job ON Course.id = Course_Job.course_id WHERE Course.job_id = %s ' + limitQuery, (jobId))
+                Course.jobs, Course.subject_id FROM Course JOIN Course_Job ON Course.id = Course_Job.course_id WHERE Course_Job.job_id = %s ' + limitQuery, (jobId))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
