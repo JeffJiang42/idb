@@ -6,7 +6,7 @@ from flask_cors import CORS
 
 SUBJECT_FIELDS = ('id', 'subject', 'provider', 'image', 'course-ids', 'job-ids')
 # need to add provider to gitbook
-COURSE_FIELDS = ('id', 'course', 'desc', 'image', 'instructor', 'link', 'price', 'subject', 'provider', 'job-ids', 'subject-id')
+COURSE_FIELDS = ('id', 'course', 'desc', 'image', 'instructor', 'link', 'price', 'provider', 'job-ids', 'subject-id')
 JOB_FIELDS = ('id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'course-ids', 'subject-ids')
 
 FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
