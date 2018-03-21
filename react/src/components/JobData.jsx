@@ -8,7 +8,7 @@ class JobData extends Component{
     return(
 	<div className="container h-100">
 	  	<div className="row h-100 justify-content-center align-items-center">
-			<div className="card h-100" align = "center" style="width:600px">
+			<div className="card h-100" align = "center">
 				<img className="card-img-top" src="https://i.ytimg.com/vi/cDu-2h8ZDhI/maxresdefault.jpg" />
 				<div className="card-body">
 				<h4 className="card-title">hello there 1</h4>
@@ -27,8 +27,3 @@ class JobData extends Component{
 }
 
 export default JobData;
-
-
-
-
-
