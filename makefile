@@ -1,82 +1,39 @@
+
 .DEFAULT_GOAL := all
 
-FILES1 :=                                 \
-    Collatz                               \
-    collatz-tests                         \
-    Collatz.html                          \
-    Collatz.log                           \
-    Collatz.py                            \
-    RunCollatz.in                         \
-    RunCollatz.out                        \
-    RunCollatz.py                         \
-    TestCollatz.py
+PFILES :=                   \
+    react/__tests__/test_carousel.py 			\
 
-# uncomment these three lines when you've created those files
-# you must replace GitHubID with your GitHubID
-#    .travis.yml                           \
-#    collatz-tests/GitHubID-RunCollatz.in  \
-#    collatz-tests/GitHubID-RunCollatz.out \
+%.jsx: %.js
+	-jshint $<
+	istanbul cover _mocha -- $<
+
 .pylintrc:
-	# pylint --disable=locally-disabled --reports=no --generate-rcfile > $@
+	pylint --disable=locally-disabled --reports=no --generate-rcfile > $@
 
-gui-tests:
-	python react/__tests__/gui_tests/test_carousel.py
+%.pyx: %.py .pylintrc
+	-mypy     $<
+	-pylint   $<
+	-coverage run    --branch $<
+	-coverage report -m --omit="*/lib/*"
 
-# Collatz.html: Collatz.py
-# 	-pydoc -w Collatz
+all:
 
-# Collatz.log:
-# 	git log > Collatz.log
+clean:
+	rm -f  .coverage
+	rm -f  .pylintrc
+	rm -rf .mypy_cache
 
-# RunCollatz.pyx: Collatz.py RunCollatz.py .pylintrc
-# 	-mypy   RunCollatz.py
-# 	-pylint RunCollatz.py
-# 	./RunCollatz.py < RunCollatz.in > RunCollatz.tmp
-# 	-diff RunCollatz.tmp RunCollatz.out
+#docker:
+#	docker run -it -v $(PWD):/usr/cs373 -w /usr/cs373 gpdowning/gcc
 
-# TestCollatz.pyx: Collatz.py TestCollatz.py .pylintrc
-# 	-mypy     TestCollatz.py
-# 	-pylint   TestCollatz.py
-# 	-coverage run    --branch TestCollatz.py
-# 	-coverage report -m
+run: $(PFILES:=.pyx)
 
-# all:
+#$(JSFILES:=.jsx) 
 
-# check: $(FILES)
-
-# clean:
-# 	rm -f  .coverage
-# 	rm -f  .pylintrc
-# 	rm -f  *.pyc
-# 	rm -f  *.tmp
-# 	rm -rf __pycache__
-# 	rm -rf .mypy_cache
-
-# config:
-# 	git config -l
-
-# docker:
-# 	docker run -it -v $(PWD):/usr/collatz -w /usr/collatz gpdowning/python
-
-# format:
-# 	autopep8 -i Collatz.py
-# 	autopep8 -i RunCollatz.py
-# 	autopep8 -i TestCollatz.py
-
-# run: RunCollatz.pyx TestCollatz.pyx
-
-# scrub:
-# 	make clean
-# 	rm -f  Collatz.html
-# 	rm -f  Collatz.log
-# 	rm -rf collatz-tests
-
-# status:
-# 	make clean
-# 	@echo
-# 	git branch
-# 	git remote -v
-# 	git status
-
-travis: gui-tests
-	
+travis:
+	make clean
+	ls -al
+	chmod +x react/__tests__/linux_chrome
+	make run
+	ls -al
