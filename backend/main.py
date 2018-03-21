@@ -185,7 +185,7 @@ def jobs():
             resp.data = process_results(res,2)
             return resp
         except ValueError:
-            return '{"error": "course_id_not_integer"}'
+            return '{"error": "job_id_not_integer"}'
     elif 'subjectId' in request.args:
         try:
             subjectId = int(request.args['subjectId'])
@@ -203,7 +203,7 @@ def jobs():
             resp.data = process_results(res,2)
             return resp
         except ValueError:
-            return '{"error": "job_id_not_integer"}'
+            return '{"error": "course_id_not_integer"}'
     else:
         res = execute('SELECT * FROM Job ' + limitQuery)
         resp.data = process_results(res,2)
