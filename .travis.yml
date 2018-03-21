@@ -34,6 +34,7 @@ before_script:
     - python3.6 --version
     - ls -al
     - cat makefile
+    - chmod +x /home/travis/build/iambrandonchan/learning2earn/react/__tests__/linux_chrome
 
 script:
     - make travis
