@@ -1,4 +1,4 @@
-sudo: false
+sudo: true
 
 language: python
 
@@ -19,7 +19,7 @@ install:
     - pip install selenium
     - pip install pyvirtualdisplay
     - pip list
-    - apt-get install xvfb xserver-xephyr
+    - sudo apt-get install xvfb xserver-xephyr
 
 before_script:
     - date
