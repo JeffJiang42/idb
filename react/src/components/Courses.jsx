@@ -56,9 +56,9 @@ class Courses extends Component{
   }
 
   render(){
-    var {courseList, page, pageSize} = this.state
+    var {courseList, page, pageSize, maxPage} = this.state
     var pageItems = []
-    for (let i of _.range(1,11)){
+    for (let i of _.range(1, maxPage + 1)){
       pageItems.push(
         <Pagination.Item key={i} id={i} onClick={this.handlePageChange} active={i === page}>{i}</Pagination.Item>
       );

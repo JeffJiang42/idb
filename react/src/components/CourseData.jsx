@@ -16,7 +16,6 @@ class CourseData extends Component{
 
   componentWillMount(){
     var id = this.props.match.params.id
-    this.setState({courseId: Number(id)})
     var courseUrl= 'http://api.learning2earn.me/courses?courseId='+ id
     fetch(courseUrl)
       .then((response) => { return response.json() })
