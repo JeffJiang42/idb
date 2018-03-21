@@ -9,7 +9,9 @@ import unittest, time, re
 
 class UntitledTestCase(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome("../chromedriver2")
+        self.display = Display(visible=0, size=(1920, 1080))
+        self.display.start()
+        self.driver = webdriver.Chrome("../linux_chrome")
         self.driver.implicitly_wait(30)
         self.base_url = "https://www.katalon.com/"
         self.verificationErrors = []
