@@ -4,13 +4,6 @@ import './styles/Card.css';
 
 class CourseCard extends Component{
 
-	constructor(props){
-	    super(props);
-	    this.state = {
-	    };
-	  }
-
-
 	render(){
 		const { match } = this.props;
 	 	return(
@@ -22,6 +15,7 @@ class CourseCard extends Component{
 			      </h4>
 			      <p className="card-text">Provider: {this.props.provider}</p>
 			      <p className="card-text">Price: {this.props.price}</p>
+						<p className="card-text">Relevant Jobs: {this.props.relJobs}</p>
 			    </div>
 			  </div>
 	    );

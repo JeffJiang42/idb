@@ -17,29 +17,13 @@ class Subjects extends Component{
       maxPage: 4
     };
     this.handlePageChange = this.handlePageChange.bind(this);
-    this.prevPage = this.prevPage.bind(this);
-    this.nextPage = this.nextPage.bind(this);
   }
 
   handlePageChange(event){
+    console.log(event.selected)
     this.setState({page: Number(event.selected+1)})
   }
 
-  prevPage(event){
-    var currPage = this.state.page
-    if (currPage == 1){
-      return
-    }
-    this.setState({page:currPage-1})
-  }
-
-  nextPage(event){
-    var currPage = this.state.page
-    if (currPage == this.state.maxPage){
-      return
-    }
-    this.setState({page:currPage+1})
-  }
 
   componentDidMount(){
     const url = 'http://api.learning2earn.me/subjects';
@@ -50,23 +34,17 @@ class Subjects extends Component{
         return courseJson
       })
       .catch(() => {return []})
-      .then((info) => {this.setState({subjectList: info})})
+      .then((info) => {this.setState({subjectList: info, maxPage: Math.ceil(info.length / this.state.pageSize)})})
 
   }
 
   render(){
       var {subjectList, page, pageSize, maxPage} = this.state
-      var pageItems = []
-      for (let i of _.range(1,maxPage + 1)){
-        pageItems.push(
-          <Pagination.Item key={i} id={i} onClick={this.handlePageChange} active={i === page}>{i}</Pagination.Item>
-        );
-      }
       var lastInd = page * pageSize
       var firstInd = lastInd - pageSize
       var subjectArr = subjectList.slice(firstInd,lastInd)
-      var subjectCards = subjectArr.map((sub) =>
-        <div className='col-sm-4'>
+      var subjectCards = subjectArr.map((sub,i) =>
+        <div className='col-sm-4' key={i}>
           <div className='card'>
           <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length}/>
           </div>
@@ -80,11 +58,11 @@ class Subjects extends Component{
         </Row>
         <ReactPaginate previousLabel={"previous"}
                     nextLabel={"next"}
-                    breakLabel={<a href="">...</a>}
+                    breakLabel={<p>...</p>}
                     breakClassName={"break-me"}
                     pageCount={this.state.maxPage}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
+                    marginPagesDisplayed={4}
+                    pageRangeDisplayed={4}
                     onPageChange={this.handlePageChange}
                     containerClassName={"pagination"}
                     subContainerClassName={"pages pagination"}

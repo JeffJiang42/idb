@@ -17,7 +17,6 @@ class JobData extends Component{
 				<p className="card-text"><strong>Description</strong>: a description</p>
 				<p className="card-text"><strong>related subjects</strong>: subjects</p>
 				<p className="card-text"><strong>related courses</strong>: courses</p>
-
 			  </div>
 			</div>
 		</div>

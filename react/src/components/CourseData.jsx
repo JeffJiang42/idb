@@ -74,7 +74,7 @@ class CourseData extends Component{
     if (jobTemp.constructor === Array){
       jobTemp = <div>
         <p className="card-text"><strong>Related Jobs:</strong></p>
-        <ul className='jobList'> {jobTemp} </ul>
+        <ul className='linkList'> {jobTemp} </ul>
       </div>
     }
     else{
