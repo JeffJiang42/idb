@@ -5,7 +5,7 @@ import './styles/FrontStats.css';
 class FrontStats extends Component{
   render(){
     return(
-      <div className="test">
+      <div className="stats">
         <Row>
         <div className="col statistic">
           <h3>Number of Courses</h3>

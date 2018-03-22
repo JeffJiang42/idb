@@ -1,6 +1,12 @@
 .carousel .item {
   height: 700px;
+  background-color: black;
 }
+
+.item > img {
+    opacity: 0.5;
+}
+
 .item img {
     position: absolute;
     top: 0;
@@ -9,10 +15,10 @@
 }
 .carousel-caption > h1{
   font-size: 40px;
-  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+  /* text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black; */
 }
 
 .carousel-caption > p{
   font-size: 20px;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  /*text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;*/
 }

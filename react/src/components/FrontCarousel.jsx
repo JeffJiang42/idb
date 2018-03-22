@@ -5,7 +5,7 @@ import './styles/FrontCarousel.css';
 class FrontCarousel extends Component{
   render(){
     return(
-      <Carousel>
+    <Carousel>
         <Carousel.Item>
           <img alt="carousel 1" src="https://imgur.com/JX40uak.jpg" />
           <Carousel.Caption>

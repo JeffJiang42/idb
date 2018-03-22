@@ -5,10 +5,16 @@ import  FrontCarousel  from './FrontCarousel.jsx';
 import FrontStats from './FrontStats.jsx';
 import './styles/Home.css';
 
+var grid_style: {
+    'backgroundColor': '#ff0000',
+    'padding-left': '600px',
+    'padding-right': 0,
+};
+
 class Home extends Component{
   render(){
     return(
-      <Grid fluid>
+      <Grid fluid style={grid_style}>
         <FrontCarousel/>
         <FrontStats/>
       </Grid>

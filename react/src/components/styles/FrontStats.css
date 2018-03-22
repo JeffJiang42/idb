@@ -1,16 +1,16 @@
-.test{
-  background-image: url('https://i.imgur.com/26P5bKp.jpg')
+.stats > row {
+  
 }
 
 .statistic {
   padding-top: 50px;
   padding-bottom: 50px;
   text-align: center;
-  color: #FFFFFF;
+  color: #2f2f2f;
   font-size: 36px;
-  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+  /* text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black; */
 }
 .statistic > h4 {
   font-size: 84px;
-  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+  /* text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black; */
 }

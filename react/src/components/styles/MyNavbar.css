@@ -42,3 +42,7 @@ ul.nav.navbar-nav.navbar-right {
   height: 40px;
   width: 60px;
 }
+
+.navbar-nav > li {
+    font-size: 16px;
+}

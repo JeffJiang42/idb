@@ -1,11 +1,10 @@
-import CourseCard from './CourseCard.jsx';
 import './styles/ModelGrid.css';
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import _ from 'lodash'
 import { Row, Grid, Pagination } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
-
+import CourseCard from './CourseCard.jsx';
 
 
 

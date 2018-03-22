@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { Navbar, NavItem, Nav, Image } from 'react-bootstrap';
 import './styles/MyNavbar.css';
 
+var navbar_style = {
+    'borderRadius': 0,
+    'marginBottom': 0
+};
+
 class MyNavbar extends Component{
   render() {
     return (
-      <Navbar inverse fluid>
+    <Navbar inverse fluid style={navbar_style}>
         <Navbar.Header>
           <div className="brand-align">
           <Navbar.Brand>

@@ -13,3 +13,11 @@
   height: 270px;
   width: 450px;
 }
+
+.card-block > .card-title {
+    font-size: 24px;
+}
+
+.card-text {
+    font-size: 16px;
+}
