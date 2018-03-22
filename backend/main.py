@@ -38,7 +38,7 @@ def clean_data(type_,sub):
     # default github jobs when no image
     elif type_ == 2 and sub['provider']=='Github Jobs':
         if sub['image']=='null' or sub['image'] is None:
-            sub['image'] = 'https://jobs.github.com/images/layout/logo@2x.png'
+            sub['image'] = 'https://pbs.twimg.com/profile_images/625760778554093568/dM7xD4SQ_400x400.png'
     if type_==2 and sub['provider']=='Authentic Jobs':
         sub['name']=sub['name'][:sub['name'].rindex("_")]
     return sub

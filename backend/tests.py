@@ -69,7 +69,7 @@ class APIAuxFunctionTest(unittest.TestCase):
         type_ = 2
         res = main.clean_data(type_,sub)
         self.assertTrue(res['image'] != 'null')
-        self.assertTrue(res['image'] == 'https://jobs.github.com/images/layout/logo@2x.png')
+        self.assertTrue(res['image'] == 'https://pbs.twimg.com/profile_images/625760778554093568/dM7xD4SQ_400x400.png')
 
     # check desired results of parsing name
     def test_name_parse1(self):
