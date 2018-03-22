@@ -22,7 +22,6 @@ class Subjects extends Component{
   }
 
   handlePageChange(event){
-    console.log(event.selected)
     this.setState({page: Number(event.selected+1)})
   }
 

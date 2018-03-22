@@ -51,13 +51,13 @@
     },
     {
       "key": "jobSchema",
-      "value": "{\"required\":[\"id\",\"name\",\"company\",\"desc\",\"image\",\"link\",\"provider\",\"course-ids\",\"subject-ids\"],\"properties\":{\"id\":{\"type\":\"integer\",\"minimum\":0},\"name\":{\"type\":\"string\",\"minLength\":1},\"company\":{\"type\":\"string\",\"minLength\":1},\"desc\":{\"type\":\"string\",\"minLength\":1},\"image\":{\"type\":\"string\",\"minLength\":1},\"link\":{\"type\":\"string\",\"minLength\":1},\"provider\":{\"type\":\"string\",\"minLength\":1},\"course-ids\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"subject-ids\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}}}}",
+      "value": "{\"required\":[\"id\",\"name\",\"company\",\"desc\",\"image\",\"link\",\"provider\",\"course-ids\",\"subject-ids\",\"location\",\"jobtype\"],\"properties\":{\"id\":{\"type\":\"integer\",\"minimum\":0},\"name\":{\"type\":\"string\",\"minLength\":1},\"company\":{\"type\":\"string\",\"minLength\":1},\"desc\":{\"type\":\"string\",\"minLength\":1},\"image\":{\"type\":\"string\",\"minLength\":1},\"link\":{\"type\":\"string\",\"minLength\":1},\"provider\":{\"type\":\"string\",\"minLength\":1},\"course-ids\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"subject-ids\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"location\":{\"type\":\"string\",\"minLength\":1},\"jobtype\":{\"type\":\"string\",\"minLength\":1}}}",
       "enabled": true,
       "type": "text"
     }
   ],
   "name": "My Workspace Globals",
   "_postman_variable_scope": "globals",
-  "_postman_exported_at": "2018-03-21T23:48:43.687Z",
+  "_postman_exported_at": "2018-03-22T22:09:13.434Z",
   "_postman_exported_using": "Postman/6.0.10"
 }
