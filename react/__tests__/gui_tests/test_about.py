@@ -22,12 +22,8 @@ class About(unittest.TestCase):
         driver = self.driver
         driver.get("http://learning2earn.me/")
         driver.find_element_by_link_text("About").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/div/p/a/b").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/div/p[2]/a/b").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/div/p[3]/a/b").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/div[2]/p[4]/a/b").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/div[2]/p[12]/a/b").click()
-        driver.find_element_by_xpath("//img[contains(@src,'https://i.imgur.com/g16hr23.png')]").click()
+        self.assertEqual(self.driver.title, "Learning2Earn")
+        
         driver.find_element_by_link_text("About").click()
     
     def is_element_present(self, how, what):
