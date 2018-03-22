@@ -83,5 +83,15 @@ class APIAuxFunctionTest(unittest.TestCase):
                'provider': 'Authentic Jobs'}
         res2 = main.clean_data(type_,sub2)
         self.assertTrue(res2['name']=='lmao_lmao_lmao')
+
+    # check desired results of parsing name
+    def test_text_encode(self):
+        sub = {'name': 'lmao_390', 'image': 'x',
+               'provider': 'Authentic Jobs', 'desc': 'IÃÂ¢ÃÂÃÂm'}
+        type_ = 2
+        res = main.clean_data(type_,sub)
+        self.assertTrue(res['desc']=='I\'m')
+        res = main.clean_data(1,sub)
+        self.assertTrue(res['desc']=='I\'m')
 if __name__ == '__main__':
     unittest.main()
