@@ -183,6 +183,48 @@
 					"response": []
 				},
 				{
+					"name": "Subject - Invalid SID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1563031d-f5c8-4719-9771-14b5701d2d5c",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"subject_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/subjects?subjectId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "subjectId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Subject - JobID",
 					"event": [
 						{
@@ -249,48 +291,6 @@
 								{
 									"key": "{{limit}}",
 									"value": null
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Subject - Invalid SID",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "1563031d-f5c8-4719-9771-14b5701d2d5c",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Response Check\", function () {",
-									"    pm.response.to.be.ok;",
-									"});",
-									"",
-									"pm.test(\"Error Check\", function() {",
-									"    pm.expect(pm.response.json().error).to.eql(\"subject_id_not_integer\")",
-									"})"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"url": {
-							"raw": "{{url}}/subjects?subjectId={{bad_id}}",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"subjects"
-							],
-							"query": [
-								{
-									"key": "subjectId",
-									"value": "{{bad_id}}"
 								}
 							]
 						}
@@ -480,6 +480,92 @@
 			"description": "",
 			"item": [
 				{
+					"name": "Course - SubjectID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9c481e7a-1e82-47b1-ae8f-5883ddf2c696",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e077547d-5c68-4b07-97af-218e3d41c847",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"});",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+									"    ",
+									"    for (let course of jsonData) {",
+									"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+									"    }",
+									"    ",
+									"});",
+									"",
+									"pm.test(\"Valid Join\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    for (let x of jsonData) {",
+									"        pm.expect(x['subject-id']).to.be.equal(42);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Unique Results\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let seen = [];",
+									"    for (let x of jsonData) {",
+									"        pm.expect(seen).to.not.include.members([x['id']]);",
+									"        seen.push(x['id']);",
+									"    }",
+									"})",
+									"",
+									"pm.test(\"Limit Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.at.most(5);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?{{sid}}&{{limit}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "{{sid}}",
+									"value": null
+								},
+								{
+									"key": "{{limit}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Course - CourseID",
 					"event": [
 						{
@@ -591,61 +677,21 @@
 					"response": []
 				},
 				{
-					"name": "Course - SubjectID",
+					"name": "Course - Invalid SID",
 					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "9c481e7a-1e82-47b1-ae8f-5883ddf2c696",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
 						{
 							"listen": "test",
 							"script": {
-								"id": "e077547d-5c68-4b07-97af-218e3d41c847",
+								"id": "1563031d-f5c8-4719-9771-14b5701d2d5c",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Response Check\", function () {",
-									"        pm.response.to.be.ok;",
+									"    pm.response.to.be.ok;",
 									"});",
 									"",
-									"// does most of our tests in one",
-									"pm.test(\"Schema Check\", function() {",
-									"    let jsonData = pm.response.json();",
-									"    let schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
-									"    ",
-									"    for (let course of jsonData) {",
-									"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
-									"    }",
-									"    ",
-									"});",
-									"",
-									"pm.test(\"Valid Join\", function() {",
-									"    let jsonData = pm.response.json();",
-									"    for (let x of jsonData) {",
-									"        pm.expect(x['subject-id']).to.be.equal(42);",
-									"    }",
-									"});",
-									"",
-									"pm.test(\"Unique Results\", function() {",
-									"    let jsonData = pm.response.json();",
-									"    let seen = [];",
-									"    for (let x of jsonData) {",
-									"        pm.expect(seen).to.not.include.members([x['id']]);",
-									"        seen.push(x['id']);",
-									"    }",
-									"})",
-									"",
-									"pm.test(\"Limit Check\", function() {",
-									"    let jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.be.at.most(5);",
-									"});",
-									"",
-									""
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"subject_id_not_integer\")",
+									"})"
 								]
 							}
 						}
@@ -655,7 +701,7 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "{{url}}/courses?{{sid}}&{{limit}}",
+							"raw": "{{url}}/courses?subjectId={{bad_id}}",
 							"host": [
 								"{{url}}"
 							],
@@ -664,12 +710,8 @@
 							],
 							"query": [
 								{
-									"key": "{{sid}}",
-									"value": null
-								},
-								{
-									"key": "{{limit}}",
-									"value": null
+									"key": "subjectId",
+									"value": "{{bad_id}}"
 								}
 							]
 						}
@@ -748,90 +790,6 @@
 					"response": []
 				},
 				{
-					"name": "Course - Invalid CID",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "adbb46c0-97b7-40fe-9e72-258eea753975",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Response Check\", function () {",
-									"    pm.response.to.be.ok;",
-									"});",
-									"",
-									"pm.test(\"Error Check\", function() {",
-									"    pm.expect(pm.response.json().error).to.eql(\"course_id_not_integer\")",
-									"})"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"url": {
-							"raw": "{{url}}/courses?courseId={{bad_id}}",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"courses"
-							],
-							"query": [
-								{
-									"key": "courseId",
-									"value": "{{bad_id}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Course - Invalid SID",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "1563031d-f5c8-4719-9771-14b5701d2d5c",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Response Check\", function () {",
-									"    pm.response.to.be.ok;",
-									"});",
-									"",
-									"pm.test(\"Error Check\", function() {",
-									"    pm.expect(pm.response.json().error).to.eql(\"subject_id_not_integer\")",
-									"})"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"url": {
-							"raw": "{{url}}/courses?subjectId={{bad_id}}",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"courses"
-							],
-							"query": [
-								{
-									"key": "subjectId",
-									"value": "{{bad_id}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Course - Invalid JID",
 					"event": [
 						{
@@ -866,6 +824,48 @@
 							"query": [
 								{
 									"key": "jobId",
+									"value": "{{bad_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course - Invalid CID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "adbb46c0-97b7-40fe-9e72-258eea753975",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Error Check\", function() {",
+									"    pm.expect(pm.response.json().error).to.eql(\"course_id_not_integer\")",
+									"})"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?courseId={{bad_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "courseId",
 									"value": "{{bad_id}}"
 								}
 							]
@@ -1005,11 +1005,11 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "41fa2345-860f-471b-bf3e-dca1a6afde3d",
+								"id": "6132bf9e-06b9-4dbb-a8e9-04fe4e707104",
 								"type": "text/javascript",
 								"exec": [
 									"var schema = {",
-									"    \t\"required\": ['id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'course-ids', 'subject-ids'],",
+									"    \t\"required\": ['id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'course-ids', 'subject-ids', 'location', 'jobtype'],",
 									"      \t\"properties\": {",
 									"           \"id\": {",
 									"               \"type\": \"integer\",",
@@ -1050,6 +1050,14 @@
 									"            \t\"items\": {",
 									"            \t    \"type\": \"integer\"",
 									"            \t}",
+									"            },",
+									"            \"location\": {",
+									"                \"type\": \"string\",",
+									"                \"minLength\": 1",
+									"            },",
+									"            \"jobtype\": {",
+									"                \"type\": \"string\",",
+									"                \"minLength\": 1",
 									"            }",
 									"    \t}",
 									"};",
