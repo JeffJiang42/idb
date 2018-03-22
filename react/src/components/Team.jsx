@@ -36,7 +36,7 @@ var info = [{
     'name': 'Jeffrey Jiang',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 1,
+    'unit_tests': 3,
     'image': 'https://i.imgur.com/EA09WOz.jpg',
     'bio': jeff_bio,
     'resp': jeff_resp
@@ -44,7 +44,7 @@ var info = [{
     'name': 'Kurtis David',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 0,
+    'unit_tests': 69,
     'image': 'https://i.imgur.com/cUfxaZU.jpg',
     'bio': kurtis_bio,
     'resp':kurtis_resp
@@ -52,7 +52,7 @@ var info = [{
     'name': 'William Chia',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 0,
+    'unit_tests': 7,
     'image': 'https://i.imgur.com/0PUOsTj.jpg',
     'bio': william_bio,
     'resp': william_resp
@@ -60,7 +60,7 @@ var info = [{
     'name': 'Brandon Chan',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 2,
+    'unit_tests': 8,
     'image': 'https://i.imgur.com/3LhRT5l.jpg',
     'bio': brandon_bio,
     'resp': brandon_resp
@@ -191,7 +191,7 @@ class Team extends Component{
         <h3>Collective Statistics</h3>
         <p><b>Total # of Commits: </b>{this.state.commits.reduce((a,b) => {return a + b})}</p>
         <p><b>Total # of Issues: </b>{this.state.issues.reduce((a,b) => {return a + b})}</p>
-        <p><b>Total # of Unit Tests: </b>3</p>
+        <p><b>Total # of Unit Tests: </b>87</p>
         <br/>
         </div>
         <div className="statement">
