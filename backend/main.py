@@ -111,7 +111,7 @@ def subjects():
     if 'subjectId' in request.args:
         try:
             subjectId = int(request.args['subjectId'])
-            res = execute('SELECT * FROM Subject WHERE Subject.id = %s ORDER BY id ORDER BY id ' + limitQuery, (subjectId))
+            res = execute('SELECT * FROM Subject WHERE Subject.id = %s ORDER BY id ' + limitQuery, (subjectId))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
@@ -120,7 +120,7 @@ def subjects():
         try:
             courseId = int(request.args['courseId'])
             res = execute('SELECT Subject.id, Subject.subject, Subject.provider, Subject.image, Subject.courses, \
-                Subject.jobs FROM Subject JOIN Course ON subject_id = Subject.id WHERE Course.id = %s ORDER BY id ' + limitQuery, (courseId))
+                Subject.jobs FROM Subject JOIN Course ON subject_id = Subject.id WHERE Course.id = %s ORDER BY Subject.id ' + limitQuery, (courseId))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
