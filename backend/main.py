@@ -224,7 +224,7 @@ def jobs():
     elif 'courseId' in request.args:
         try:
             courseId = int(request.args['courseId'])
-            res = execute('SELECT Job.id, Job.name, Job.company, Job.description, Job.image, Job.link, Job.provider, Job.courses, Job.subjects_ids \
+            res = execute('SELECT Job.id, Job.name, Job.company, Job.description, Job.image, Job.link, Job.provider, Job.courses, Job.subjects_ids, Job.location, Job.jobtype \
                 FROM Job JOIN Course_Job ON Course_Job.job_id = Job.id WHERE course_id = %s ' + limitQuery, (courseId))
             resp.data = process_results(res,2)
             return resp
