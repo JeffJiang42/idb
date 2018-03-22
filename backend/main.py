@@ -38,9 +38,11 @@ def process_results(pg_result,type_):
                     sub[k] = [int(x) for x in v.split(',')]
                 else:
                     sub[k] = []
-
+        # authentic jobs images broken
         if type_ == 2 and sub['provider']=='Authentic Jobs':
             sub['image'] = sub['image'].replace('https://authenticjobs.s3.amazonaws.com','')
+            if 'company-blank.png' in sub['image']:
+                sub['image'] = 'https://i.vimeocdn.com/portrait/3831018_300x300' # set a real default
         results.append(sub)
     return json.dumps(results)
 
