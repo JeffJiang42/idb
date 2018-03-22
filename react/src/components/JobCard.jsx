@@ -12,7 +12,6 @@ class JobCard extends Component{
 	    };
 	  }
 
-
 	render(){
 	 	return(
 			  <div className="card"  align="center">
