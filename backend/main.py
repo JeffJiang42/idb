@@ -43,6 +43,10 @@ def process_results(pg_result,type_):
             sub['image'] = sub['image'].replace('https://authenticjobs.s3.amazonaws.com','')
             if 'company-blank.png' in sub['image']:
                 sub['image'] = 'https://i.vimeocdn.com/portrait/3831018_300x300' # set a real default
+        # default github jobs when no image
+        elif type_ == 2 and sub['provider']=='Github Jobs':
+            if sub['image']=='null' or sub['image'] is None:
+                sub['image'] = 'https://jobs.github.com/images/layout/logo@2x.png'
         results.append(sub)
     return json.dumps(results)
 
