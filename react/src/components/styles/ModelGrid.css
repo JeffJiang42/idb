@@ -5,9 +5,15 @@
 .card {
   display: inline-block;
   height: 400px;
-  width: 450px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
 }
 
+.col-sm-3 > .card {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
 
 .pagination{
   position: absolute;

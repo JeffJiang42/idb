@@ -1,32 +1,26 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Router, Route, Link } from 'react-router-dom';
 import './styles/Card.css';
-
-
 
 class SubjectCard extends Component{
 
 	constructor(props){
-	    super(props);
-	    this.state = {
-	    };
-	  }
-
+		super(props)
+	}
 
 	render(){
 	 	return(
-    		<div className="col-sm-4">
-			  <div className="card"  align="center">
-			    <Link to={`/subjects/${this.props.subId}`}><img className="card-img-top" src={this.props.image}/></Link>
+            <Link to={`/courses/${this.props.subId}`}>
+			  <div className="card" style={{ borderRadius: '5px', backgroundImage: `url("${this.props.image}")`}} align="center">
 			    <div className="card-block">
 			      <h4 className="card-title">
-			        <Link to={`/subjects/${this.props.subId}`}>{this.props.subName}</Link>
+			        {this.props.subName}
 			      </h4>
 			      <p className="card-text">Provider: {this.props.provider}</p>
 			      <p className="card-text"># of Courses: {this.props.totalCourses}</p>
 			    </div>
 			  </div>
-			</div>
+              </Link>
 	    );
 	}
 }

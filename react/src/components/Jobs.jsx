@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { Row } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
 
-
-
+var card_remove_border = {
+    'borderStyle': 'none'
+};
 
 class Jobs extends Component{
   constructor(props){
@@ -44,8 +45,8 @@ class Jobs extends Component{
     var firstInd = lastInd - pageSize
     var jobArr = jobList.slice(firstInd, lastInd)
     var jCards = jobArr.map((job,i) =>
-      <div className='col-sm-4' key={i}>
-        <div className='card'>
+      <div className='col-sm-3' key={i}>
+        <div className='card' style={card_remove_border}>
           <JobCard jobId={job.id} name={job.name} company={job.company} image={job.image} provider={job.provider} numCourses={job['course-ids'].length} />
         </div>
       </div>
