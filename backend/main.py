@@ -47,6 +47,8 @@ def process_results(pg_result,type_):
         elif type_ == 2 and sub['provider']=='Github Jobs':
             if sub['image']=='null' or sub['image'] is None:
                 sub['image'] = 'https://jobs.github.com/images/layout/logo@2x.png'
+        if type_==2 and sub['provider']=='Authentic Jobs':
+            sub['name']=sub['name'][:sub['name'].rindex("_")]
         results.append(sub)
     return json.dumps(results)
 
