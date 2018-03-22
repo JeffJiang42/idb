@@ -41,8 +41,6 @@ def clean_data(type_,sub):
             sub['image'] = 'https://pbs.twimg.com/profile_images/625760778554093568/dM7xD4SQ_400x400.png'
     if type_==2 and sub['provider']=='Authentic Jobs':
         sub['name']=sub['name'][:sub['name'].rindex("_")]
-    if (type_==1 or type_==2) and 'desc' in sub:
-        sub['desc'] = sub['desc'].replace('ÃÂ¢ÃÂÃÂ','\'')
     return sub
 
 def process_results(pg_result,type_):
