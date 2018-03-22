@@ -18,6 +18,31 @@ best_cache = {}
 
 conn = psycopg2.connect('host=learning2earn.c9dnk6wbtbst.us-east-2.rds.amazonaws.com user=postgres dbname=learning2earn password=cs373spring2018')
 
+def clean_images(type_,sub):
+    """
+    some bad data - we can parse in backend
+
+    type_ -- the type according to the FIELDS tuple
+    sub -- dictionary of attributes to be returned from api query
+
+    returns updated sub
+    """
+    # increase resolution of courses
+    if type_ == 1 and sub['provider']=='Udemy':
+        sub['image'] = sub['image'].replace('125_H','480x270')
+    # authentic jobs images broken
+    if type_ == 2 and sub['provider']=='Authentic Jobs':
+        sub['image'] = sub['image'].replace('https://authenticjobs.s3.amazonaws.com','')
+        if 'company-blank.png' in sub['image']:
+            sub['image'] = 'https://i.vimeocdn.com/portrait/3831018_300x300' # set a real default
+    # default github jobs when no image
+    elif type_ == 2 and sub['provider']=='Github Jobs':
+        if sub['image']=='null' or sub['image'] is None:
+            sub['image'] = 'https://jobs.github.com/images/layout/logo@2x.png'
+    if type_==2 and sub['provider']=='Authentic Jobs':
+        sub['name']=sub['name'][:sub['name'].rindex("_")]
+    return sub
+
 def process_results(pg_result,type_):
     """
     process the results according to the type
@@ -38,17 +63,7 @@ def process_results(pg_result,type_):
                     sub[k] = [int(x) for x in v.split(',')]
                 else:
                     sub[k] = []
-        # authentic jobs images broken
-        if type_ == 2 and sub['provider']=='Authentic Jobs':
-            sub['image'] = sub['image'].replace('https://authenticjobs.s3.amazonaws.com','')
-            if 'company-blank.png' in sub['image']:
-                sub['image'] = 'https://i.vimeocdn.com/portrait/3831018_300x300' # set a real default
-        # default github jobs when no image
-        elif type_ == 2 and sub['provider']=='Github Jobs':
-            if sub['image']=='null' or sub['image'] is None:
-                sub['image'] = 'https://jobs.github.com/images/layout/logo@2x.png'
-        if type_==2 and sub['provider']=='Authentic Jobs':
-            sub['name']=sub['name'][:sub['name'].rindex("_")]
+        sub = clean_images(type_,sub)
         results.append(sub)
     return json.dumps(results)
 
