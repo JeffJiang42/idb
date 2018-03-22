@@ -23,6 +23,8 @@ install:
     - npm install lodash
     - npm install newman
     - pip install mypy
+    - pip install flask
+    - pip install flask_cors
     - pip install numpy
     - pip install requests
     - pip install psycopg2
