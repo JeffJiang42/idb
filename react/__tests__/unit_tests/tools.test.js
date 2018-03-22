@@ -23,5 +23,4 @@ describe('Tools Component', () => {
      const tools = shallow(<Tools />)
      expect(tools.find('.data')).to.have.length(1);
    })
-
 })
