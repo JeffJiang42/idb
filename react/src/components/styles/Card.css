@@ -1,20 +1,33 @@
 .card-img-top {
     width: 100%;
-	   min-height: 270px;
+	min-height: 270px;
     max-height: 270px;
     object-fit: cover;
 }
-.card {
-    height: 400px;
-    width: 450px;
+
+.cards {
+    padding: 15px;
 }
 
-.card > img{
-  height: 270px;
-  width: 450px;
+.card-block {
+    padding-top: 15px;
+    position: absolute;
+    bottom: 0;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 50%;
 }
 
-.card-block > .card-title {
+.card-block {
+    color: white;
+}
+
+.card-block > a:hover {
+    text-decoration: none
+}
+
+.card-title {
     font-size: 24px;
 }
 

@@ -5,7 +5,9 @@ import _ from 'lodash'
 import { Row, Grid, Pagination } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
 
-
+var card_remove_border = {
+    'borderStyle': 'none'
+};
 
 class Subjects extends Component{
   constructor(props){
@@ -49,8 +51,8 @@ class Subjects extends Component{
       var firstInd = lastInd - pageSize
       var subjectArr = subjectList.slice(firstInd,lastInd)
       var subjectCards = subjectArr.map((sub,i) =>
-        <div className='col-sm-4' key={i}>
-          <div className='card'>
+        <div className='col-sm-3' key={i}>
+          <div className='card' style={card_remove_border} >
           <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length}/>
           </div>
       </div>
@@ -58,7 +60,7 @@ class Subjects extends Component{
 
       return(
         <div className='box'>
-        <Row className-='cards'>
+        <Row className='cards'>
       	{subjectCards}
         </Row>
         <div className='pages' >
