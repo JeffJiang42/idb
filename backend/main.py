@@ -18,7 +18,7 @@ best_cache = {}
 
 conn = psycopg2.connect('host=learning2earn.c9dnk6wbtbst.us-east-2.rds.amazonaws.com user=postgres dbname=learning2earn password=cs373spring2018')
 
-def clean_images(type_,sub):
+def clean_data(type_,sub):
     """
     some bad data - we can parse in backend
 
@@ -63,7 +63,7 @@ def process_results(pg_result,type_):
                     sub[k] = [int(x) for x in v.split(',')]
                 else:
                     sub[k] = []
-        sub = clean_images(type_,sub)
+        sub = clean_data(type_,sub)
         results.append(sub)
     return json.dumps(results)
 
