@@ -14,7 +14,9 @@ CREATE TABLE Job (
 	provider VARCHAR(256),
     subject VARCHAR(2048),
     courses VARCHAR(2048),
-    subjects_ids VARCHAR(2048)
+    subjects_ids VARCHAR(2048),
+    location VARCHAR(64),
+    jobtype VARCHAR(256)
 );
 
 CREATE TABLE Subject (
