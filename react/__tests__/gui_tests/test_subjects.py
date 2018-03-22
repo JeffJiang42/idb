@@ -7,12 +7,13 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
 from pyvirtualdisplay import Display
+import time 
 
 class UntitledTestCase(unittest.TestCase):
     def setUp(self):
         self.display = Display(visible=0, size=(1920, 1080))
         self.display.start()
-        self.driver = webdriver.Chrome('../linux_chrome')
+        self.driver = webdriver.Chrome('../chromedriver2')
         self.driver.implicitly_wait(30)
         self.base_url = "https://www.katalon.com/"
         self.verificationErrors = []
@@ -23,12 +24,11 @@ class UntitledTestCase(unittest.TestCase):
         driver.get("http://learning2earn.me/")
         driver.find_element_by_link_text("Subjects").click()
         driver.find_element_by_link_text("Statistics Probability").click()
-        driver.find_element_by_link_text("Probability").click()
-        driver.find_element_by_link_text("Software Developer (Functional Programming)").click()
-        driver.find_element_by_link_text("Multivariable Calculus").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/p[17]/div/div/div").click()
-        driver.find_element_by_link_text("World History").click()
-        driver.find_element_by_link_text("Development Engineer - Working in Japan").click()
+        driver.find_element_by_link_text("Analyzing categorical data").click()
+        driver.find_element_by_link_text("Subjects").click()
+        driver.find_element_by_link_text("next").click()
+        driver.find_element_by_link_text("previous").click()
+        driver.find_element_by_link_text("Subjects").click()
     
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)
@@ -57,3 +57,4 @@ class UntitledTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
