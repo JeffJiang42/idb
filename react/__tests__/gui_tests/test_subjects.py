@@ -27,7 +27,6 @@ class UntitledTestCase(unittest.TestCase):
         driver.find_element_by_link_text("Analyzing categorical data").click()
         driver.find_element_by_link_text("Subjects").click()
         driver.find_element_by_link_text("next").click()
-        driver.find_element_by_link_text("previous").click()
         driver.find_element_by_link_text("Subjects").click()
     
     def is_element_present(self, how, what):
