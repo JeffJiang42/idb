@@ -8,3 +8,8 @@
     height: 400px;
     width: 450px;
 }
+
+.card > img{
+  height: 270px;
+  width: 450px;
+}
