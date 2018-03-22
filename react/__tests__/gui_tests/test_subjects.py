@@ -7,7 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
 
-class test_subjects(unittest.TestCase):
+class UntitledTestCase(unittest.TestCase):
     def setUp(self):
         self.display = Display(visible=0, size=(1920, 1080))
         self.display.start()
@@ -17,7 +17,7 @@ class test_subjects(unittest.TestCase):
         self.verificationErrors = []
         # self.accept_next_alert = True
     
-    def subjects(self):
+    def test_untitled_test_case(self):
         driver = self.driver
         driver.get("http://learning2earn.me/")
         driver.find_element_by_link_text("Subjects").click()

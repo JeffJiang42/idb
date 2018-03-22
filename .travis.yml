@@ -45,5 +45,5 @@ before_script:
     #- cat projects/collatz/makefile
 
 script:
-   - make travis
    - node_modules/.bin/newman run postman_tests.json -g postman_globals.json
+   - make travis
