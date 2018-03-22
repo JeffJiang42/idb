@@ -8,7 +8,7 @@ class SubjectData extends Component{
     this.state = {
       courses:[],
       jobs:[],
-      info: {  'course-ids':[], 'job-ids':[]}
+      info: {  'course-ids':[], 'job-ids':[] }
     }
     this.getCourses = this.getCourses.bind(this);
     this.getJobs = this.getJobs.bind(this);
@@ -27,7 +27,20 @@ class SubjectData extends Component{
   }
 
   getCourses(){
-
+    var cids = this.state.info['course-ids']
+    var courseUrls = []
+    for (let cid of cids){
+      courseUrls.push('http://api.learning2earn.me/courses?courseId=' + cid)
+    }
+    for (let url of courseUrls){
+      fetch(url)
+        .then((response) => {return response.json()})
+        .then((courseJson) => {
+          var temp = this.state.courses
+          temp.push(courseJson[0])
+          this.setState({courses: temp})
+        })
+    }
   }
 
   getJobs(){
@@ -66,12 +79,22 @@ class SubjectData extends Component{
     if (jobTemp.constructor === Array){
       jobTemp = <div>
         <p className="card-text"><strong>Related Jobs:</strong></p>
-        <ul className='jobList'> {jobTemp} </ul>
+        <ul className='linkList'> {jobTemp} </ul>
       </div>
     }
     else{
       jobTemp = <p className="card-text"><strong>Related Jobs:</strong> {jobTemp}</p>
     }
+    var courseTemp = []
+    for (let course of this.state.courses){
+      courseTemp.push(
+        <li><Link to={`/courses/${course.id}`}>{course.course}</Link></li>
+      )
+    }
+    courseTemp = <div>
+      <p className="card-text"><strong>Related Courses:</strong></p>
+      <ul className='linkList'>{courseTemp}</ul>
+    </div>
     return(
 	<div className="container h-100">
 	  	<div className="row h-100 justify-content-center align-items-center">
@@ -81,7 +104,7 @@ class SubjectData extends Component{
 				<h4 className="card-title">{sub.subject}</h4>
 				<p className="card-text"><strong>Provider</strong>: {sub.provider}</p>
 				<p className="card-text"><strong># of Courses</strong>: {sub['course-ids'].length}</p>
-				<p className="card-text"><strong>Related courses</strong>: coursesr</p>
+				{courseTemp}
 				{jobTemp}
 			  </div>
 			</div>

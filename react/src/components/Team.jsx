@@ -27,9 +27,9 @@ const spencer_bio = "Spencer is a junior CS major at UT Austin. He likes to cook
     and hang out with his cats in his free time."
 
 const jeff_resp = "Frontend"
-const kurtis_resp = "Frontend + Backend"
+const kurtis_resp = "Scraping + Backend"
 const william_resp = "API + Full Stack"
-const brandon_resp = "Frontend"
+const brandon_resp = "Frontend + Testing"
 const spencer_resp = "Backend"
 
 var info = [{
