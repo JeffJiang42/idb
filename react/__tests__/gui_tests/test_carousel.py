@@ -8,7 +8,6 @@ from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
 from pyvirtualdisplay import Display
 
-
 class UntitledTestCase(unittest.TestCase):
     def setUp(self):
         self.display = Display(visible=0, size=(1920, 1080))

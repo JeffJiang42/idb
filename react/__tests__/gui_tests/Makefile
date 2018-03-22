@@ -35,5 +35,5 @@ travis:
 	python test_subjects.py
 	python test_courses.py
 	python test_jobs.py
-	# python test_about.py
+	python test_about.py
 	ls -al
