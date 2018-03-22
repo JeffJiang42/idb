@@ -6,7 +6,9 @@ import { Row, Grid, Pagination } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
 import CourseCard from './CourseCard.jsx';
 
-
+var card_remove_border = {
+    'borderStyle': 'none'
+};
 
 class Courses extends Component{
   constructor(props){
@@ -14,7 +16,7 @@ class Courses extends Component{
     this.state = {
       courseList: [],
       page: 1,
-      pageSize: 30,
+      pageSize: 32,
       maxPage: 10
     };
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -51,8 +53,8 @@ class Courses extends Component{
     var firstInd = lastInd - pageSize
     var courseArr = courseList.slice(firstInd,lastInd)
     var courseCards = courseArr.map((course, i) =>
-      <div className="col-sm-4" key={i} >
-      <div className='card'>
+      <div className="col-sm-3" key={i} >
+      <div className='card' style={card_remove_border}>
         <CourseCard provider={course["provider"]} price={course["price"]} courseId={course["id"]} courseName={course["course"]} image={course["image"]} relJobs={course['job-ids'].length}/>
       </div>
       </div>

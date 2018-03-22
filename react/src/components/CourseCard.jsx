@@ -10,17 +10,18 @@ class CourseCard extends Component{
 
 	render(){
 	 	return(
-			  <div className="card"  align="center">
-			    <Link to={`/courses/${this.props.courseId}`}><img className="card-img-top" src={this.props.image} /></Link>
+            <Link to={`/courses/${this.props.courseId}`}>
+			  <div className="card" style={{ borderRadius: '5px', backgroundImage: `url("${this.props.image}")`}} align="center">
 			    <div className="card-block">
 			      <h4 className="card-title">
-			        <Link to={`/courses/${this.props.courseId}`}>{this.props.courseName}</Link>
+			        {this.props.courseName}
 			      </h4>
 			      <p className="card-text">Provider: {this.props.provider}</p>
 			      <p className="card-text">Price: {this.props.price}</p>
 						<p className="card-text">Relevant Jobs: {this.props.relJobs}</p>
 			    </div>
 			  </div>
+              </Link>
 	    );
 	}
 }
