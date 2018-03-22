@@ -38,6 +38,9 @@ def process_results(pg_result,type_):
                     sub[k] = [int(x) for x in v.split(',')]
                 else:
                     sub[k] = []
+
+        if type_ == 2 and sub['provider']=='Authentic Jobs':
+            sub['image'] = sub['image'].replace('https://authenticjobs.s3.amazonaws.com','')
         results.append(sub)
     return json.dumps(results)
 
