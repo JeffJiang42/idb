@@ -17,7 +17,7 @@ class SubjectCard extends Component{
 	 	return(
     		<div className="col-sm-4">
 			  <div className="card"  align="center">
-			    <img className="card-img-top" src={this.props.image}/>
+			    <Link to={`/subjects/${this.props.subId}`}><img className="card-img-top" src={this.props.image}/></Link>
 			    <div className="card-block">
 			      <h4 className="card-title">
 			        <Link to={`/subjects/${this.props.subId}`}>{this.props.subName}</Link>
