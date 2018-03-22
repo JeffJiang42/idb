@@ -4,8 +4,11 @@ import './styles/Card.css';
 
 class CourseCard extends Component{
 
+	constructor(props){
+		super(props)
+	}
+
 	render(){
-		const { match } = this.props;
 	 	return(
 			  <div className="card"  align="center">
 			    <img className="card-img-top" src={this.props.image}/>

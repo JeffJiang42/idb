@@ -56,17 +56,19 @@ class Subjects extends Component{
         <Row className-='cards'>
       	{subjectCards}
         </Row>
+        <div className='pages' >
         <ReactPaginate previousLabel={"previous"}
                     nextLabel={"next"}
-                    breakLabel={<p>...</p>}
+                    breakLabel={<a>...</a>}
                     breakClassName={"break-me"}
                     pageCount={this.state.maxPage}
-                    marginPagesDisplayed={4}
-                    pageRangeDisplayed={4}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
                     onPageChange={this.handlePageChange}
                     containerClassName={"pagination"}
                     subContainerClassName={"pages pagination"}
                     activeClassName={"active"} />
+         </div>
         </div>
       );
     }

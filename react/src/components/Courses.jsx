@@ -61,7 +61,7 @@ class Courses extends Component{
          <div className='pages' >
          <ReactPaginate previousLabel={"previous"}
                      nextLabel={"next"}
-                     breakLabel={<p>...</p>}
+                     breakLabel={<a>...</a>}
                      breakClassName={"break-me"}
                      pageCount={this.state.maxPage}
                      marginPagesDisplayed={2}

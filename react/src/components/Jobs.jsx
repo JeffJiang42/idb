@@ -2,6 +2,7 @@ import JobCard from './JobCard.jsx';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Row } from 'react-bootstrap'
+import ReactPaginate from 'react-paginate'
 
 
 
@@ -28,6 +29,7 @@ class Jobs extends Component{
       .then((response) => {return response.json()})
       .catch((error) => {console.log(error.message)})
       .then((info) => {this.setState({jobList: info, maxPage: Math.ceil(info.length / this.state.pageSize)})})
+      .catch((error) => {console.log(error.message)})
   }
 
   render(){
@@ -35,10 +37,10 @@ class Jobs extends Component{
     var lastInd = page * pageSize
     var firstInd = lastInd - pageSize
     var jobArr = jobList.slice(firstInd, lastInd)
-    var jCards = jobArr.map((job,i) => 
+    var jCards = jobArr.map((job,i) =>
       <div className='col-sm-4' key={i}>
         <div className='card'>
-          <JobCard jobId={job.id} name={job.name} company={job.company} image={job.image} provider={job.provider} />
+          <JobCard jobId={job.id} name={job.name} company={job.company} image={job.image} provider={job.provider} numCourses={job['course-ids'].length} />
         </div>
       </div>
     )
@@ -46,7 +48,22 @@ class Jobs extends Component{
     console.log(jobList.length)
     return(
       <div className='box'>
+        <Row className='cards'>
         {jCards}
+        </Row>
+        <div className='pages' >
+        <ReactPaginate previousLabel={"previous"}
+                    nextLabel={"next"}
+                    breakLabel={<a>...</a>}
+                    breakClassName={"break-me"}
+                    pageCount={this.state.maxPage}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageChange}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"} />
+         </div>
       </div>
     );
   }

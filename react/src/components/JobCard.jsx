@@ -18,10 +18,11 @@ class JobCard extends Component{
 			    <img className="card-img-top" src={this.props.image}/>
 			    <div className="card-block">
 			      <h4 className="card-title">
-			        <a href={this.props.positionRoute}> {this.props.name}</a>
+			        <Link to={`/jobs/${this.props.jobId}`}>{this.props.name}</Link>
 			      </h4>
 			      <p className="card-text">Provider: {this.props.provider}</p>
 			      <p className="card-text">Company: {this.props.company}</p>
+						<p className="card-text">Related Courses: {this.props.numCourses}</p>
 			    </div>
 			  </div>
 	    );
