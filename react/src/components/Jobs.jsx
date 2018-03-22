@@ -50,8 +50,6 @@ class Jobs extends Component{
         </div>
       </div>
     )
-    console.log(jCards.length)
-    console.log(jobList.length)
     return(
       <div className='box'>
         <Row className='cards'>
