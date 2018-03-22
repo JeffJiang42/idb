@@ -17,7 +17,7 @@ class UntitledTestCase(unittest.TestCase):
         self.base_url = "https://www.katalon.com/"
         self.verificationErrors = []
         # self.accept_next_alert = True
-    
+        
     def test_untitled_test_case(self):
         driver = self.driver
         driver.get("http://learning2earn.me/")
@@ -50,7 +50,7 @@ class UntitledTestCase(unittest.TestCase):
     #             alert.dismiss()
     #         return alert_text
     #     finally: self.accept_next_alert = True
-    
+
     def tearDown(self):
         self.driver.quit()
         self.assertEqual([], self.verificationErrors)
