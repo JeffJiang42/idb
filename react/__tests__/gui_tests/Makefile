@@ -30,8 +30,8 @@ travis:
 	make clean
 	ls -al
 	chmod +x ../linux_chrome
-	# python test_carousel.py
-	# python test_navbar.py
+	python test_carousel.py
+	python test_navbar.py
 	python test_subjects.py
 	python test_courses.py
 	python test_jobs.py

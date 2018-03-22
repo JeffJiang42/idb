@@ -8,37 +8,33 @@ from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
 from pyvirtualdisplay import Display
 
-
-class test_navbar(unittest.TestCase):
-	def setUp(self):
-		self.display = Display(visible=0, size=(1920, 1080))
-		self.display.start()
-		self.driver = webdriver.Chrome("../linux_chrome")
-		self.driver.implicitly_wait(30)
-		self.base_url = "https://www.katalon.com/"
-		self.verificationErrors = []
-		# self.accept_next_alert = True
-
-	def navbar(self):
-		driver = self.driver
-		driver.get("http://www.learning2earn.me/")
-		driver.find_element_by_link_text("About").click()
-		driver.find_element_by_link_text("Courses").click()
-		driver.find_element_by_link_text("Subjects").click()
-		driver.find_element_by_link_text("Jobs").click()
-		driver.find_element_by_xpath("//img[contains(@src,'https://i.imgur.com/g16hr23.png')]").click()
-		driver.find_element_by_link_text("About").click()
-		driver.find_element_by_link_text("Courses").click()
-		driver.find_element_by_link_text("Subjects").click()
-		driver.find_element_by_link_text("Jobs").click()
-		driver.find_element_by_link_text("About").click()
-		driver.find_element_by_link_text("Courses").click()
-		driver.find_element_by_xpath("//img[contains(@src,'https://i.imgur.com/g16hr23.png')]").click()
+class UntitledTestCase(unittest.TestCase):
+    def setUp(self):
+        self.display = Display(visible=0, size=(1920, 1080))
+        self.display.start()
+        self.driver = webdriver.Chrome('../linux_chrome')
+        self.driver.implicitly_wait(30)
+        self.base_url = "https://www.katalon.com/"
+        self.verificationErrors = []
+        # self.accept_next_alert = True
     
-	def is_element_present(self, how, what):
-		try: self.driver.find_element(by=how, value=what)
-		except NoSuchElementException as e: return False
-		return True
+    def test_untitled_test_case(self):
+        driver = self.driver
+        driver.get("http://www.learning2earn.me/")
+        driver.find_element_by_xpath("//img[contains(@src,'https://i.imgur.com/g16hr23.png')]").click()
+        driver.find_element_by_link_text("About").click()
+        driver.find_element_by_link_text("Courses").click()
+        driver.find_element_by_link_text("Subjects").click()
+        driver.find_element_by_link_text("Jobs").click()
+        driver.find_element_by_link_text("Subjects").click()
+        driver.find_element_by_link_text("Courses").click()
+        driver.find_element_by_link_text("About").click()
+        driver.find_element_by_xpath("//img[contains(@src,'https://i.imgur.com/g16hr23.png')]").click()
+    
+    def is_element_present(self, how, what):
+        try: self.driver.find_element(by=how, value=what)
+        except NoSuchElementException as e: return False
+        return True
     
     # def is_alert_present(self):
     #     try: self.driver.switch_to_alert()
@@ -56,9 +52,9 @@ class test_navbar(unittest.TestCase):
     #         return alert_text
     #     finally: self.accept_next_alert = True
     
-	def tearDown(self):
-		self.driver.quit()
-		self.assertEqual([], self.verificationErrors)
+    def tearDown(self):
+        self.driver.quit()
+        self.assertEqual([], self.verificationErrors)
 
 if __name__ == "__main__":
     unittest.main()
