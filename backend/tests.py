@@ -43,7 +43,7 @@ class APIAuxFunctionTest(unittest.TestCase):
         self.assertTrue('125_H' not in res['image'])
         self.assertTrue(res['image'] == sub['image'].replace('125_H','480x270'))
 
-        res2 = main.clean_Data(type_2,sub)
+        res2 = main.clean_data(type_2,sub)
         self.assertTrue('125_H' not in res2['image'])
         self.assertTrue(res2['image'] == sub['image'].replace('125_H','480x270'))
 
