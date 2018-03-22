@@ -16,41 +16,21 @@ class JobData extends Component{
   }
 
   getSubject(){
-    var sids = this.state.info['subject-ids']
-    if(sids !== undefined){
-    var surls = []
-    for (let sid of sids){
-      surls.push('http://api.learning2earn.me/subjects?subjectId=' + sid)
-    }
-    for(let url of surls){
-      fetch(url)
-        .then((response) => {return response.json()})
-        .then((subJson) => {
-          var temp = this.state.subjects
-          temp.push(subJson[0])
-          this.setState({subjects: temp})
-        })
-    }
-    }
+    var url = 'http://api.learning2earn.me/subjects?jobId=' + this.props.match.params.id
+    fetch(url)
+      .then((response) => { return response.json()})
+      .then((subJson) => {
+        this.setState({subjects: subJson})
+      })
   }
 
   getCourses(){
-    var cids = this.state.info['course-ids']
-    if(cids !== undefined){
-      var curls = []
-      for (let cid of cids){
-        curls.push('http://api.learning2earn.me/subjects?subjectId=' + cid)
-      }
-      for (let url of curls){
-        fetch(url)
-          .then((response) => {return response.json()})
-          .then((cJson) => {
-            var temp = this.state.courses
-            temp.push(cJson[0])
-            this.setState({courses:temp})
-          })
-      }
-    }
+    var url = 'http://api.learning2earn.me/courses?jobId=' + this.props.match.params.id
+    fetch(url)
+      .then((response) => { return response.json()})
+      .then((courseJson) => {
+        this.setState({courses: courseJson})
+      })
   }
 
   componentDidMount(){
@@ -61,7 +41,7 @@ class JobData extends Component{
       .then( (jobJson) => {
         this.setState({info: jobJson[0]})
         this.getSubject()
-        //this.getCourses()
+        this.getCourses()
       })
   }
 
@@ -70,18 +50,28 @@ class JobData extends Component{
     this.getCourses()
     var job = this.state.info
     var courseTemp = []
-    console.log(this.state.courses.length)
-    /*
     for (let course of this.state.courses){
       courseTemp.push(
-        <li><Link to={`/courses/${course.id}`}></Link>{course.name}</li>
+        <li><Link to={`/courses/${course.id}`}>{course.course}</Link></li>
       )
     }
     courseTemp = <div>
       <p className="card-text"><strong>Related Courses:</strong></p>
       <ul className='linkList'> {courseTemp} </ul>
     </div>
-    */
+
+    var subTemp = []
+    for (let sub of this.state.subjects){
+      subTemp.push(
+        <li><Link to={`/subjects/${sub.id}`}>{sub.subject}</Link></li>
+      )
+    }
+
+    subTemp = <div>
+      <p className="card-text"><strong>Related Subjects:</strong></p>
+      <ul className='linkList'>{subTemp}</ul>
+    </div>
+
     return(
 	<div className="container h-100">
 	  	<div className="row h-100 justify-content-center align-items-center">
@@ -89,11 +79,11 @@ class JobData extends Component{
 				<img className="card-img-top" src={job.image} />
 				<div className="card-body">
 				<h4 className="card-title">{job.name}</h4>
-				<p className="card-text"><strong>Provider</strong>: insert provider</p>
+				<p className="card-text"><strong>Provider</strong>: {job.provider}</p>
 				<p className="card-text"><strong>Link</strong>: <a href={job.link}>{job.link}</a></p>
 				<p className="card-text"><strong>Description</strong>:{job.desc}</p>
-				<p className="card-text"><strong>related subjects</strong>: subjects</p>
 				{courseTemp}
+        {subTemp}
 			  </div>
 			</div>
 		</div>
