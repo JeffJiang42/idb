@@ -4,6 +4,8 @@ PFILES :=                   \
     test_carousel 			\
     test_about				\
     test_navbar				\
+    test_subjects			\
+    test_courses			\
 
 
 %.jsx: %.js
@@ -31,5 +33,7 @@ travis:
 	# python test_carousel.py
 	# python test_navbar.py
 	python test_subjects.py
+	python test_courses.py
+	python test_jobs.py
 	# python test_about.py
 	ls -al

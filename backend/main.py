@@ -27,8 +27,8 @@ def clean_data(type_,sub):
 
     returns updated sub
     """
-    # increase resolution of courses
-    if type_ == 1 and sub['provider']=='Udemy':
+    # increase resolution of courses/subject
+    if (type_ == 1 or type_==0) and sub['provider']=='Udemy':
         sub['image'] = sub['image'].replace('125_H','480x270')
     # authentic jobs images broken
     if type_ == 2 and sub['provider']=='Authentic Jobs':

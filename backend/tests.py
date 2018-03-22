@@ -34,12 +34,18 @@ class APIAuxFunctionTest(unittest.TestCase):
 
     # check desired results of image cleanup
     def test_image1(self):
-        sub = {'name': 'x','image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
+        sub = {'name': 'x', 'image': 'https://udemy-images.udemy.com/course/125_H/364426_2991_5.jpg',
                'provider': 'Udemy'}
         type_ = 1
+        type_2 = 0
+
         res = main.clean_data(type_,sub)
         self.assertTrue('125_H' not in res['image'])
         self.assertTrue(res['image'] == sub['image'].replace('125_H','480x270'))
+
+        res2 = main.clean_Data(type_2,sub)
+        self.assertTrue('125_H' not in res2['image'])
+        self.assertTrue(res2['image'] == sub['image'].replace('125_H','480x270'))
 
     # check desired results of image cleanup
     def test_image2(self):
