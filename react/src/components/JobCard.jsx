@@ -10,7 +10,7 @@ class JobCard extends Component{
 
 	render(){
 	 	return(
-            <Link to={`/courses/${this.props.jobId}`}>
+            <Link to={`/jobs/${this.props.jobId}`}>
 			  <div className="card" style={{ borderRadius: '5px', backgroundImage: `url("${this.props.image}")`}} align="center">
 			    <div className="card-block">
 			      <h4 className="card-title">

@@ -10,7 +10,7 @@ class SubjectCard extends Component{
 
 	render(){
 	 	return(
-            <Link to={`/courses/${this.props.subId}`}>
+            <Link to={`/subject/${this.props.subId}`}>
 			  <div className="card" style={{ borderRadius: '5px', backgroundImage: `url("${this.props.image}")`}} align="center">
 			    <div className="card-block">
 			      <h4 className="card-title">
