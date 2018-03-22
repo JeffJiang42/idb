@@ -111,7 +111,7 @@ def subjects():
     if 'subjectId' in request.args:
         try:
             subjectId = int(request.args['subjectId'])
-            res = execute('SELECT * FROM Subject WHERE Subject.id = %s ' + limitQuery, (subjectId))
+            res = execute('SELECT * FROM Subject WHERE Subject.id = %s ORDER BY id ORDER BY id ' + limitQuery, (subjectId))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
@@ -120,7 +120,7 @@ def subjects():
         try:
             courseId = int(request.args['courseId'])
             res = execute('SELECT Subject.id, Subject.subject, Subject.provider, Subject.image, Subject.courses, \
-                Subject.jobs FROM Subject JOIN Course ON subject_id = Subject.id WHERE Course.id = %s ' + limitQuery, (courseId))
+                Subject.jobs FROM Subject JOIN Course ON subject_id = Subject.id WHERE Course.id = %s ORDER BY id ' + limitQuery, (courseId))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
@@ -129,13 +129,13 @@ def subjects():
         try:
             jobId = int(request.args['jobId'])
             res = execute('SELECT Subject.id, Subject.subject, Subject.provider, Subject.image, Subject.courses, \
-                Subject.jobs FROM Subject JOIN Subject_Job ON Subject.id = Subject_Job.subject_id WHERE job_id = %s ' + limitQuery, (jobId))
+                Subject.jobs FROM Subject JOIN Subject_Job ON Subject.id = Subject_Job.subject_id WHERE job_id = %s ORDER BY id ' + limitQuery, (jobId))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
             return '{"error": "job_id_not_integer"}'
     else:
-        res = execute('SELECT * FROM Subject ' + limitQuery)
+        res = execute('SELECT * FROM Subject ORDER BY id ' + limitQuery)
         resp.data = process_results(res,0)
         return resp
 
@@ -159,7 +159,7 @@ def courses():
     if 'courseId' in request.args:
         try:
             courseId = int(request.args['courseId'])
-            res = execute('SELECT * FROM Course WHERE Course.id = %s ' + limitQuery, (courseId))
+            res = execute('SELECT * FROM Course WHERE Course.id = %s ORDER BY id ' + limitQuery, (courseId))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
@@ -167,7 +167,7 @@ def courses():
     elif 'subjectId' in request.args:
         try:
             subjectId = int(request.args['subjectId'])
-            res = execute('SELECT * FROM Course WHERE Course.subject_id = %s ' + limitQuery, (subjectId))
+            res = execute('SELECT * FROM Course WHERE Course.subject_id = %s ORDER BY id ' + limitQuery, (subjectId))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
@@ -177,13 +177,13 @@ def courses():
             jobId = int(request.args['jobId'])
             res = execute('SELECT Course.id, Course.course, Course.description, Course.image, \
                 Course.instructor, Course.link, Course.price, Course.provider, \
-                Course.jobs, Course.subject_id FROM Course JOIN Course_Job ON Course.id = Course_Job.course_id WHERE Course_Job.job_id = %s ' + limitQuery, (jobId))
+                Course.jobs, Course.subject_id FROM Course JOIN Course_Job ON Course.id = Course_Job.course_id WHERE Course_Job.job_id = %s ORDER BY id ' + limitQuery, (jobId))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
             return '{"error": "job_id_not_integer"}'
     else:
-        res = execute('SELECT * FROM Course ' + limitQuery)
+        res = execute('SELECT * FROM Course ORDER BY id ' + limitQuery)
         resp.data = process_results(res,1)
         return resp
 
@@ -207,7 +207,7 @@ def jobs():
     if 'jobId' in request.args:
         try:
             jobId = int(request.args['jobId'])
-            res = execute('SELECT * FROM Job WHERE Job.id = %s ' + limitQuery, (jobId))
+            res = execute('SELECT * FROM Job WHERE Job.id = %s ORDER BY id ' + limitQuery, (jobId))
             resp.data = process_results(res,2)
             return resp
         except ValueError:
@@ -216,7 +216,7 @@ def jobs():
         try:
             subjectId = int(request.args['subjectId'])
             res = execute('SELECT Job.id, Job.name, Job.company, Job.description, Job.image, Job.link, Job.provider, Job.courses, Job.subjects_ids \
-                FROM Job JOIN Subject_Job ON Subject_Job.job_id = Job.id WHERE subject_id = %s ' + limitQuery, (subjectId))
+                FROM Job JOIN Subject_Job ON Subject_Job.job_id = Job.id WHERE subject_id = %s ORDER BY id ' + limitQuery, (subjectId))
             resp.data = process_results(res,2)
             return resp
         except ValueError:
@@ -225,13 +225,13 @@ def jobs():
         try:
             courseId = int(request.args['courseId'])
             res = execute('SELECT Job.id, Job.name, Job.company, Job.description, Job.image, Job.link, Job.provider, Job.courses, Job.subjects_ids, Job.location, Job.jobtype \
-                FROM Job JOIN Course_Job ON Course_Job.job_id = Job.id WHERE course_id = %s ' + limitQuery, (courseId))
+                FROM Job JOIN Course_Job ON Course_Job.job_id = Job.id WHERE course_id = %s ORDER BY id ' + limitQuery, (courseId))
             resp.data = process_results(res,2)
             return resp
         except ValueError:
             return '{"error": "course_id_not_integer"}'
     else:
-        res = execute('SELECT * FROM Job ' + limitQuery)
+        res = execute('SELECT * FROM Job ORDER BY id ' + limitQuery)
         resp.data = process_results(res,2)
         return resp
 
