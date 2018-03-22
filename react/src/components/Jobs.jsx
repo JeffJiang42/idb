@@ -23,13 +23,19 @@ class Jobs extends Component{
     this.setState({page: Number(event.selected+1)})
   }
 
-  componentDidMount(){
+  componentWillMount(){
+    const rehydrate = JSON.parse(localStorage.getItem('someSavedState'))
+    this.setState(rehydrate)
     const url = 'http://api.learning2earn.me/jobs';
     fetch(url)
       .then((response) => {return response.json()})
       .catch((error) => {console.log(error.message)})
       .then((info) => {this.setState({jobList: info, maxPage: Math.ceil(info.length / this.state.pageSize)})})
       .catch((error) => {console.log(error.message)})
+  }
+
+  componentWillUnmount(){
+    localStorage.setItem('someSavedState', JSON.stringify(this.state))
   }
 
   render(){
@@ -52,7 +58,9 @@ class Jobs extends Component{
         {jCards}
         </Row>
         <div className='pages' >
-        <ReactPaginate previousLabel={"previous"}
+        <ReactPaginate
+                    initialPage={this.state.page}
+                    previousLabel={"previous"}
                     nextLabel={"next"}
                     breakLabel={<a>...</a>}
                     breakClassName={"break-me"}

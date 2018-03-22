@@ -27,7 +27,9 @@ class Courses extends Component{
   }
 
 
-  componentDidMount(){
+  componentWillMount(){
+    const rehydrate = JSON.parse(localStorage.getItem('someSavedState'))
+    this.setState(rehydrate)
     const url = 'http://api.learning2earn.me/courses';
 
     fetch(url)
@@ -38,6 +40,10 @@ class Courses extends Component{
       .catch((error) => {console.log(error.message); return []})
       .then((info) => {this.setState({courseList: info, maxPage: Math.ceil(info.length / this.state.pageSize)})})
 
+  }
+
+  componentWillUnmount(){
+    localStorage.setItem('someSavedState', JSON.stringify(this.state))
   }
 
   render(){
@@ -60,6 +66,7 @@ class Courses extends Component{
          </Row>
          <div className='pages' >
          <ReactPaginate previousLabel={"previous"}
+                     initialPage={this.state.page}
                      nextLabel={"next"}
                      breakLabel={<a>...</a>}
                      breakClassName={"break-me"}

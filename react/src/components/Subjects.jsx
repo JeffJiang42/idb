@@ -25,7 +25,9 @@ class Subjects extends Component{
   }
 
 
-  componentDidMount(){
+  componentWillMount(){
+    const rehydrate = JSON.parse(localStorage.getItem('someSavedState'))
+    this.setState(rehydrate)
     const url = 'http://api.learning2earn.me/subjects';
 
     fetch(url)
@@ -36,6 +38,10 @@ class Subjects extends Component{
       .catch(() => {return []})
       .then((info) => {this.setState({subjectList: info, maxPage: Math.ceil(info.length / this.state.pageSize)})})
 
+  }
+
+  componentWillUnmount(){
+    localStorage.setItem('someSavedState', JSON.stringify(this.state))
   }
 
   render(){
@@ -58,6 +64,7 @@ class Subjects extends Component{
         </Row>
         <div className='pages' >
         <ReactPaginate previousLabel={"previous"}
+                    initialPage={this.state.page}
                     nextLabel={"next"}
                     breakLabel={<a>...</a>}
                     breakClassName={"break-me"}
