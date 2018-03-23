@@ -103,7 +103,6 @@ class SubjectData extends Component{
 				<div className="card-body">
 				<h4 className="card-title">{sub.subject}</h4>
 				<p className="card-text"><strong>Provider</strong>: {sub.provider}</p>
-				<p className="card-text"><strong># of Courses</strong>: {sub['course-ids'].length}</p>
 				{courseTemp}
 				{jobTemp}
 			  </div>
