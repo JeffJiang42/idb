@@ -85,6 +85,12 @@ def execute(statement, *formatted):
             conn = psycopg2.connect('host=learning2earn.c9dnk6wbtbst.us-east-2.rds.amazonaws.com user=postgres dbname=learning2earn password=cs373spring2018')
     return [('error',)]
 
+@app.route('/anime')
+def anime():
+    resp = Response('{"anime":1}')
+    resp.headers['Content-Type'] = 'application/json'
+    return resp
+    
 @app.route('/')
 def default():
     resp = Response('{"error": "pick_something"}')
