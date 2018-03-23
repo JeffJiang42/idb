@@ -20,7 +20,11 @@ class CourseData extends Component{
     fetch(courseUrl)
       .then((response) => { return response.json() })
       .then( (courseJson) => {
-        this.setState({info: courseJson[0]})
+        var temp = courseJson[0]
+        if (temp.provider === 'Udemy'){
+            temp.link = 'https://udemy.com' + temp.link
+          }
+        this.setState({info: temp})
         this.getSubject()
         this.getJobs()
       })
@@ -81,7 +85,7 @@ class CourseData extends Component{
       jobTemp = <p className="card-text"><strong>Related Jobs:</strong> {jobTemp}</p>
     }
     return(
-	<div className="container h-100">
+	     <div className="container h-100">
 	  	<div className="row h-100 justify-content-center align-items-center">
 			<div className="card h-100" align = "center">
 				<img className="card-img-top" src={course.image} />

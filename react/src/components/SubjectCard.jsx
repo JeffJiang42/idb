@@ -18,6 +18,7 @@ class SubjectCard extends Component{
 			      </h4>
 			      <p className="card-text">Provider: {this.props.provider}</p>
 			      <p className="card-text"># of Courses: {this.props.totalCourses}</p>
+						<p className="card-text"># of Jobs: {this.props.totalJobs}</p>
 			    </div>
 			  </div>
               </Link>

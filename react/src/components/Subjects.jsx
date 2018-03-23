@@ -54,7 +54,7 @@ class Subjects extends Component{
       var subjectCards = subjectArr.map((sub,i) =>
         <div className='col-sm-3' key={i}>
           <div className='card' style={card_remove_border} >
-          <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length}/>
+          <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length} totalJobs={sub['job-ids'].length}/>
           </div>
       </div>
       );
