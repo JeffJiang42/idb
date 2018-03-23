@@ -13,11 +13,11 @@ class FrontStats extends Component{
         </div>
         <div className="col statistic">
           <h3>Number of Subjects</h3>
-          <h4>139</h4>
+          <h4>140</h4>
         </div>
         <div className="col statistic">
           <h3>Number of Jobs</h3>
-          <h4>302</h4>
+          <h4>211</h4>
         </div>
       </Row>
       </div>

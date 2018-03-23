@@ -36,7 +36,7 @@ var info = [{
     'name': 'Jeffrey Jiang',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 3,
+    'unit_tests': 18,
     'image': 'https://i.imgur.com/EA09WOz.jpg',
     'bio': jeff_bio,
     'resp': jeff_resp
@@ -60,7 +60,7 @@ var info = [{
     'name': 'Brandon Chan',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 8,
+    'unit_tests': 25,
     'image': 'https://i.imgur.com/3LhRT5l.jpg',
     'bio': brandon_bio,
     'resp': brandon_resp
@@ -191,7 +191,7 @@ class Team extends Component{
         <h3>Collective Statistics</h3>
         <p><b>Total # of Commits: </b>{this.state.commits.reduce((a,b) => {return a + b})}</p>
         <p><b>Total # of Issues: </b>{this.state.issues.reduce((a,b) => {return a + b})}</p>
-        <p><b>Total # of Unit Tests: </b>87</p>
+        <p><b>Total # of Unit Tests: </b>119</p>
         <br/>
         </div>
         <div className="statement">
