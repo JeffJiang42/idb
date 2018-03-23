@@ -10,6 +10,7 @@ class Tools extends Component{
         <p><a href="https://github.com/JeffJiang42/learning2earn"><b>Github Repository</b></a></p>
         <p><a href="https://acciaccatura.gitbooks.io/api/content/"><b>API Documentation</b></a></p>
         <p><a href="https://jeffjiang42.gitbooks.io/report/content/"><b>Report</b></a></p>
+        <p><a href="https://travis-ci.org/JeffJiang42/idb"><b>TravisCI</b></a></p>
         <br/>
       </div>
       <div className="tools">
