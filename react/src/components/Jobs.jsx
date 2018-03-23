@@ -47,7 +47,7 @@ class Jobs extends Component{
     var jCards = jobArr.map((job,i) =>
       <div className='col-sm-3' key={i}>
         <div className='card' style={card_remove_border}>
-          <JobCard jobId={job.id} name={job.name} company={job.company} image={job.image} provider={job.provider} numCourses={job['course-ids'].length} />
+          <JobCard jobId={job.id} name={job.name} company={job.company} image={job.image} provider={job.provider} numCourses={job['course-ids'].length} jobType={job.jobtype} location={job.location}/>
         </div>
       </div>
     )

@@ -18,6 +18,8 @@ class JobCard extends Component{
 			      </h4>
 			      <p className="card-text">Provider: {this.props.provider}</p>
 			      <p className="card-text">Company: {this.props.company}</p>
+						<p className="card-text">Type: {this.props.jobType}</p>
+						<p className="card-text">Location: {this.props.location}</p>
 				  <p className="card-text">Related Courses: {this.props.numCourses}</p>
 			    </div>
 			  </div>
