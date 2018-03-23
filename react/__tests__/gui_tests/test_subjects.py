@@ -21,10 +21,19 @@ class UntitledTestCase(unittest.TestCase):
         
     def test_untitled_test_case(self):
         driver = self.driver
-        driver.get("http://learning2earn.me/")
+        driver.get("http://www.learning2earn.me/")
         driver.find_element_by_link_text("Subjects").click()
-        driver.find_element_by_link_text("Statistics Probability").click()
-        driver.find_element_by_link_text("Analyzing categorical data").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[5]/div/a/div").click()
+        driver.find_element_by_link_text("Subjects").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[7]/div/a/div").click()
+        driver.find_element_by_link_text("Subjects").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[8]/div/a/div").click()
+        driver.find_element_by_link_text("Subjects").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[3]/div/a/div/div/p[2]").click()
+        driver.find_element_by_link_text("Green's, Stokes', and the divergence theorems").click()
+        driver.find_element_by_link_text("Subjects").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[4]/div/a/div/div/h4").click()
+        driver.find_element_by_link_text("Second order linear equations").click()
         driver.find_element_by_link_text("Subjects").click()
     
     def is_element_present(self, how, what):

@@ -21,23 +21,14 @@ class UntitledTestCase(unittest.TestCase):
     
     def test_untitled_test_case(self):
         driver = self.driver
-        driver.get("http://www.learning2earn.me/")
+        driver.get("http://www.learning2earn.me/courses")
+        driver.find_element_by_xpath("//img[contains(@src,'https://i.imgur.com/g16hr23.png')]").click()
         driver.find_element_by_link_text("Jobs").click()
-        driver.find_element_by_link_text("Android Developer").click()
-        driver.find_element_by_link_text("Blockchain and Bitcoin Fundamentals").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div/div/a/div/div").click()
+        driver.find_element_by_link_text("The Complete Cyber Security Course : Anonymous Browsing!").click()
         driver.find_element_by_link_text("Jobs").click()
-        driver.find_element_by_link_text("Backend Developer").click()
-        driver.find_element_by_link_text("Jobs").click()
-        driver.find_element_by_link_text("Associate Director of User Experience").click()
-        driver.find_element_by_link_text("R Programming: Advanced Analytics In R For Data Science").click()
-        driver.find_element_by_link_text("Jobs").click()
-        driver.find_element_by_link_text("next").click()
-        driver.find_element_by_link_text("next").click()
-        driver.find_element_by_link_text("next").click()
-        driver.find_element_by_link_text("next").click()
-        # ERROR: Caught exception [ERROR: Unsupported command [doubleClick | link=next | ]]
-        driver.find_element_by_link_text("previous").click()
-        # ERROR: Caught exception [ERROR: Unsupported command [doubleClick | link=previous | ]]
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[7]/div/a/div/div").click()
+        driver.find_element_by_link_text(u"CRUSH IT !!! ÃÂ Sales Strategies").click()
         driver.find_element_by_link_text("Jobs").click()
     
     def is_element_present(self, how, what):
