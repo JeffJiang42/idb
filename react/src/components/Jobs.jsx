@@ -14,7 +14,7 @@ class Jobs extends Component{
     this.state = {
       jobList: [],
       page: 1,
-      pageSize: 30,
+      pageSize: 32,
       maxPage: 10
     }
     this.handlePageChange = this.handlePageChange.bind(this)

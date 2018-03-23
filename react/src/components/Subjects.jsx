@@ -15,7 +15,7 @@ class Subjects extends Component{
     this.state = {
       subjectList: [],
       page: 1,
-      pageSize: 30,
+      pageSize: 32,
       maxPage: 4
     };
     this.handlePageChange = this.handlePageChange.bind(this);
