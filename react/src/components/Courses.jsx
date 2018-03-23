@@ -29,7 +29,7 @@ class Courses extends Component{
 
 
   componentWillMount(){
-    const rehydrate = JSON.parse(localStorage.getItem('someSavedState'))
+    const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
     this.setState(rehydrate)
     const url = 'http://api.learning2earn.me/courses';
 
@@ -44,7 +44,7 @@ class Courses extends Component{
   }
 
   componentWillUnmount(){
-    localStorage.setItem('someSavedState', JSON.stringify(this.state))
+    localStorage.setItem('coursesSavedState', JSON.stringify(this.state))
   }
 
   render(){
@@ -67,7 +67,7 @@ class Courses extends Component{
          </Row>
          <div className='pages' >
          <ReactPaginate previousLabel={"previous"}
-                     initialPage={this.state.page}
+                     initialPage={this.state.page-1}
                      nextLabel={"next"}
                      breakLabel={<a>...</a>}
                      breakClassName={"break-me"}

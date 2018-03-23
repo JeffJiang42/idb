@@ -25,7 +25,7 @@ class Jobs extends Component{
   }
 
   componentWillMount(){
-    const rehydrate = JSON.parse(localStorage.getItem('someSavedState'))
+    const rehydrate = JSON.parse(localStorage.getItem('jobSavedState'))
     this.setState(rehydrate)
     const url = 'http://api.learning2earn.me/jobs';
     fetch(url)
@@ -36,7 +36,7 @@ class Jobs extends Component{
   }
 
   componentWillUnmount(){
-    localStorage.setItem('someSavedState', JSON.stringify(this.state))
+    localStorage.setItem('jobSavedState', JSON.stringify(this.state))
   }
 
   render(){
@@ -58,7 +58,7 @@ class Jobs extends Component{
         </Row>
         <div className='pages' >
         <ReactPaginate
-                    initialPage={this.state.page}
+                    initialPage={this.state.page-1}
                     previousLabel={"previous"}
                     nextLabel={"next"}
                     breakLabel={<a>...</a>}
