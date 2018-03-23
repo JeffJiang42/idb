@@ -46,6 +46,7 @@ class Subjects extends Component{
   }
 
   render(){
+      console.log(this.state.page);
       var {subjectList, page, pageSize, maxPage} = this.state
       var lastInd = page * pageSize
       var firstInd = lastInd - pageSize

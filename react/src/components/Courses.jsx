@@ -48,6 +48,7 @@ class Courses extends Component{
   }
 
   render(){
+      console.log(this.state.page);
     var {courseList, page, pageSize, maxPage} = this.state
     var lastInd = page * pageSize
     var firstInd = lastInd - pageSize
