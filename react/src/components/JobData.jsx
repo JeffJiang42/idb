@@ -80,6 +80,8 @@ class JobData extends Component{
 				<div className="card-body">
 				<h4 className="card-title">{job.name}</h4>
 				<p className="card-text"><strong>Provider</strong>: {job.provider}</p>
+        <p className="card-text"><strong>Type</strong>: {job.jobtype}</p>
+        <p className="card-text"><strong>Location</strong>: {job.location}</p>
 				<p className="card-text"><strong>Link</strong>: <a href={job.link}>{job.link}</a></p>
 				<p className="card-text"><strong>Description</strong>:{job.desc}</p>
 				{courseTemp}
