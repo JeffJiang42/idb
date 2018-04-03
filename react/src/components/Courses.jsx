@@ -19,15 +19,16 @@ class Courses extends Component{
       page: 1,
       pageSize: 32,
       maxPage: 10,
-      selectedOption: []
+      selectedOption: [],
     };
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.filterChange = this.filterChange.bind(this)
   }
 
-  handleChange = (selectedOption) => {
-  this.setState({ selectedOption });
-  console.log(`Selected: ${selectedOption.label}`);
-}
+  filterChange(choice){
+    this.setState({ selectedOption: choice });
+    console.log(`Selected: ${choice.label}`);
+  }
 
   handlePageChange(event){
     console.log(event.selected)
@@ -56,10 +57,8 @@ class Courses extends Component{
 
   render(){
 
-    const options = Array.from(new Array(1000), (_, index) => ({
-      label: `Item ${index}`,
-      value: index
-      }));
+    const options = [{label: 'filter option 1', value: 1}, {label:'filter option 2', value: 2},
+    {label:'filter option 3', value:3}]
       console.log(this.state.page);
     var {courseList, page, pageSize, maxPage, selectedOption} = this.state
     var lastInd = page * pageSize
@@ -73,11 +72,11 @@ class Courses extends Component{
       </div>
     );
 
-    const value = selectedOption && selectedOption.value;
-
     return(
       <div className='box'>
-        <Select multi joinValues options={options} value={value} onChange={this.handleChange} />
+          <div className="col-sm=3">
+            <Select closeOnSelect={false} multi  options={options} simpleValue value={selectedOption} onChange={this.filterChange} />
+          </div>
         <Row className='cards'>
     	     {courseCards}
          </Row>
