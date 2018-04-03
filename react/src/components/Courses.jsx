@@ -2,7 +2,7 @@ import './styles/ModelGrid.css';
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import _ from 'lodash'
-import { Row, Grid, Pagination } from 'react-bootstrap'
+import { Row, Grid, Pagination, Button, Collapse } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
 import Select from "react-virtualized-select";
 import CourseCard from './CourseCard.jsx';
@@ -11,8 +11,6 @@ var card_remove_border = {
     'borderStyle': 'none'
 };
 
-const options = [{label: 'filter option 1', value: 1}, {label:'filter option 2', value: 2},
-{label:'filter option 3', value: 3}]
 
 class Courses extends Component{
   constructor(props){
@@ -22,22 +20,25 @@ class Courses extends Component{
       page: 1,
       pageSize: 32,
       maxPage: 10,
-      selectedOption: [],
+      providerOption: [],
+      priceOption: [],
+      filterOpen: false
     };
     this.handlePageChange = this.handlePageChange.bind(this);
-    this.filterChange = this.filterChange.bind(this)
+    this.providerChange = this.providerChange.bind(this)
+    this.priceChange = this.priceChange.bind(this)
   }
 
-  filterChange(choice){
-    this.setState({ selectedOption: choice });
-    //console.log(`Selected: ${typeof(choice.split(',')[0])}`);
+  providerChange(choice){
+    this.setState({ providerOption: choice });
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return parseInt(a)})
     console.log(choiceArr)
-    if (choiceArr.includes(1)){
-      var info = this.state.courseList.filter((course)=>{return course.provider == "Khan Academy"})
-      this.setState({courseList: info, maxPage: Math.ceil(info.length / this.state.pageSize)})
-    }
+  }
+
+  priceChange(choice){
+    this.setState({ priceOption: choice });
+    console.log(choice)
   }
 
   handlePageChange(event){
@@ -49,6 +50,7 @@ class Courses extends Component{
   componentWillMount(){
     const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
     this.setState(rehydrate)
+    this.setState({providerOption:'', priceOption:''})
     const url = 'http://api.learning2earn.me/courses';
 
     fetch(url)
@@ -66,8 +68,12 @@ class Courses extends Component{
   }
 
   render(){
-    console.log(this.state.page);
-    var {courseList, page, pageSize, maxPage, selectedOption} = this.state
+    const providerOptions = [{label: 'Khan Academy', value: 1}, {label:'Udemy', value: 2}]
+    const priceOptions=[{label:"Free", value: 1},{label:"less than $50", value:2},{label:"between $50 and $100", value:3},
+    {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}
+    ]
+    //console.log(this.state.page);
+    var {courseList, page, pageSize, maxPage, providerOption} = this.state
     var lastInd = page * pageSize
     var firstInd = lastInd - pageSize
     var courseArr = courseList.slice(firstInd,lastInd)
@@ -82,7 +88,15 @@ class Courses extends Component{
     return(
       <div className='box'>
           <div className="col-sm=3">
-            <Select closeOnSelect={false} multi  options={options} simpleValue value={selectedOption} onChange={this.filterChange} />
+            <div className='Filters'>
+              <Button onClick={() => this.setState({ filterOpen: !this.state.filterOpen })}>Filters</Button>
+              <Collapse in={this.state.filterOpen}>
+                <div style={{width:"100%"}}>
+                  <Select multi  options={providerOptions} simpleValue value={providerOption} placeholder="Provider" onChange={this.providerChange} />
+                  <Select options={priceOptions} simpleValue value={this.state.priceOption} placeholder="Price" onChange={this.priceChange}/>
+                </div>
+              </Collapse>
+            </div>
           </div>
         <Row className='cards'>
     	     {courseCards}
