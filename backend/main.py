@@ -11,6 +11,16 @@ JOB_FIELDS = ('id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'cou
 
 FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
 
+SUBJECT_FILTERS = {}
+COURSE_FILTERS = {'provider': 'exact',
+                  'price': 'range',
+                  'relevant-jobs': 'range'
+                  }
+JOB_FILTERS = {}
+
+FILTERS = (SUBJECT_FILTERS,COURSE_FILTERS,JOB_FILTERS)
+TABLES = ('Subject','Course','Job')
+
 app = Flask(__name__)
 CORS(app)
 
@@ -85,6 +95,35 @@ def execute(statement, *formatted):
             conn = psycopg2.connect('host=learning2earn.c9dnk6wbtbst.us-east-2.rds.amazonaws.com user=postgres dbname=learning2earn password=cs373spring2018')
     return [('error',)]
 
+def filter_query(args,type_):
+    filters = FILTERS(type_)
+    table = TABLES(type_)
+    query = ''
+
+    for param in filters:
+        if param in args:
+            query += ' and'
+
+            if filters[param] == 'exact':
+                query += ' (' + table + '.' + param + ' = ' + args[param] + ')'
+            elif filters[param] == 'range':
+                range_ = args[param].split('..')
+                if len(range_) != 2:
+                    raise ValueError(param + '_invalid_range')
+                else:
+                    try:
+                        min_ = int(range_[0])
+                        max_ = int(range_[1])
+                        if min_>max_:
+                            raise ValueError(param + '_invalid_range')
+                    except ValueError:
+                        raise ValueError(param + '_range_not_integers')
+                query += ' (' + table + '.' + param + ' BETWEEN ' + range_[0] + ' AND ' + range_[1] + ')'
+
+    return query
+
+
+
 @app.route('/anime')
 def anime():
     resp = Response('{"anime":1}')
@@ -151,6 +190,13 @@ def courses():
     resp = Response()
     resp.headers['Content-Type'] = 'application/json'
     limit, limitQuery = 0, ''
+    # check filters
+    try:
+        where_clause = filter_query(request.args,1)
+    except Exception, e:
+        resp.data = '{"error": "' + e + '"}'
+        return resp
+
     # check request type
     if 'limit' in request.args:
         try:
@@ -165,7 +211,7 @@ def courses():
     if 'courseId' in request.args:
         try:
             courseId = int(request.args['courseId'])
-            res = execute('SELECT * FROM Course WHERE Course.id = %s ORDER BY id ' + limitQuery, (courseId))
+            res = execute('SELECT * FROM Course WHERE Course.id = %s' + where_clause + ' ORDER BY id ' + limitQuery, (courseId))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
@@ -173,7 +219,7 @@ def courses():
     elif 'subjectId' in request.args:
         try:
             subjectId = int(request.args['subjectId'])
-            res = execute('SELECT * FROM Course WHERE Course.subject_id = %s ORDER BY id ' + limitQuery, (subjectId))
+            res = execute('SELECT * FROM Course WHERE Course.subject_id = %s ' + where_clause + ' ORDER BY id ' + limitQuery, (subjectId))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
@@ -183,13 +229,17 @@ def courses():
             jobId = int(request.args['jobId'])
             res = execute('SELECT Course.id, Course.course, Course.description, Course.image, \
                 Course.instructor, Course.link, Course.price, Course.provider, \
-                Course.jobs, Course.subject_id FROM Course JOIN Course_Job ON Course.id = Course_Job.course_id WHERE Course_Job.job_id = %s ORDER BY id ' + limitQuery, (jobId))
+                Course.jobs, Course.subject_id FROM Course JOIN Course_Job ON Course.id = Course_Job.course_id WHERE Course_Job.job_id = %s ' + where_clause + ' ORDER BY id ' + limitQuery, (jobId))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
             return '{"error": "job_id_not_integer"}'
     else:
-        res = execute('SELECT * FROM Course ORDER BY id ' + limitQuery)
+        if len(where_clause)>4:
+            where_clause = where_clause[4:]
+            res = execute('SELECT * FROM Course WHERE ' + where_clause + ' ORDER BY id ' + limitQuery)
+        else:
+            res = execute('SELECT * FROM Course ORDER BY id ' + limitQuery)
         resp.data = process_results(res,1)
         return resp
 
