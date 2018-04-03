@@ -9,6 +9,7 @@ import Subjects from './components/Subjects.jsx';
 import CourseData from './components/CourseData.jsx'
 import SubjectData from './components/SubjectData.jsx'
 import JobData from './components/JobData.jsx'
+import SearchPage from './components/SearchPage.jsx'
 
 
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
           <Route path='/courses/:id' component={CourseData}/>
           <Route path='/subjects/:id' component={SubjectData}/>
           <Route path='/jobs/:id' component={JobData} />
+          <Route path='/search/:query' component={SearchPage} />
         </div>
     </Router>
     );

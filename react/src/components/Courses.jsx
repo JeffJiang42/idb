@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import _ from 'lodash'
 import { Row, Grid, Pagination } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
+import Select from "react-virtualized-select";
 import CourseCard from './CourseCard.jsx';
 
 var card_remove_border = {
@@ -17,10 +18,16 @@ class Courses extends Component{
       courseList: [],
       page: 1,
       pageSize: 32,
-      maxPage: 10
+      maxPage: 10,
+      selectedOption: []
     };
     this.handlePageChange = this.handlePageChange.bind(this);
   }
+
+  handleChange = (selectedOption) => {
+  this.setState({ selectedOption });
+  console.log(`Selected: ${selectedOption.label}`);
+}
 
   handlePageChange(event){
     console.log(event.selected)
@@ -48,8 +55,13 @@ class Courses extends Component{
   }
 
   render(){
+
+    const options = Array.from(new Array(1000), (_, index) => ({
+      label: `Item ${index}`,
+      value: index
+      }));
       console.log(this.state.page);
-    var {courseList, page, pageSize, maxPage} = this.state
+    var {courseList, page, pageSize, maxPage, selectedOption} = this.state
     var lastInd = page * pageSize
     var firstInd = lastInd - pageSize
     var courseArr = courseList.slice(firstInd,lastInd)
@@ -61,8 +73,11 @@ class Courses extends Component{
       </div>
     );
 
+    const value = selectedOption && selectedOption.value;
+
     return(
       <div className='box'>
+        <Select multi joinValues options={options} value={value} onChange={this.handleChange} />
         <Row className='cards'>
     	     {courseCards}
          </Row>
