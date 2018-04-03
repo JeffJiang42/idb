@@ -201,7 +201,7 @@ def subjects():
     else:
         if len(where_clause)>4:
             where_clause = where_clause[4:]
-            res = execute('SELECT * FROM Subject WHERE ' + where_clause + ' ORDER BY id ' + limitQuery)
+            res = execute('SELECT * FROM Subject WHERE' + where_clause + ' ORDER BY id ' + limitQuery)
         else:
             res = execute('SELECT * FROM Subject ORDER BY id ' + limitQuery)
         resp.data = process_results(res,0)
@@ -260,7 +260,7 @@ def courses():
     else:
         if len(where_clause)>4:
             where_clause = where_clause[4:]
-            res = execute('SELECT * FROM Course WHERE ' + where_clause + ' ORDER BY id ' + limitQuery)
+            res = execute('SELECT * FROM Course WHERE' + where_clause + ' ORDER BY id ' + limitQuery)
         else:
             res = execute('SELECT * FROM Course ORDER BY id ' + limitQuery)
         resp.data = process_results(res,1)
@@ -319,7 +319,7 @@ def jobs():
     else:
         if len(where_clause)>4:
             where_clause = where_clause[4:]
-            res = execute('SELECT * FROM Job WHERE ' + where_clause + ' ORDER BY id ' + limitQuery)
+            res = execute('SELECT * FROM Job WHERE' + where_clause + ' ORDER BY id ' + limitQuery)
         else:
             res = execute('SELECT * FROM Job ORDER BY id ' + limitQuery)
         resp.data = process_results(res,2)
