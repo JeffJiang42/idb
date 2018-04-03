@@ -145,7 +145,7 @@ def filter_query(args,type_):
 def sort_by(args, type_):
     ret = 'id'
     if 'sort_by' in args:
-    sort_val = args['sort_by']
+        sort_val = args['sort_by']
         if type_ == 0:
             if sort_val not in SUBJECT_FIELDS:
                 return ret
