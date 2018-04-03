@@ -14,7 +14,8 @@ FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
 SUBJECT_FILTERS = {}
 COURSE_FILTERS = {'provider': 'exact',
                   'price': 'range',
-                  'relevant-jobs': 'range'
+                  'relevant-jobs': 'range',
+                  'course': 'exact'
                   }
 JOB_FILTERS = {}
 
