@@ -11,15 +11,15 @@ JOB_FIELDS = ('id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'cou
 
 FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
 
-SUBJECT_FILTERS = {#'num-courses': 'range', TODO
+SUBJECT_FILTERS = {'num-courses': 'range',
                    'provider': 'exact'
                   }
 COURSE_FILTERS = {'provider': 'exact',
-                 #'num-relevant-jobs': 'range', TODO
+                  'num-relevant-jobs': 'range',
                   'price': 'range'
                   }
 JOB_FILTERS = {'company': 'exact',
-              #'num-related-courses': 'range', TODO
+               'num-related-courses': 'range',
                'location': 'exact',
                'course': 'exact',
                'provider': 'exact',
@@ -75,7 +75,7 @@ def process_results(pg_result,type_):
     for res in pg_result:
         sub = {}
         for k, v in zip(type_fields, res):
-            sub[k] = v
+            sub[k] = str(v)
             if k == 'course-ids' or k == 'job-ids' or k == 'subject-ids':
                 if v and not v == 'None' :
                     sub[k] = [int(x) for x in v.split(',')]
@@ -110,27 +110,36 @@ def filter_query(args,type_):
 
     for param in filters:
         if param in args:
-            query += ' and'
-            column = table + '.' + param
-
-            if filters[param] == 'exact':
-                query += ' (' + column + ' = ' + "'" + args[param] + "'" + ')'
-            elif filters[param] == 'range':
-                range_ = args[param].split('..')
-                if len(range_) != 2:
-                    raise ValueError(param + '_invalid_range')
+            query += ' and ('
+            values = args.getlist(param)
+            first = True
+            for value in values:
+                column = table + '.' + param
+                if first:
+                    first = False
                 else:
-                    try:
-                        min_ = int(range_[0])
-                        max_ = int(range_[1])
-                        if min_>max_:
-                            raise ValueError(param + '_invalid_range')
-                    except ValueError:
-                        raise ValueError(param + '_range_not_integers')
-                query += ' ( CASE WHEN ' + column + " = 'Free' THEN 0 BETWEEN " + range_[0] + ' AND ' + range_[1] +''\
-                'ELSE CAST( (COALESCE(' + 'SUBSTR(' + column + ',2),' + "'0'" + ')) AS decimal(10,2))'\
-                            ' BETWEEN ' + range_[0] + ' AND ' + range_[1] + ' END)'
-
+                    query += ' or'
+                if filters[param] == 'exact':
+                    query += ' (' + column + ' = ' + "'" + value + "'" + ')'
+                elif filters[param] == 'range':
+                    range_ = value.split('..')
+                    if len(range_) != 2:
+                        raise ValueError(param + '_invalid_range')
+                    else:
+                        try:
+                            if range_[0]=='':
+                                min_ = 0
+                            else:
+                                min_ = int(range_[0])
+                            if range_[1]=='':
+                                max_ = int(range_[1])
+                            if min_>max_:
+                                raise ValueError(param + '_invalid_range')
+                        except ValueError:
+                            raise ValueError(param + '_range_not_integers')
+                    
+                    query += ' (' + column + ' BETWEEN ' + range_[0] + ' AND ' + range_[1] + ')'
+            query += ')'
     return query
 
 
@@ -219,6 +228,8 @@ def courses():
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
     print(where_clause)
+
+    print(request.args)
     # check request type
     if 'limit' in request.args:
         try:
