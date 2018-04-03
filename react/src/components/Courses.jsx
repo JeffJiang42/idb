@@ -11,6 +11,9 @@ var card_remove_border = {
     'borderStyle': 'none'
 };
 
+const options = [{label: 'filter option 1', value: 1}, {label:'filter option 2', value: 2},
+{label:'filter option 3', value: 3}]
+
 class Courses extends Component{
   constructor(props){
     super(props);
@@ -27,7 +30,14 @@ class Courses extends Component{
 
   filterChange(choice){
     this.setState({ selectedOption: choice });
-    console.log(`Selected: ${choice.label}`);
+    //console.log(`Selected: ${typeof(choice.split(',')[0])}`);
+    var choiceArr = choice.split(',')
+    choiceArr = choiceArr.map((a) => {return parseInt(a)})
+    console.log(choiceArr)
+    if (choiceArr.includes(1)){
+      var info = this.state.courseList.filter((course)=>{return course.provider == "Khan Academy"})
+      this.setState({courseList: info, maxPage: Math.ceil(info.length / this.state.pageSize)})
+    }
   }
 
   handlePageChange(event){
@@ -56,10 +66,7 @@ class Courses extends Component{
   }
 
   render(){
-
-    const options = [{label: 'filter option 1', value: 1}, {label:'filter option 2', value: 2},
-    {label:'filter option 3', value:3}]
-      console.log(this.state.page);
+    console.log(this.state.page);
     var {courseList, page, pageSize, maxPage, selectedOption} = this.state
     var lastInd = page * pageSize
     var firstInd = lastInd - pageSize
