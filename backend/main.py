@@ -11,7 +11,9 @@ JOB_FIELDS = ('id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'cou
 
 FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
 
-SUBJECT_FILTERS = {}
+SUBJECT_FILTERS = {'provider': 'exact',
+                   'subject': 'exact'
+                  }
 COURSE_FILTERS = {'provider': 'exact',
                   'price': 'range',
                   'relevant-jobs': 'range',
@@ -146,6 +148,13 @@ def subjects():
     resp = Response()
     resp.headers['Content-Type'] = 'application/json'
     limit, limitQuery = 0, ''
+    # check filters
+    try:
+        where_clause = filter_query(request.args,0)
+    except Exception as e:
+        resp.data = '{"error": "' + str(e) + '"}'
+        return resp
+    print(where_clause)
     # check request type
     if 'limit' in request.args:
         try:
@@ -160,7 +169,7 @@ def subjects():
     if 'subjectId' in request.args:
         try:
             subjectId = int(request.args['subjectId'])
-            res = execute('SELECT * FROM Subject WHERE Subject.id = %s ORDER BY id ' + limitQuery, (subjectId))
+            res = execute('SELECT * FROM Subject WHERE (Subject.id = %s)' + where_clause + ' ORDER BY id ' + limitQuery, (subjectId))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
@@ -169,7 +178,7 @@ def subjects():
         try:
             courseId = int(request.args['courseId'])
             res = execute('SELECT Subject.id, Subject.subject, Subject.provider, Subject.image, Subject.courses, \
-                Subject.jobs FROM Subject JOIN Course ON subject_id = Subject.id WHERE Course.id = %s ORDER BY Subject.id ' + limitQuery, (courseId))
+                Subject.jobs FROM Subject JOIN Course ON subject_id = Subject.id WHERE (Course.id = %s)' + where_clause + ' ORDER BY Subject.id ' + limitQuery, (courseId))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
@@ -178,13 +187,26 @@ def subjects():
         try:
             jobId = int(request.args['jobId'])
             res = execute('SELECT Subject.id, Subject.subject, Subject.provider, Subject.image, Subject.courses, \
-                Subject.jobs FROM Subject JOIN Subject_Job ON Subject.id = Subject_Job.subject_id WHERE job_id = %s ORDER BY id ' + limitQuery, (jobId))
+                Subject.jobs FROM Subject JOIN Subject_Job ON Subject.id = Subject_Job.subject_id WHERE (job_id = %s)' + where_clause + ' ORDER BY id ' + limitQuery, (jobId))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
             return '{"error": "job_id_not_integer"}'
     else:
-        res = execute('SELECT * FROM Subject ORDER BY id ' + limitQuery)
+        """
+        if len(where_clause)>4:
+            where_clause = where_clause[4:]
+            res = execute('SELECT * FROM Course WHERE ' + where_clause + ' ORDER BY id ' + limitQuery)
+        else:
+            res = execute('SELECT * FROM Course ORDER BY id ' + limitQuery)
+        resp.data = process_results(res,1)
+        return resp
+        """
+        if len(where_clause)>4:
+            where_clause = where_clause[4:]
+            res = execute('SELECT * FROM Subject WHERE ' + where_clause + ' ORDER BY id ' + limitQuery)
+        else:
+            res = execute('SELECT * FROM Subject ORDER BY id ' + limitQuery)
         resp.data = process_results(res,0)
         return resp
 
