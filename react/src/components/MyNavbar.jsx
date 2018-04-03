@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, NavItem, Nav, Image } from 'react-bootstrap';
 import './styles/MyNavbar.css';
+import Search from './GlobalSearch.jsx';
 
 var navbar_style = {
     'borderRadius': 0,
@@ -32,6 +33,9 @@ class MyNavbar extends Component{
             </NavItem>
             <NavItem eventKey={2} href="/jobs" to="/jobs">
               Jobs
+            </NavItem>
+            <NavItem>
+            <Search />
             </NavItem>
           </Nav>
         </Navbar.Collapse>
