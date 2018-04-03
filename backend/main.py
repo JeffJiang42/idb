@@ -142,7 +142,25 @@ def filter_query(args,type_):
             query += ')'
     return query
 
+def sort_by(args, type_):
+    ret = 'id'
+    if 'sort_by' in args:
+    sort_val = args['sort_by']
+        if type_ == 0:
+            if sort_val not in SUBJECT_FIELDS:
+                return ret
+        elif type_ == 1:
+            if sort_val not in COURSE_FIELDS:
+                return ret
+        elif type_ == 2:
+            if sort_val not in JOB_FIELDS:
+                return ret
+        ret = sort_val
+    if 'desc' in args:
+        if args['desc'] == 'TRUE':
+            ret += ' DESC'
 
+    return ret
 
 @app.route('/anime')
 def anime():
