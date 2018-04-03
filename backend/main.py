@@ -11,20 +11,19 @@ JOB_FIELDS = ('id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'cou
 
 FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
 
-SUBJECT_FILTERS = {'provider': 'exact',
-                   'subject': 'exact'
+SUBJECT_FILTERS = {#'num-courses': 'range', TODO
+                   'provider': 'exact'
                   }
 COURSE_FILTERS = {'provider': 'exact',
-                  'price': 'range',
-                  'relevant-jobs': 'range',
-                  'course': 'exact'
+                 #'num-relevant-jobs': 'range', TODO
+                  'price': 'range'
                   }
-JOB_FILTERS = {'name': 'exact',
-               'company': 'exact',
+JOB_FILTERS = {'company': 'exact',
+              #'num-related-courses': 'range', TODO
                'location': 'exact',
                'course': 'exact',
                'provider': 'exact',
-               'jobtype': 'exact'
+               'jobtype': 'exact'  
               }
 
 FILTERS = (SUBJECT_FILTERS,COURSE_FILTERS,JOB_FILTERS)
