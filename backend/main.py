@@ -103,9 +103,10 @@ def filter_query(args,type_):
     for param in filters:
         if param in args:
             query += ' and'
+            column = table + '.' + param
 
             if filters[param] == 'exact':
-                query += ' (' + table + '.' + param + ' = ' + "'" + args[param] + "'" + ')'
+                query += ' (' + column + ' = ' + "'" + args[param] + "'" + ')'
             elif filters[param] == 'range':
                 range_ = args[param].split('..')
                 if len(range_) != 2:
@@ -118,7 +119,9 @@ def filter_query(args,type_):
                             raise ValueError(param + '_invalid_range')
                     except ValueError:
                         raise ValueError(param + '_range_not_integers')
-                query += ' (' + table + '.' + param + ' BETWEEN ' + range_[0] + ' AND ' + range_[1] + ')'
+                query += ' ( CASE WHEN ' + column + " = 'Free' THEN 0 BETWEEN " + range_[0] + ' AND ' + range_[1] +''\
+                'ELSE CAST( (COALESCE(' + 'SUBSTR(' + column + ',2),' + "'0'" + ')) AS decimal(10,2))'\
+                            ' BETWEEN ' + range_[0] + ' AND ' + range_[1] + ' END)'
 
     return query
 
@@ -196,7 +199,7 @@ def courses():
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
-
+    print(where_clause)
     # check request type
     if 'limit' in request.args:
         try:
