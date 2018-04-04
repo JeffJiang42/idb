@@ -235,11 +235,12 @@ class Courses extends Component{
                 </div>
               </Collapse>
             </div>
+            <br />
             <div className='Sorting'>
               <h1 onClick={() => this.setState({ sortOpen: !this.state.sortOpen})}>Sorting</h1>
               <br />
               <Collapse in={this.state.sortOpen}>
-                <Select options={sortOptions} simpleValue value={this.state.sortOption} placeholder='Sort by' onChange={this.sortChange} />
+                <Select options={sortOptions} simpleValue value={this.state.sortOption} placeholder='Provider' onChange={this.sortChange} />
               </Collapse>
             </div>
           </div>

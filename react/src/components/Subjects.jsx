@@ -10,6 +10,7 @@ var card_remove_border = {
     'borderStyle': 'none'
 };
 
+const providers = ["Khan Academy", "Udemy"]
 const sortQueries = ["provider", "provider&desc=TRUE", "num-courses", "num-courses&desc=TRUE"]
 
 class Subjects extends Component{
@@ -24,34 +25,68 @@ class Subjects extends Component{
       filterOpen: false,
       providerOption: '',
       sortOption: '',
+      queries: [],
       url:'http://api.learning2earn.me/subjects'
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.sortChange = this.sortChange.bind(this)
+    this.makeQuery = this.makeQuery.bind(this)
+    this.providerChange = this.providerChange.bind(this)
+  }
+
+  providerChange(choice){
+    this.setState({providerOption: choice})
+    var choiceArr = choice.split(',')
+    choiceArr = choiceArr.map((a) => {return encodeURI(providers[parseInt(a)-1])})
+    console.log(choiceArr)
+    if (!(choiceArr.includes(NaN) || choice == '' || choice == null)){
+        this.state.queries.providers = ''
+        for (let c in choiceArr){
+          console.log('Choices ' + choiceArr[c])
+          this.state.queries.providers += 'provider=' + choiceArr[c]
+          if (c < choiceArr.length -1){
+            this.state.queries.providers += '&'
+          }
+        }
+    console.log(this.state.queries)
+    }
+    else{
+      delete this.state.queries.providers
+    }
+    this.makeQuery()
   }
 
   sortChange(choice){
     this.setState({sortOption: choice})
-    var url = ''
-    if (choice != null){
-      //TODO make this work with filtering (using & instead of ?) when it's there
-      url = this.state.url + '?sort_by=' + sortQueries[choice - 1]
-      fetch(url)
-        .then((response) => {return response.json()})
-        .then((json) => {
-          var sorted = json
-          this.setState({subjectList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
-        })
+    //console.log(this.state.queries)
+    if(choice != null){
+      this.state.queries.sort = ("sort_by=" + sortQueries[choice-1])
+      //console.log(this.state.queries)
     }
-    else{
-      url = this.state.url
-      fetch(url)
-        .then((response) => {return response.json()})
-        .then((json) => {
-          var sorted = json
-          this.setState({subjectList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
-        })
+    this.makeQuery()
+  }
+
+  makeQuery(){
+    var url = 'http://api.learning2earn.me/subjects'
+    var first = true
+    var queries = this.state.queries
+    console.log(queries)
+    for (let key in queries){
+      if (first){
+        url += '?' + queries[key]
+        first = false
       }
+      else{
+        url += '&' + queries[key]
+      }
+    }
+    console.log(url)
+    fetch(url)
+      .then((response) => {return response.json()})
+      .then((json) => {
+        var sorted = json
+        this.setState({subjectList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
+      })
   }
 
   handlePageChange(event){
@@ -75,11 +110,16 @@ class Subjects extends Component{
   }
 
   componentWillUnmount(){
-    localStorage.setItem('subjectSavedState', JSON.stringify(this.state))
+    var toSave = {
+      page: this.state.page,
+      providerOption: this.state.providerOption,
+      sortOption: this.state.sortOption
+    };
+    localStorage.setItem('subjectSavedState', JSON.stringify(toSave))
   }
 
   render(){
-      const filterOptions=[{label:"Provider", value: 1}]
+      const providerOptions=[{label:"Khan Academy", value: 1}, {label: "Udemy", value: 2}]
       const sortOptions=[{label: "Provider (Alphabetical)", value: 1}, {label:"Provider (Descending alphabetical)", value: 2},
       {label: "Number of courses", value: 3}, {label:"Number of courses (Descending)", value: 4}]
       //console.log(this.state.page);
@@ -99,12 +139,15 @@ class Subjects extends Component{
         <div className='box'>
         <div className='Filters'>
           <h1 onClick={() => this.setState({filterOpen: !this.state.filterOpen})}>Filters</h1>
+          <br />
           <Collapse in={this.state.filterOpen}>
-            <Select options={filterOptions} />
+            <Select multi options={providerOptions} simpleValue value={this.state.providerOption} placeholder='Sort by' onChange={this.providerChange} />
           </Collapse>
         </div>
+        <br />
         <div className='Sorting'>
           <h1 onClick={() => this.setState({ sortOpen: !this.state.sortOpen})}>Sorting</h1>
+          <br />
           <Collapse in={this.state.sortOpen}>
             <Select options={sortOptions} simpleValue value={this.state.sortOption} placeholder='Sort by' onChange={this.sortChange} />
           </Collapse>
