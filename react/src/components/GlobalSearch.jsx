@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, NavItem, Nav, Image, Form, FormGroup, Button, FormControl } from 'react-bootstrap';
 import './styles/MyNavbar.css';
+import { Link } from 'react-router-dom'
 
 class GlobalSearch extends Component{
 	constructor() {
@@ -10,6 +11,9 @@ class GlobalSearch extends Component{
 		};
 	}
 
+	handleClick(){
+
+	}
   render() {
     return (
     	<div className="search-align">
@@ -18,7 +22,9 @@ class GlobalSearch extends Component{
 			      <FormGroup>
 			        <FormControl type="text" placeholder="Search" onChange={e => this.setState({search: e.target.value})} />
 			      </FormGroup>{' '}
-			      <button onClick={() => console.log(this.state.search)}> Submit</button>
+			      <Link to={"/search/" + this.state.search}>
+			      <button onClick={() => console.log("testing123")}> Submit</button>
+			      </Link>
 			    </Navbar.Form>
 			</NavItem>
 		</div>
