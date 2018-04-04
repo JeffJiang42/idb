@@ -45,6 +45,7 @@ class Courses extends Component{
     choiceArr = choiceArr.map((a) => {return parseInt(a)})
     var priceFilter = this.state.priceOption
     var jobFilter = this.state.relJobOption
+    var sortOption = this.state.sortOption
     console.log(choice)
     if (choiceArr.includes(NaN) || choice == '' || choice == null){
       var url = 'http://api.learning2earn.me/courses'
@@ -52,12 +53,19 @@ class Courses extends Component{
         url += '?price=' + priceRanges[parseInt(priceFilter)-1]
       }
       if (jobFilter != ''){
-        console.log("nonempty jobFilter")
         if(priceFilter != ''){
           url += '&num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
         }
         else{
           url += '?num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
+        }
+      }
+      if (sortOption != ''){
+        if (jobFilter != ''  || priceFilter != ''){
+          url += '&sort_by=' + sortQueries[sortOption-1]
+        }
+        else{
+          url += '?sort_by=' + sortQueries[sortOption-1]
         }
       }
       console.log("url = " + url)
@@ -87,6 +95,10 @@ class Courses extends Component{
         }
         if (jobFilter != ''){
           url += '&num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
+        }
+
+        if (sortOption != ''){
+          url += '&sort_by=' + sortQueries[sortOption-1]
         }
       }
       console.log(url)
@@ -120,14 +132,17 @@ class Courses extends Component{
   }
 
   sortChange(choice){
-    this.setState({sortOption: choice})
-    var url = ''
+    this.state.sortOption = choice
+    var url = this.state.url
+    console.log("state url = " + url)
+    this.providerChange(this.state.providerOption)
+    /*
     if (choice != null){
       if (this.state.providerOption == '' && this.state.priceOption == '' && this.state.relJobOption == ''){
-        url = this.state.url + "?sort_by=" + sortQueries[choice-1]
+        url = url + "?sort_by=" + sortQueries[choice-1]
       }
       else{
-        url = this.state.url + "&sort_by=" + sortQueries[choice-1]
+        url = url + "&sort_by=" + sortQueries[choice-1]
       }
       console.log(url)
       fetch(url)
@@ -146,6 +161,8 @@ class Courses extends Component{
           this.setState({courseList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
         })
     }
+    this.state.url = url
+    */
   }
 
   handlePageChange(event){

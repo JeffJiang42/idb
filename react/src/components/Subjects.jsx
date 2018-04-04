@@ -24,7 +24,7 @@ class Subjects extends Component{
       filterOpen: false,
       providerOption: '',
       sortOption: '',
-      url:'http://127.0.0.1:5000/subjects'
+      url:'http://api.learning2earn.me/subjects'
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.sortChange = this.sortChange.bind(this)
