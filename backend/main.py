@@ -169,9 +169,10 @@ def sort_by(args, type_):
         elif type_ == 2:
             if sort_val not in JOB_FIELDS:
                 return ret
+        sort_val = sort_val.replace('-','_')
         ret = sort_val
     if 'desc' in args:
-        if args['desc'] == 'TRUE':
+        if args['desc'].upper() == 'TRUE':
             ret += ' DESC'
 
     return ret
