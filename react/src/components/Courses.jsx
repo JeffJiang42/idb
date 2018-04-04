@@ -14,6 +14,7 @@ var card_remove_border = {
 const providers = ["Khan Academy", "Udemy"]
 const priceRanges = ["0..0","0..50", "50..100","100..150","150..200",'200..']
 const relJobRanges = ["10..", "20..", "30..", "40..", "50.."]
+const sortQueries = ["provider", "provider&desc=TRUE", "price", "price&desc=TRUE", "num-relevant-jobs", "num-relevant-jobs&desc=TRUE"]
 
 class Courses extends Component{
   constructor(props){
@@ -26,12 +27,16 @@ class Courses extends Component{
       providerOption: '',
       priceOption: '',
       relJobOption:'',
-      filterOpen: false
+      filterOpen: false,
+      sortOpen: false,
+      url:'http://127.0.0.1:5000/courses',
+      sortOption: ''
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.providerChange = this.providerChange.bind(this)
     this.priceChange = this.priceChange.bind(this)
     this.jobChange = this.jobChange.bind(this)
+    this.sortChange = this.sortChange.bind(this)
   }
 
   providerChange(choice){
@@ -56,6 +61,7 @@ class Courses extends Component{
         }
       }
       console.log("url = " + url)
+      this.state.url = url
       fetch(url)
         .then((response) => {return response.json()})
         .then((courseJson) =>{
@@ -76,6 +82,7 @@ class Courses extends Component{
           url += '&num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
         }
         console.log(url)
+        this.state.url = url
         fetch(url)
           .then((response) => {return response.json()})
           .then((courseJson) => {
@@ -105,6 +112,26 @@ class Courses extends Component{
     //console.log(choice)
   }
 
+  sortChange(choice){
+    this.setState({sortOption: choice})
+    var url = ''
+    if (choice != null){
+      if (this.state.providerOption == '' && this.state.priceOption == '' && this.state.relJobOption == ''){
+        url = this.state.url + "?sort_by=" + sortQueries[choice-1]
+      }
+      else{
+        url = this.state.url + "&sort_by=" + sortQueries[choice-1]
+      }
+      console.log(url)
+      fetch(url)
+        .then((response) => {return response.json()})
+        .then((json) => {
+          var sorted = json;
+          this.setState({courseList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
+        })
+    }
+  }
+
   handlePageChange(event){
     //console.log(event.selected)
     this.setState({page: Number(event.selected+1)})
@@ -128,7 +155,15 @@ class Courses extends Component{
   }
 
   componentWillUnmount(){
-    localStorage.setItem('coursesSavedState', JSON.stringify(this.state))
+    var toSave = {
+      page: this.state.page,
+      providerOption: this.state.providerOption,
+      priceOption: this.state.priceOption,
+      relJobOption: this.state.relJobOption,
+      url: this.state.url,
+      sortOption: this.state.sortOption
+    };
+    localStorage.setItem('coursesSavedState', JSON.stringify(toSave))
   }
 
   render(){
@@ -137,6 +172,9 @@ class Courses extends Component{
     {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}, {label:"greater than $200", value:6}]
     const relJobOptions=[{label:"More than 10", value:1},{label:"More than 20", value:2},{label:"More than 30", value:3},
     {label:"More than 40", value:4},{label:"More than 50", value:5}]
+    const sortOptions=[{label: "Provider (Alphabetical)", value: 1}, {label:"Provider (Descending alphabetical)", value: 2},
+    {label: "Price", value: 3}, {label: "Price (Descending)", value: 4}, {label: "Relevant jobs", value: 5},
+    {label:"Relevant jobs (Descending)", value: 6}]
     //console.log(this.state.page);
     var {courseList, page, pageSize, maxPage, providerOption} = this.state
     var lastInd = page * pageSize
@@ -155,12 +193,20 @@ class Courses extends Component{
           <div className="col-sm=3">
             <div className='Filters'>
               <h1 onClick={() => this.setState({ filterOpen: !this.state.filterOpen })}>Filters</h1>
+              <br />
               <Collapse in={this.state.filterOpen}>
                 <div style={{width:"100%"}}>
                   <Select multi  options={providerOptions} simpleValue value={providerOption} placeholder="Provider" onChange={this.providerChange} />
                   <Select options={priceOptions} simpleValue value={this.state.priceOption} placeholder="Price" onChange={this.priceChange}/>
                   <Select options={relJobOptions} simpleValue value={this.state.relJobOption} placeholder="Number of Relevant Jobs" onChange={this.jobChange}/>
                 </div>
+              </Collapse>
+            </div>
+            <div className='Sorting'>
+              <h1 onClick={() => this.setState({ sortOpen: !this.state.sortOpen})}>Sorting</h1>
+              <br />
+              <Collapse in={this.state.sortOpen}>
+                <Select options={sortOptions} simpleValue value={this.state.sortOption} placeholder='Sort by' onChange={this.sortChange} />
               </Collapse>
             </div>
           </div>
