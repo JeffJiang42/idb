@@ -5,9 +5,9 @@ from flask import Flask, request, Response
 from flask_cors import CORS
 import re
 
-COURSE_SEARCH = 'SELECT * FROM Course WHERE description LIKE %s OR course LIKE %s OR provider LIKE %s'
-SUBJECT_SEARCH = 'SELECT * FROM Subject WHERE subject LIKE %s OR provider LIKE %s'
-JOB_SEARCH = 'SELECT * FROM Job WHERE name LIKE %s OR company LIKE %s OR description LIKE %s OR provider LIKE %s OR location LIKE %s OR jobtype LIKE %s'
+COURSE_SEARCH = 'SELECT * FROM Course WHERE description ILIKE %s OR course ILIKE %s OR provider ILIKE %s'
+SUBJECT_SEARCH = 'SELECT * FROM Subject WHERE subject ILIKE %s OR provider ILIKE %s'
+JOB_SEARCH = 'SELECT * FROM Job WHERE name ILIKE %s OR company ILIKE %s OR description ILIKE %s OR provider ILIKE %s OR location ILIKE %s OR jobtype ILIKE %s'
 
 SUBJECT_FIELDS = ('id', 'subject', 'provider', 'image', 'course-ids', 'job-ids','num-courses')
 # need to add provider to gitbook
