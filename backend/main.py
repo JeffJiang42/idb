@@ -235,7 +235,7 @@ def subjects():
     elif 'courseId' in request.args:
         try:
             courseId = int(request.args['courseId'])
-            res = execute('SELECT * FROM Subject JOIN Course ON subject_id = Subject.id WHERE (Course.id = %s)' + where_clause + ' ORDER BY Subject.id' + limitQuery, (courseId))
+            res = execute('SELECT * FROM Subject JOIN Course ON subject_id = Subject.id WHERE (Course.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (courseId))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
