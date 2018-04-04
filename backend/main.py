@@ -3,6 +3,7 @@ import os
 import json
 from flask import Flask, request, Response
 from flask_cors import CORS
+import re
 
 COURSE_SEARCH = 'SELECT * FROM Course WHERE description LIKE %s OR course LIKE %s OR provider LIKE %s'
 SUBJECT_SEARCH = 'SELECT * FROM Subject WHERE subject LIKE %s OR provider LIKE %s'
@@ -98,12 +99,12 @@ def process_results(pg_result,type_):
     return json.dumps(results)
 
 def execute(statement, *formatted):
-    print(statement)
     global conn
     for x in range(0, 3):
         try:
             with conn.cursor() as cur:
                 statement = cur.mogrify(statement, formatted)
+                print(statement)
                 if statement in best_cache:
                     print('pulling from cache')
                     return best_cache[statement]
@@ -120,6 +121,7 @@ def filter_query(args,type_):
     filters = FILTERS[type_]
     table = TABLES[type_]
     query = ''
+    parts = []
 
     for param in args:
         if 'Id' in param or 'limit' in param or 'sort_by' in param or 'desc' in param:
@@ -133,13 +135,15 @@ def filter_query(args,type_):
             filter_type = filters[param]
             param = param.replace('-','_')
             for value in values:
+                value = value
                 column = table + '.' + param
                 if first:
                     first = False
                 else:
                     query += ' or'
                 if filter_type == 'exact':
-                    query += ' (' + column + ' = ' + "'" + value + "'" + ')'
+                    query += ' (' + column + ' = %s)'
+                    parts.append(value)
                 elif filter_type == 'range':
                     range_ = value.split('..')
                     if len(range_) != 2:
@@ -159,12 +163,13 @@ def filter_query(args,type_):
                         except ValueError:
                             raise ValueError(param + '_range_not_integers')
                     
-                    query += ' (' + column + ' BETWEEN ' + str(min_) + ' AND ' + str(max_) + ')'
+                    query += ' (' + column + ' BETWEEN %s AND %s)'
+                    parts.extend([min_,max_])
             query += ')'
-    return query
+    return query,parts
 
 def sort_by(args, type_):
-    ret = 'id'
+    ret = TABLES[type_] + '.id'
     if 'sort_by' in args:
         sort_val = args['sort_by']
         if type_ == 0:
@@ -206,7 +211,7 @@ def subjects():
     limit, limitQuery = 0, ''
     # check filters
     try:
-        where_clause = filter_query(request.args,0)
+        where_clause,where_data = filter_query(request.args,0)
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
@@ -227,7 +232,7 @@ def subjects():
     if 'subjectId' in request.args:
         try:
             subjectId = int(request.args['subjectId'])
-            res = execute('SELECT * FROM Subject WHERE (Subject.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (subjectId))
+            res = execute('SELECT * FROM Subject WHERE (Subject.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery , (subjectId,*where_data) )
             resp.data = process_results(res,0)
             return resp
         except ValueError:
@@ -235,7 +240,7 @@ def subjects():
     elif 'courseId' in request.args:
         try:
             courseId = int(request.args['courseId'])
-            res = execute('SELECT * FROM Subject JOIN Course ON subject_id = Subject.id WHERE (Course.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (courseId))
+            res = execute('SELECT * FROM Subject JOIN Course ON subject_id = Subject.id WHERE (Course.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (courseId,*where_data))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
@@ -243,15 +248,15 @@ def subjects():
     elif 'jobId' in request.args:
         try:
             jobId = int(request.args['jobId'])
-            res = execute('SELECT * FROM Subject JOIN Subject_Job ON Subject.id = Subject_Job.subject_id WHERE (job_id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (jobId))
+            res = execute('SELECT * FROM Subject JOIN Subject_Job ON Subject.id = Subject_Job.subject_id WHERE (job_id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (jobId,*where_data))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
             return '{"error": "job_id_not_integer"}'
     else:
-        if len(where_clause)>4:
+        if len(where_data)>0:
             where_clause = where_clause[4:]
-            res = execute('SELECT * FROM Subject WHERE' + where_clause + ' ORDER BY ' + sort_ + limitQuery)
+            res = execute('SELECT * FROM Subject WHERE' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (*where_data))
         else:
             res = execute('SELECT * FROM Subject ORDER BY ' + sort_ + limitQuery)
         resp.data = process_results(res,0)
@@ -265,7 +270,7 @@ def courses():
     limit, limitQuery = 0, ''
     # check filters
     try:
-        where_clause = filter_query(request.args,1)
+        where_clause,where_data = filter_query(request.args,1)
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
@@ -286,7 +291,7 @@ def courses():
     if 'courseId' in request.args:
         try:
             courseId = int(request.args['courseId'])
-            res = execute('SELECT * FROM Course WHERE (Course.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (courseId))
+            res = execute('SELECT * FROM Course WHERE (Course.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (courseId,*where_data))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
@@ -294,7 +299,7 @@ def courses():
     elif 'subjectId' in request.args:
         try:
             subjectId = int(request.args['subjectId'])
-            res = execute('SELECT * FROM Course WHERE (Course.subject_id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (subjectId))
+            res = execute('SELECT * FROM Course WHERE (Course.subject_id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (subjectId,*where_data))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
@@ -302,15 +307,15 @@ def courses():
     elif 'jobId' in request.args:
         try:
             jobId = int(request.args['jobId'])
-            res = execute('SELECT * FROM Course JOIN Course_Job ON Course.id = Course_Job.course_id WHERE (Course_Job.job_id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (jobId))
+            res = execute('SELECT * FROM Course JOIN Course_Job ON Course.id = Course_Job.course_id WHERE (Course_Job.job_id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (jobId,*where_data))
             resp.data = process_results(res,1)
             return resp
         except ValueError:
             return '{"error": "job_id_not_integer"}'
     else:
-        if len(where_clause)>4:
+        if len(where_data)>0:
             where_clause = where_clause[4:]
-            res = execute('SELECT * FROM Course WHERE' + where_clause + ' ORDER BY ' + sort_ + limitQuery)
+            res = execute('SELECT * FROM Course WHERE' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (*where_data))
         else:
             res = execute('SELECT * FROM Course ORDER BY ' + sort_ + limitQuery)
         resp.data = process_results(res,1)
@@ -324,7 +329,7 @@ def jobs():
     limit, limitQuery = 0, ''
     # check filters
     try:
-        where_clause = filter_query(request.args,2)
+        where_clause,where_data = filter_query(request.args,2)
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
@@ -345,7 +350,7 @@ def jobs():
     if 'jobId' in request.args:
         try:
             jobId = int(request.args['jobId'])
-            res = execute('SELECT * FROM Job WHERE (Job.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (jobId))
+            res = execute('SELECT * FROM Job WHERE (Job.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (jobId,*where_data))
             resp.data = process_results(res,2)
             return resp
         except ValueError:
@@ -354,7 +359,7 @@ def jobs():
         try:
             subjectId = int(request.args['subjectId'])
             res = execute('SELECT *\
-                FROM Job JOIN Subject_Job ON Subject_Job.job_id = Job.id WHERE (subject_id = %s) ' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (subjectId))
+                FROM Job JOIN Subject_Job ON Subject_Job.job_id = Job.id WHERE (subject_id = %s) ' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (subjectId,*where_data))
             resp.data = process_results(res,2)
             return resp
         except ValueError:
@@ -363,15 +368,15 @@ def jobs():
         try:
             courseId = int(request.args['courseId'])
             res = execute('SELECT *\
-                FROM Job JOIN Course_Job ON Course_Job.job_id = Job.id (WHERE course_id = %s) ' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (courseId))
+                FROM Job JOIN Course_Job ON Course_Job.job_id = Job.id (WHERE course_id = %s) ' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (courseId,*where_data))
             resp.data = process_results(res,2)
             return resp
         except ValueError:
             return '{"error": "course_id_not_integer"}'
     else:
-        if len(where_clause)>4:
+        if len(where_data)>0:
             where_clause = where_clause[4:]
-            res = execute('SELECT * FROM Job WHERE' + where_clause + ' ORDER BY ' + sort_ + limitQuery)
+            res = execute('SELECT * FROM Job WHERE' + where_clause + ' ORDER BY ' + sort_ + limitQuery,(*where_data))
         else:
             res = execute('SELECT * FROM Job ORDER BY ' + sort_ + limitQuery)
         resp.data = process_results(res,2)
