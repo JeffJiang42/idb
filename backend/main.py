@@ -85,7 +85,7 @@ def process_results(pg_result,type_):
     for res in pg_result:
         sub = {}
         for k, v in zip(type_fields, res):
-            sub[k] = str(v)
+            sub[k] = v
             if k == 'course-ids' or k == 'job-ids' or k == 'subject-ids':
                 if v and not v == 'None' :
                     sub[k] = [int(x) for x in v.split(',')]
