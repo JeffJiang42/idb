@@ -12,7 +12,8 @@ var card_remove_border = {
 };
 
 const providers = ["Khan Academy", "Udemy"]
-const priceRanges = ["0..0","0..50", "50..100","100..150","150..200",'200..100000000000']
+const priceRanges = ["0..0","0..50", "50..100","100..150","150..200",'200..']
+const relJobRanges = ["10..", "20..", "30..", "40..", "50.."]
 
 class Courses extends Component{
   constructor(props){
@@ -34,19 +35,27 @@ class Courses extends Component{
   }
 
   providerChange(choice){
-    console.log("Hello from providerChange")
     this.setState({ providerOption: choice });
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return parseInt(a)})
     var priceFilter = this.state.priceOption
-    console.log(choice == '')
-    if (choiceArr.includes(NaN) || choice == ''){
-      console.log("entered if")
+    var jobFilter = this.state.relJobOption
+    console.log(choice)
+    if (choiceArr.includes(NaN) || choice == '' || choice == null){
       var url = 'http://127.0.0.1:5000/courses'
       if (priceFilter != ''){
         url += '?price=' + priceRanges[parseInt(priceFilter)-1]
       }
-      console.log(url)
+      if (jobFilter != ''){
+        console.log("nonempty jobFilter")
+        if(priceFilter != ''){
+          url += '&num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
+        }
+        else{
+          url += '?num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
+        }
+      }
+      console.log("url = " + url)
       fetch(url)
         .then((response) => {return response.json()})
         .then((courseJson) =>{
@@ -63,6 +72,9 @@ class Courses extends Component{
         if (priceFilter != ''){
           url += '&price=' + priceRanges[parseInt(priceFilter)-1]
         }
+        if (jobFilter != ''){
+          url += '&num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
+        }
         console.log(url)
         fetch(url)
           .then((response) => {return response.json()})
@@ -77,22 +89,20 @@ class Courses extends Component{
   }
 
   priceChange(choice){
-    console.log("choice =" + choice)
-    //this.setState({ priceOption: choice });
     if(choice == null){
       choice = ''
     }
     this.state.priceOption = choice
-    console.log("price choice =" + this.state.priceOption)
-    console.log("priceChange calling providerChange")
     this.providerChange(this.state.providerOption);
-    console.log("done")
-    //console.log(choice)
   }
 
   jobChange(choice){
-    this.setState({ relJobOption: choice });
-    console.log(choice)
+    if(choice == null){
+      choice = ''
+    }
+    this.state.relJobOption = choice
+    this.providerChange(this.state.providerOption);
+    //console.log(choice)
   }
 
   handlePageChange(event){
