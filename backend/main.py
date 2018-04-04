@@ -232,7 +232,7 @@ def subjects():
     if 'subjectId' in request.args:
         try:
             subjectId = int(request.args['subjectId'])
-            res = execute('SELECT * FROM Subject WHERE (Subject.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery , (subjectId,*where_data) )
+            res = execute('SELECT * FROM Subject WHERE (Subject.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery ,(subjectId,*where_data))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
@@ -368,7 +368,7 @@ def jobs():
         try:
             courseId = int(request.args['courseId'])
             res = execute('SELECT *\
-                FROM Job JOIN Course_Job ON Course_Job.job_id = Job.id (WHERE course_id = %s) ' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (courseId,*where_data))
+                FROM Job JOIN Course_Job ON Course_Job.job_id = Job.id WHERE (course_id = %s) ' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (courseId,*where_data))
             resp.data = process_results(res,2)
             return resp
         except ValueError:
