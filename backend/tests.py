@@ -2,13 +2,6 @@ import unittest
 import json
 import main
 
-#valid param not desc
-#valid param desc
-#valid param with dashed
-#invalid param
-#invalid param with desc
-
-
 class APIAuxFunctionTest(unittest.TestCase):
     
     # Tests if things are processed correctly
@@ -90,6 +83,96 @@ class APIAuxFunctionTest(unittest.TestCase):
                'provider': 'Authentic Jobs'}
         res2 = main.clean_data(type_,sub2)
         self.assertTrue(res2['name']=='lmao_lmao_lmao')
+        
+
+    # check desired results of sorting
+    # valid param ascending
+    def test_sort_by1(self):
+        args = {'sort_by': 'provider'}
+        type_ = 0
+        sort_str = main.sort_by(args, type_)
+        self.assertTrue(sort_str == 'provider NULLS FIRST')
+
+        args = {'sort_by': 'price'}
+        type_ = 1
+        sort_str = main.sort_by(args, type_)
+        self.assertTrue(sort_str == 'price NULLS FIRST')
+
+        args = {'sort_by': 'jobtype'}
+        type_ = 2
+        sort_str = main.sort_by(args, type_)
+        self.assertTrue(sort_str == 'jobtype NULLS FIRST')
+
+    # check desired results of sorting
+    # valid param descending
+    def test_sort_by2(self):
+        args = {'sort_by': 'provider',
+                'desc': 'TRUE'}
+        type_ = 0
+        sort_str = main.sort_by(args, type_)
+        self.assertTrue(sort_str == 'provider DESC NULLS LAST')
+
+        args = {'sort_by': 'price',
+                'desc': 'TRUE'}
+        type_ = 1
+        sort_str = main.sort_by(args, type_)
+        self.assertTrue(sort_str == 'price DESC NULLS LAST')
+
+        args = {'sort_by': 'jobtype',
+                'desc': 'TRUE'}
+        type_ = 2
+        sort_str = main.sort_by(args, type_)
+        self.assertTrue(sort_str == 'jobtype DESC NULLS LAST')
+
+    # check desired results of sorting
+    # invalid param
+    def test_sort_by3(self):
+        args = {'sort_by': 'test'}
+        type_ = 0
+        exception_str = ''
+        sort_str = ''
+        try:
+            sort_str = main.sort_by(args, type_)
+        except Exception as e:
+            exception_str = str(e)
+        self.assertTrue(exception_str == 'test_invalid_parameter')
+
+        args = {'sort_by': 'test'}
+        type_ = 1
+        try:
+            sort_str = main.sort_by(args, type_)
+        except Exception as e:
+            exception_str = str(e)
+        self.assertTrue(exception_str == 'test_invalid_parameter')
+
+        args = {'sort_by': 'test'}
+        type_ = 2
+        try:
+            sort_str = main.sort_by(args, type_)
+        except Exception as e:
+            exception_str = str(e)
+        self.assertTrue(exception_str == 'test_invalid_parameter')
+
+    # check desired results of sorting
+    # valid param with dashes
+    def test_sort_by4(self):
+        args = {'sort_by': 'num-courses'}
+        type_ = 0
+        sort_str = main.sort_by(args, type_)
+        self.assertTrue(sort_str == 'num_courses NULLS FIRST')
+
+        args = {'sort_by': 'subject-id'}
+        type_ = 1
+        sort_str = main.sort_by(args, type_)
+        self.assertTrue(sort_str == 'subject_id NULLS FIRST')
+
+        args = {'sort_by': 'num-related-courses'}
+        type_ = 2
+        sort_str = main.sort_by(args, type_)
+        self.assertTrue(sort_str == 'num_related_courses NULLS FIRST')
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
