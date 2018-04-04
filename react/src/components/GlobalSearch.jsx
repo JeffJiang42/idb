@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Navbar, NavItem, Nav, Image, Form, FormGroup, Button, FormControl } from 'react-bootstrap';
 import './styles/MyNavbar.css';
 import { Link } from 'react-router-dom'
+import SearchPage from './SearchPage.jsx'
 
 class GlobalSearch extends Component{
 	constructor() {
@@ -11,9 +12,7 @@ class GlobalSearch extends Component{
 		};
 	}
 
-	handleClick(){
 
-	}
   render() {
     return (
     	<div className="search-align">

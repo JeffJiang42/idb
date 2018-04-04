@@ -7,10 +7,22 @@ class SearchPage extends Component{
 	constructor(props) {
 		super(props);
 		console.log(props)
+			var query = props.match.query;
 			this.state = {
-			query: props.match.params.query
+			query: ''
 		};
 	}
+
+	componentWillMount(){
+		this.setState({query: this.props.match.params.query})
+	}
+
+	componentWillReceiveProps(nextProps) {
+	    if(JSON.stringify(this.props.match.query) !== JSON.stringify(nextProps.match.params.query)) // Check if it's a new user, you can also use some unique, like the ID
+	    {
+	           this.setState({query: nextProps.match.params.query});
+	    }
+	} 
 
   render(){
     return(
