@@ -12,18 +12,24 @@ JOB_FIELDS = ('id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'cou
 FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
 
 SUBJECT_FILTERS = {'num-courses': 'range',
-                   'provider': 'exact'
+                   'provider': 'exact',
+                   'sort_by': 'exact',
+                   'desc': 'exact'
                   }
 COURSE_FILTERS = {'provider': 'exact',
                   'num-relevant-jobs': 'range',
-                  'price': 'range'
+                  'price': 'range',
+                  'sort_by': 'exact',
+                  'desc': 'exact'
                   }
 JOB_FILTERS = {'company': 'exact',
                'num-related-courses': 'range',
                'location': 'exact',
                'course': 'exact',
                'provider': 'exact',
-               'jobtype': 'exact'  
+               'jobtype': 'exact',
+               'sort_by': 'exact',
+               'desc': 'exact'  
               }
 
 FILTERS = (SUBJECT_FILTERS,COURSE_FILTERS,JOB_FILTERS)
@@ -109,7 +115,7 @@ def filter_query(args,type_):
     query = ''
 
     for param in args:
-        if 'Id' in param or 'limit' in param:
+        if 'Id' in param or 'limit' in param or 'sort_by' in param or 'desc' in param:
             continue
         if param not in filters:
             raise ValueError(param +'_invalid_filter')
