@@ -143,7 +143,7 @@ def filter_query(args,type_):
                     query += ' or'
                 if filter_type == 'exact':
                     query += ' (' + column + ' = %s)'
-                    parts.append(value)
+                    parts.append(value.title())
                 elif filter_type == 'range':
                     range_ = value.split('..')
                     if len(range_) != 2:
