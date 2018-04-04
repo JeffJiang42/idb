@@ -209,7 +209,7 @@ def subjects():
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
-
+    
     sort_ = sort_by(request.args, 0)
 
     # check request type

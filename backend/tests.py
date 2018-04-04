@@ -2,6 +2,13 @@ import unittest
 import json
 import main
 
+#valid param not desc
+#valid param desc
+#valid param with dashed
+#invalid param
+#invalid param with desc
+
+
 class APIAuxFunctionTest(unittest.TestCase):
     
     # Tests if things are processed correctly
