@@ -12,6 +12,8 @@ var card_remove_border = {
 };
 
 const providers = ["Khan Academy", "Udemy"]
+const priceRanges = ["0..0","0..50", "50..100","100..150","150..200",'200..']
+const relJobRanges = ["10..", "20..", "30..", "40..", "50.."]
 
 class Courses extends Component{
   constructor(props){
@@ -21,9 +23,9 @@ class Courses extends Component{
       page: 1,
       pageSize: 32,
       maxPage: 10,
-      providerOption: [],
-      priceOption: [],
-      relJobOption:[],
+      providerOption: '',
+      priceOption: '',
+      relJobOption:'',
       filterOpen: false
     };
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -36,10 +38,24 @@ class Courses extends Component{
     this.setState({ providerOption: choice });
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return parseInt(a)})
-    //console.log(choiceArr)
-    if (choiceArr.includes(NaN)){
+    var priceFilter = this.state.priceOption
+    var jobFilter = this.state.relJobOption
+    console.log(choice)
+    if (choiceArr.includes(NaN) || choice == '' || choice == null){
       var url = 'http://127.0.0.1:5000/courses'
-      //console.log(url)
+      if (priceFilter != ''){
+        url += '?price=' + priceRanges[parseInt(priceFilter)-1]
+      }
+      if (jobFilter != ''){
+        console.log("nonempty jobFilter")
+        if(priceFilter != ''){
+          url += '&num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
+        }
+        else{
+          url += '?num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
+        }
+      }
+      console.log("url = " + url)
       fetch(url)
         .then((response) => {return response.json()})
         .then((courseJson) =>{
@@ -53,7 +69,13 @@ class Courses extends Component{
       for (let i of choiceArr){
         var provider = providers[i-1];
         var url = 'http://127.0.0.1:5000/courses?provider=' + encodeURI(provider)
-        //console.log(url)
+        if (priceFilter != ''){
+          url += '&price=' + priceRanges[parseInt(priceFilter)-1]
+        }
+        if (jobFilter != ''){
+          url += '&num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
+        }
+        console.log(url)
         fetch(url)
           .then((response) => {return response.json()})
           .then((courseJson) => {
@@ -67,13 +89,20 @@ class Courses extends Component{
   }
 
   priceChange(choice){
-    this.setState({ priceOption: choice });
-    console.log(choice)
+    if(choice == null){
+      choice = ''
+    }
+    this.state.priceOption = choice
+    this.providerChange(this.state.providerOption);
   }
 
   jobChange(choice){
-    this.setState({ relJobOption: choice });
-    console.log(choice)
+    if(choice == null){
+      choice = ''
+    }
+    this.state.relJobOption = choice
+    this.providerChange(this.state.providerOption);
+    //console.log(choice)
   }
 
   handlePageChange(event){
@@ -105,7 +134,7 @@ class Courses extends Component{
   render(){
     const providerOptions = [{label: 'Khan Academy', value: 1}, {label:'Udemy', value: 2}]
     const priceOptions=[{label:"Free", value: 1},{label:"less than $50", value:2},{label:"between $50 and $100", value:3},
-    {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}]
+    {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}, {label:"greater than $200", value:6}]
     const relJobOptions=[{label:"More than 10", value:1},{label:"More than 20", value:2},{label:"More than 30", value:3},
     {label:"More than 40", value:4},{label:"More than 50", value:5}]
     //console.log(this.state.page);
