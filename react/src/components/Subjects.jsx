@@ -11,7 +11,7 @@ var card_remove_border = {
 };
 
 const providers = ["Khan Academy", "Udemy"]
-const sortQueries = ["provider", "provider&desc=TRUE", "num-courses", "num-courses&desc=TRUE"]
+const sortQueries = ["subject", "subject&desc=TRUE", "provider", "provider&desc=TRUE", "num-courses", "num-courses&desc=TRUE"]
 const numCourse = ["0..20", "20..40", "40..60", "60..80", "80..100", "100.."]
 
 class Subjects extends Component{
@@ -139,8 +139,9 @@ class Subjects extends Component{
       const providerOptions=[{label:"Khan Academy", value: 1}, {label: "Udemy", value: 2}]
       const numCourseOptions=[{label:"less than 20", value: 1}, {label:"between 20 and 40", value: 2},{label:"between 40 and 60", value: 3},
       {label:"between 60 and 80", value: 4}, {label: "between 80 and 100", value: 5}, {label:"greater than 100", value: 6}]
-      const sortOptions=[{label: "Provider (Alphabetical)", value: 1}, {label:"Provider (Descending alphabetical)", value: 2},
-      {label: "Number of courses", value: 3}, {label:"Number of courses (Descending)", value: 4}]
+      const sortOptions=[{label: "Subject name (Alphabetical)", value: 1}, {label: "Subject name (Descending alphabetical)", value:2},
+      {label: "Provider (Alphabetical)", value: 3}, {label:"Provider (Descending alphabetical)", value: 4},
+      {label: "Number of courses", value: 5}, {label:"Number of courses (Descending)", value: 6}]
       //console.log(this.state.page);
       var {subjectList, page, pageSize, maxPage} = this.state
       var lastInd = page * pageSize
