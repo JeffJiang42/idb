@@ -177,7 +177,9 @@ def sort_by(args, type_):
         ret = sort_val
     if 'desc' in args:
         if args['desc'].upper() == 'TRUE':
-            ret += ' DESC'
+            ret += ' DESC NULLS LAST'
+    else:
+        ret += ' NULLS FIRST'
 
     return ret
 
