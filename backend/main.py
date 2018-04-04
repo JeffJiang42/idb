@@ -98,6 +98,7 @@ def process_results(pg_result,type_):
     return json.dumps(results)
 
 def execute(statement, *formatted):
+    print(statement)
     global conn
     for x in range(0, 3):
         try:
