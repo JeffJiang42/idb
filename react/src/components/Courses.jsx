@@ -14,7 +14,7 @@ var card_remove_border = {
 const providers = ["Khan Academy", "Udemy"]
 const priceRanges = ["0..0","0..50", "50..100","100..150","150..200",'200..']
 const relJobRanges = ["10..", "20..", "30..", "40..", "50.."]
-const sortQueries = ["provider", "provider&desc=TRUE", "price", "price&desc=TRUE", "num-relevant-jobs", "num-relevant-jobs&desc=TRUE"]
+const sortQueries = ["course", "course&desc=TRUE", "provider", "provider&desc=TRUE", "price", "price&desc=TRUE", "num-relevant-jobs", "num-relevant-jobs&desc=TRUE"]
 
 class Courses extends Component{
   constructor(props){
@@ -29,7 +29,7 @@ class Courses extends Component{
       relJobOption:'',
       filterOpen: false,
       sortOpen: false,
-      url:'http://127.0.0.1:5000/courses',
+      url:'http://api.learning2earn.me/courses',
       sortOption: ''
     };
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -47,7 +47,7 @@ class Courses extends Component{
     var jobFilter = this.state.relJobOption
     console.log(choice)
     if (choiceArr.includes(NaN) || choice == '' || choice == null){
-      var url = 'http://127.0.0.1:5000/courses'
+      var url = 'http://api.learning2earn.me/courses'
       if (priceFilter != ''){
         url += '?price=' + priceRanges[parseInt(priceFilter)-1]
       }
@@ -72,26 +72,33 @@ class Courses extends Component{
     }
     else {
       this.setState({courseList:[]})
+      var url = 'http://api.learning2earn.me/courses'
+      var first = true
       for (let i of choiceArr){
         var provider = providers[i-1];
-        var url = 'http://127.0.0.1:5000/courses?provider=' + encodeURI(provider)
+        var queryChar = '&'
+        if (first){
+          queryChar = '?'
+          first = false
+        }
+        url = url + queryChar + 'provider=' + encodeURI(provider)
         if (priceFilter != ''){
           url += '&price=' + priceRanges[parseInt(priceFilter)-1]
         }
         if (jobFilter != ''){
           url += '&num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
         }
-        console.log(url)
-        this.state.url = url
-        fetch(url)
-          .then((response) => {return response.json()})
-          .then((courseJson) => {
-            var filtered = courseJson;
-            if (filtered.length > 0){
-              this.setState({courseList: this.state.courseList.concat(filtered), page: 1, maxPage: Math.ceil(this.state.courseList.concat(filtered).length / this.state.pageSize)})
-            }
-          })
       }
+      console.log(url)
+      this.state.url = url
+      fetch(url)
+        .then((response) => {return response.json()})
+        .then((courseJson) => {
+          var filtered = courseJson;
+          if (filtered.length > 0){
+            this.setState({courseList: this.state.courseList.concat(filtered), page: 1, maxPage: Math.ceil(this.state.courseList.concat(filtered).length / this.state.pageSize)})
+          }
+        })
     }
   }
 
@@ -130,6 +137,15 @@ class Courses extends Component{
           this.setState({courseList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
         })
     }
+    else{
+      url = this.state.url
+      fetch(url)
+        .then((response) => {return response.json()})
+        .then((json) => {
+          var sorted = json;
+          this.setState({courseList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
+        })
+    }
   }
 
   handlePageChange(event){
@@ -142,14 +158,14 @@ class Courses extends Component{
     const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
     this.setState(rehydrate)
     this.setState({providerOption:'', priceOption:'', relJobOption:''})
-    const url = 'http://127.0.0.1:5000/courses';
+    const url = 'http://api.learning2earn.me/courses';
 
     fetch(url)
       .then((response) => {return response.json()})
       .then((courseJson) =>{
         return courseJson
       })
-      .catch((error) => {console.log(error.message); return []})
+      .catch((error) => {console.log(url); console.log(error.message); return []})
       .then((info) => {this.setState({courseList: info, maxPage: Math.ceil(info.length / this.state.pageSize)})})
 
   }
@@ -172,9 +188,9 @@ class Courses extends Component{
     {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}, {label:"greater than $200", value:6}]
     const relJobOptions=[{label:"More than 10", value:1},{label:"More than 20", value:2},{label:"More than 30", value:3},
     {label:"More than 40", value:4},{label:"More than 50", value:5}]
-    const sortOptions=[{label: "Provider (Alphabetical)", value: 1}, {label:"Provider (Descending alphabetical)", value: 2},
-    {label: "Price", value: 3}, {label: "Price (Descending)", value: 4}, {label: "Relevant jobs", value: 5},
-    {label:"Relevant jobs (Descending)", value: 6}]
+    const sortOptions=[{label: "Course Name (Alphabetical)", value: 1}, {label: "Course Name (Descnding alphabetical)", value: 2},{label: "Provider (Alphabetical)", value: 3},
+    {label:"Provider (Descending alphabetical)", value: 4}, {label: "Price", value: 5}, {label: "Price (Descending)", value: 6},
+    {label: "Relevant jobs", value: 7}, {label:"Relevant jobs (Descending)", value: 8}]
     //console.log(this.state.page);
     var {courseList, page, pageSize, maxPage, providerOption} = this.state
     var lastInd = page * pageSize
