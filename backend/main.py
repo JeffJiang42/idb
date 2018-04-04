@@ -209,8 +209,11 @@ def subjects():
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
-    
-    sort_ = sort_by(request.args, 0)
+    try:
+        sort_ = sort_by(request.args, 0)
+    except Exception as e:
+        resp.data = '{"error": "' + str(e) + '"}'
+        return resp
 
     # check request type
     if 'limit' in request.args:
@@ -269,7 +272,11 @@ def courses():
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
 
-    sort_ = sort_by(request.args, 1)
+    try:
+        sort_ = sort_by(request.args, 1)
+    except Exception as e:
+        resp.data = '{"error": "' + str(e) + '"}'
+        return resp
 
     # check request type
     if 'limit' in request.args:
@@ -328,7 +335,11 @@ def jobs():
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
 
-    sort_ = sort_by(request.args, 2)
+    try:
+        sort_ = sort_by(request.args, 2)
+    except Exception as e:
+        resp.data = '{"error": "' + str(e) + '"}'
+        return resp
 
     # check request type
     if 'limit' in request.args:
