@@ -15,8 +15,8 @@ class GlobalSearch extends Component{
 
   render() {
     return (
-    	<div className="search-align">
 	    	<NavItem>
+    	<div className="search-align">
 			    <Navbar.Form pullRight>
 			      <FormGroup>
 			        <FormControl type="text" placeholder="Search" onChange={e => this.setState({search: e.target.value})} />
@@ -25,8 +25,8 @@ class GlobalSearch extends Component{
 			      <button onClick={() => console.log("testing123")}> Submit</button>
 			      </Link>
 			    </Navbar.Form>
-			</NavItem>
 		</div>
+			</NavItem>
     )
   }
 }
