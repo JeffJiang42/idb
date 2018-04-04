@@ -4,6 +4,10 @@ import json
 from flask import Flask, request, Response
 from flask_cors import CORS
 
+COURSE_SEARCH = 'SELECT * FROM Course WHERE description LIKE %s OR course LIKE %s OR provider LIKE %s'
+SUBJECT_SEARCH = 'SELECT * FROM Subject WHERE subject LIKE %s OR provider LIKE %s'
+JOB_SEARCH = 'SELECT * FROM Job WHERE name LIKE %s OR company LIKE %s OR description LIKE %s OR provider LIKE %s OR location LIKE %s OR jobtype LIKE %s'
+
 SUBJECT_FIELDS = ('id', 'subject', 'provider', 'image', 'course-ids', 'job-ids','num-courses')
 # need to add provider to gitbook
 COURSE_FIELDS = ('id', 'course', 'desc', 'image', 'instructor', 'link', 'price', 'provider', 'job-ids', 'subject-id','num-relevant-jobs')
@@ -374,5 +378,26 @@ def jobs():
         resp.data = process_results(res,2)
         return resp
 
+def search(phrase):
+    phrase = '%' + phrase + '%'
+    course_data = execute(COURSE_SEARCH, phrase, phrase, phrase)
+    subject_data = execute(SUBJECT_SEARCH, phrase, phrase)
+    job_data = execute(JOB_SEARCH, phrase, phrase, phrase, phrase, phrase, phrase)
+    course_processed = process_results(course_data,1)
+    subject_processed = process_results(subject_data,0)
+    job_processed = process_results(job_data,2)
+    return '{"courses":' + course_processed + ',"subjects":' + subject_processed + ',"jobs":' + job_processed + '}'
+    
+@app.route('/search')
+def queue():
+    resp = Response()
+    resp.headers['Content-Type'] = 'application/json'
+    if 'q' in request.args:
+        phrase = request.args['q']
+        resp.data = search(phrase)
+    else:
+        resp.data = '{"error":"no_search_params"}'
+    return resp
+    
 if __name__ == '__main__':
     app.run(use_reloader=True, port=5000, threaded=True)
