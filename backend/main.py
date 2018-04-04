@@ -86,6 +86,8 @@ def process_results(pg_result,type_):
         sub = {}
         for k, v in zip(type_fields, res):
             sub[k] = v
+            if k == 'price':
+                sub[k] = float(sub[k])
             if k == 'course-ids' or k == 'job-ids' or k == 'subject-ids':
                 if v and not v == 'None' :
                     sub[k] = [int(x) for x in v.split(',')]
@@ -207,7 +209,6 @@ def subjects():
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
-    print(where_clause)
 
     sort_ = sort_by(request.args, 0)
 
@@ -267,9 +268,6 @@ def courses():
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
-    print(where_clause)
-
-    print(request.args)
 
     sort_ = sort_by(request.args, 1)
 
@@ -327,10 +325,8 @@ def jobs():
     try:
         where_clause = filter_query(request.args,2)
     except Exception as e:
-        print(type(e))
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
-    print(where_clause)
 
     sort_ = sort_by(request.args, 2)
 
