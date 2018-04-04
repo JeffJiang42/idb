@@ -12,6 +12,7 @@ var card_remove_border = {
 
 const providers = ["Khan Academy", "Udemy"]
 const sortQueries = ["provider", "provider&desc=TRUE", "num-courses", "num-courses&desc=TRUE"]
+const numCourse = ["0..20", "20..40", "40..60", "60..80", "80..100", "100.."]
 
 class Subjects extends Component{
   constructor(props){
@@ -25,6 +26,7 @@ class Subjects extends Component{
       filterOpen: false,
       providerOption: '',
       sortOption: '',
+      numCourseOption:'',
       queries: [],
       url:'http://api.learning2earn.me/subjects'
     };
@@ -32,6 +34,7 @@ class Subjects extends Component{
     this.sortChange = this.sortChange.bind(this)
     this.makeQuery = this.makeQuery.bind(this)
     this.providerChange = this.providerChange.bind(this)
+    this.numCourseChange = this.numCourseChange.bind(this)
   }
 
   providerChange(choice){
@@ -56,12 +59,26 @@ class Subjects extends Component{
     this.makeQuery()
   }
 
+  numCourseChange(choice){
+    this.setState({numCourseOption: choice})
+    if (choice != null){
+      this.state.queries.numCourse = ("num-courses=" + numCourse[choice-1])
+    }
+    else{
+      delete this.state.queries.numCourse
+    }
+    this.makeQuery()
+  }
+
   sortChange(choice){
     this.setState({sortOption: choice})
     //console.log(this.state.queries)
     if(choice != null){
       this.state.queries.sort = ("sort_by=" + sortQueries[choice-1])
       //console.log(this.state.queries)
+    }
+    else{
+      delete this.state.queries.sort
     }
     this.makeQuery()
   }
@@ -120,6 +137,8 @@ class Subjects extends Component{
 
   render(){
       const providerOptions=[{label:"Khan Academy", value: 1}, {label: "Udemy", value: 2}]
+      const numCourseOptions=[{label:"less than 20", value: 1}, {label:"between 20 and 40", value: 2},{label:"between 40 and 60", value: 3},
+      {label:"between 60 and 80", value: 4}, {label: "between 80 and 100", value: 5}, {label:"greater than 100", value: 6}]
       const sortOptions=[{label: "Provider (Alphabetical)", value: 1}, {label:"Provider (Descending alphabetical)", value: 2},
       {label: "Number of courses", value: 3}, {label:"Number of courses (Descending)", value: 4}]
       //console.log(this.state.page);
@@ -141,7 +160,10 @@ class Subjects extends Component{
           <h1 onClick={() => this.setState({filterOpen: !this.state.filterOpen})}>Filters</h1>
           <br />
           <Collapse in={this.state.filterOpen}>
-            <Select multi options={providerOptions} simpleValue value={this.state.providerOption} placeholder='Sort by' onChange={this.providerChange} />
+            <div>
+            <Select multi options={providerOptions} simpleValue value={this.state.providerOption} placeholder='Provider' onChange={this.providerChange} />
+            <Select options={numCourseOptions} simpleValue value={this.state.numCourseOption} placeholder='Sort by' onChange={this.numCourseChange} />
+            </div>
           </Collapse>
         </div>
         <br />
