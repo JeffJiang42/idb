@@ -227,7 +227,7 @@ def subjects():
     if 'subjectId' in request.args:
         try:
             subjectId = int(request.args['subjectId'])
-            res = execute('SELECT * FROM Subject WHERE (Subject.id = %s)' + where_clause + ' ORDER BY' + limitQuery, (subjectId))
+            res = execute('SELECT * FROM Subject WHERE (Subject.id = %s)' + where_clause + ' ORDER BY ' + sort_ + limitQuery, (subjectId))
             resp.data = process_results(res,0)
             return resp
         except ValueError:
