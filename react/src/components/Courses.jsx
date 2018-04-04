@@ -11,6 +11,7 @@ var card_remove_border = {
     'borderStyle': 'none'
 };
 
+const providers = ["Khan Academy", "Udemy"]
 
 class Courses extends Component{
   constructor(props){
@@ -22,18 +23,47 @@ class Courses extends Component{
       maxPage: 10,
       providerOption: [],
       priceOption: [],
+      relJobOption:[],
       filterOpen: false
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.providerChange = this.providerChange.bind(this)
     this.priceChange = this.priceChange.bind(this)
+    this.jobChange = this.jobChange.bind(this)
   }
 
   providerChange(choice){
     this.setState({ providerOption: choice });
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return parseInt(a)})
-    console.log(choiceArr)
+    //console.log(choiceArr)
+    if (choiceArr.includes(NaN)){
+      var url = 'http://127.0.0.1:5000/courses'
+      //console.log(url)
+      fetch(url)
+        .then((response) => {return response.json()})
+        .then((courseJson) =>{
+          return courseJson
+        })
+        .catch((error) => {console.log(error.message); return []})
+        .then((info) => {this.setState({courseList: info, page: 1, maxPage: Math.ceil(info.length / this.state.pageSize)})})
+    }
+    else {
+      this.setState({courseList:[]})
+      for (let i of choiceArr){
+        var provider = providers[i-1];
+        var url = 'http://127.0.0.1:5000/courses?provider=' + encodeURI(provider)
+        //console.log(url)
+        fetch(url)
+          .then((response) => {return response.json()})
+          .then((courseJson) => {
+            var filtered = courseJson;
+            if (filtered.length > 0){
+              this.setState({courseList: this.state.courseList.concat(filtered), page: 1, maxPage: Math.ceil(this.state.courseList.concat(filtered).length / this.state.pageSize)})
+            }
+          })
+      }
+    }
   }
 
   priceChange(choice){
@@ -41,8 +71,13 @@ class Courses extends Component{
     console.log(choice)
   }
 
+  jobChange(choice){
+    this.setState({ relJobOption: choice });
+    console.log(choice)
+  }
+
   handlePageChange(event){
-    console.log(event.selected)
+    //console.log(event.selected)
     this.setState({page: Number(event.selected+1)})
   }
 
@@ -50,8 +85,8 @@ class Courses extends Component{
   componentWillMount(){
     const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
     this.setState(rehydrate)
-    this.setState({providerOption:'', priceOption:''})
-    const url = 'http://api.learning2earn.me/courses';
+    this.setState({providerOption:'', priceOption:'', relJobOption:''})
+    const url = 'http://127.0.0.1:5000/courses';
 
     fetch(url)
       .then((response) => {return response.json()})
@@ -70,8 +105,9 @@ class Courses extends Component{
   render(){
     const providerOptions = [{label: 'Khan Academy', value: 1}, {label:'Udemy', value: 2}]
     const priceOptions=[{label:"Free", value: 1},{label:"less than $50", value:2},{label:"between $50 and $100", value:3},
-    {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}
-    ]
+    {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}]
+    const relJobOptions=[{label:"More than 10", value:1},{label:"More than 20", value:2},{label:"More than 30", value:3},
+    {label:"More than 40", value:4},{label:"More than 50", value:5}]
     //console.log(this.state.page);
     var {courseList, page, pageSize, maxPage, providerOption} = this.state
     var lastInd = page * pageSize
@@ -89,11 +125,12 @@ class Courses extends Component{
       <div className='box'>
           <div className="col-sm=3">
             <div className='Filters'>
-              <Button onClick={() => this.setState({ filterOpen: !this.state.filterOpen })}>Filters</Button>
+              <h1 onClick={() => this.setState({ filterOpen: !this.state.filterOpen })}>Filters</h1>
               <Collapse in={this.state.filterOpen}>
                 <div style={{width:"100%"}}>
                   <Select multi  options={providerOptions} simpleValue value={providerOption} placeholder="Provider" onChange={this.providerChange} />
                   <Select options={priceOptions} simpleValue value={this.state.priceOption} placeholder="Price" onChange={this.priceChange}/>
+                  <Select options={relJobOptions} simpleValue value={this.state.relJobOption} placeholder="Number of Relevant Jobs" onChange={this.jobChange}/>
                 </div>
               </Collapse>
             </div>
