@@ -170,17 +170,11 @@ def filter_query(args,type_):
 
 def sort_by(args, type_):
     ret = TABLES[type_] + '.id'
+    fields = FIELDS[type_]
     if 'sort_by' in args:
         sort_val = args['sort_by']
-        if type_ == 0:
-            if sort_val not in SUBJECT_FIELDS:
-                return ret
-        elif type_ == 1:
-            if sort_val not in COURSE_FIELDS:
-                return ret
-        elif type_ == 2:
-            if sort_val not in JOB_FIELDS:
-                return ret
+        if sort_val not in fields:
+            raise ValueError(sort_val + "_invalid_parameter")
         sort_val = sort_val.replace('-','_')
         ret = sort_val
     if 'desc' in args:
