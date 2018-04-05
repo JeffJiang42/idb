@@ -3,6 +3,7 @@ import json
 import re
 import main
 from werkzeug.datastructures import ImmutableMultiDict
+from helper import *
 
 class APIAuxFunctionTest(unittest.TestCase):
     
