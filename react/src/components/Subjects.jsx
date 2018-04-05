@@ -114,6 +114,7 @@ class Subjects extends Component{
   componentWillMount(){
     const rehydrate = JSON.parse(localStorage.getItem('subjectSavedState'))
     this.setState(rehydrate)
+    this.setState({providerOption:'', sortOption:'', numCourseOption:''})
     const url = 'http://api.learning2earn.me/subjects';
 
     fetch(url)
