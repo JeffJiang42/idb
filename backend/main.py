@@ -105,7 +105,7 @@ def execute(statement, *formatted):
         try:
             with conn.cursor() as cur:
                 statement = cur.mogrify(statement, formatted)
-                print(statement)
+                # print(statement)
                 if statement in best_cache:
                     print('pulling from cache')
                     return best_cache[statement]
@@ -405,7 +405,7 @@ def search(phrase):
 def queue():
     resp = Response()
     resp.headers['Content-Type'] = 'application/json'
-    if 'q' in request.args:
+    if 'q' in request.args and request.args['q']:
         phrase = request.args['q']
         resp.data = search(phrase)
     else:
