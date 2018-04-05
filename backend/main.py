@@ -211,9 +211,6 @@ def subjects():
     # check filters
     try:
         where_clause,where_data = filter_query(request.args,0)
-        print('ARGS: ' + str(request.args))
-        print('CLAUSE: ' + str(where_clause))
-        print('DATA: ' + str(where_data))
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
@@ -276,9 +273,6 @@ def courses():
     # check filters
     try:
         where_clause,where_data = filter_query(request.args,1)
-        print('ARGS: ' + str(request.args))
-        print('CLAUSE: ' + str(where_clause))
-        print('DATA: ' + str(where_data))
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
@@ -342,9 +336,6 @@ def jobs():
     # check filters
     try:
         where_clause,where_data = filter_query(request.args,2)
-        print('ARGS: ' + str(request.args))
-        print('CLAUSE: ' + str(where_clause))
-        print('DATA: ' + str(where_data))
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp
