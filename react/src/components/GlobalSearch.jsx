@@ -10,27 +10,28 @@ class GlobalSearch extends Component{
 		this.state = {
 			search: ''
 		};
+		this.handleChange = this.handleChange.bind(this)
+	}
+
+	handleChange(event){
+		var test = this.enableKeyboardNavigation
+		console.log(test)
+		console.log("event = " + event)
+		this.setState({search: event.target.value}, ()=>{console.log(this.state.search)})
 	}
 
 
   render() {
     return (
-	    	<NavItem>
     	<div className="search-align">
 			    <Navbar.Form pullRight>
-			      <FormGroup>
-			        <FormControl type="text" placeholder="Search" onChange={e => this.setState({search: e.target.value})} />
-			      </FormGroup>{' '}
+						<FormControl type="text" placeholder="Search" onChange={this.handleChange}/>
 			      <Link to={"/search/" + this.state.search}>
 			      <button onClick={() => console.log("testing123")}> Submit</button>
 			      </Link>
 			    </Navbar.Form>
 		</div>
-			</NavItem>
     )
   }
 }
 export default GlobalSearch;
-
-
-
