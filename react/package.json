@@ -12,6 +12,7 @@
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
+    "react-highlight-words": "^0.11.0",
     "react-paginate": "^5.2.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",

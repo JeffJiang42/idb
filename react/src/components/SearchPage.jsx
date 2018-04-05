@@ -6,6 +6,7 @@ import CourseCard from './CourseCard.jsx';
 import ReactPaginate from 'react-paginate'
 import JobCard from './JobCard.jsx';
 import SubjectCard from './SubjectCard.jsx';
+import Highlighter from "react-highlight-words";
 
 
 
@@ -17,7 +18,7 @@ class SearchPage extends Component{
 			value: "",
 			query: '',
       		url:'http://api.learning2earn.me/search',
-      		display:'0',
+      		display:0,
       		pageSize: 32,
       		page:'1',
       		jobs: [],
@@ -27,16 +28,16 @@ class SearchPage extends Component{
 		};
 		this.getSubject = this.getSubject.bind(this)
 		this.handleButtonClick = this.handleButtonClick.bind(this)
+		this.highlight = this.highlight.bind(this)
 	}
 
 	handleButtonClick(newDisplay){
 		this.setState({display: newDisplay});
 	}
 	componentWillMount(){
-		console.log(this.props.match.params.query)
 		this.setState({query: this.props.match.params.query.toLowerCase()})
 		const url = this.state.url + "?q=" + this.props.match.params.query.toLowerCase();
-
+		console.log(url)
 	    fetch(url)
 	      .then((response) => {return response.json()})
 	      .then((searchJson) =>{
@@ -53,6 +54,7 @@ class SearchPage extends Component{
 	           this.setState({query: nextProps.match.params.query});
 		    }
 		const url = this.state.url + "?q=" + nextProps.match.params.query.toLowerCase();
+		console.log(url)
 
 	    fetch(url)
 	      .then((response) => {return response.json()})
@@ -73,9 +75,11 @@ class SearchPage extends Component{
 	      }
 	      return subName;
 	}
+  	highlight(words){
+  		return <Highlighter searchWords={[this.state.query]} textToHighlight= {words}/> 
+  	}
 
   render(){
-
     var {courses, jobs, subjects, maxPageCourses, maxPageJobs, maxPageSubjects} = this.state;
     var list;
     var results;
@@ -86,15 +90,17 @@ class SearchPage extends Component{
 	    var courseArr = courses.slice(firstInd, lastInd);
     	list = courseArr.map((course,i) =>
 				<Row key={i}>
-    		<Link to={`/courses/${course.id}`}>
+    		
 		      	<tr>
-	  				<h3> Course: {course['course']} </h3>
-	  				<p> Provider: {course['provider']}</p>
-	  				<p> Instructor: {course['instructor']}</p>
-	  				<p> Description: {course['desc']}</p>
-	  				<p> Related Subjects: {this.getSubject(course['subject-id']) }  </p>
+		      	<Link to={`/courses/${course.id}`}>
+	  				<h3> Course: {this.highlight(course['course'])} </h3>
+  				</Link>
+	  				<p> Provider: {this.highlight(course['provider'])}</p>
+	  				<p> Instructor: {this.highlight(course['instructor'])}</p>
+	  				<p> Description: {this.highlight(course['desc'])}</p>
+	  				<p> Related Subjects: {this.highlight(this.getSubject(course['subject-id'])) }  </p>
 				</tr>
-			</Link>
+			
 		</Row>
 	    )
     }
@@ -105,12 +111,13 @@ class SearchPage extends Component{
 	    var subjectsArr = subjects.slice(firstInd, lastInd)
     	list = subjectsArr.map((subject,i) =>
 				<Row key={i}>
-    		<Link to={`/subjects/${subject.id}`}>
 		      	<tr>
-	  				<h3> Subject: {subject["subject"]} </h3>
-	  				<p> Provider: {subject.provider} </p>
+    				<Link to={`/subjects/${subject.id}`}>
+	  					<h3> Subject: {this.highlight(subject["subject"])} </h3>
+					</Link>
+
+	  				<p> Provider: {this.highlight(subject.provider)} </p>
 				</tr>
-			</Link>
 		</Row>
 	    )
     }
@@ -121,15 +128,15 @@ class SearchPage extends Component{
 	    var jobArr = jobs.slice(firstInd, lastInd)
     	list = jobArr.map((job,i) =>
 			<Row key={i}>
-    		<Link to={`/jobs/${job.id}`}>
 		      	<tr>
-	  				<h3>Job: {job.name} </h3>
-	  				<p>Provider: {job.provider} </p>
-	  				<p>Type: {job.jobtype} </p>
-	  				<p>Location: {job.location} </p>
-	  				<p>Description: {job.desc} </p>
+    				<Link to={`/jobs/${job.id}`}>
+	  					<h3>Job: {this.highlight(job.name)} </h3>
+					</Link>
+	  				<p>Provider: {this.highlight(job.provider)} </p>
+	  				<p>Type: {this.highlight(job.jobtype)} </p>
+	  				<p>Location: {this.highlight(job.location)} </p>
+	  				<p>Description: {this.highlight(job.desc)} </p>
 				</tr>
-			</Link>
 			</Row>
 	    )
     }

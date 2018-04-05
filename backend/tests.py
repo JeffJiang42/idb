@@ -29,7 +29,10 @@ class APIAuxFunctionTest(unittest.TestCase):
     def test_execute(self):
         test_phrase = b'SELECT * FROM Course LIMIT 5'
         res = main.execute(test_phrase)
+<<<<<<< HEAD
         # print(main.best_cache)
+=======
+>>>>>>> 5fa3b01412aac766c00fde2197258105abfcdca8
         self.assertFalse(len(res) == 1 and res[0][0] == 'error')
         self.assertTrue(test_phrase in main.best_cache)
         self.assertTrue(main.best_cache[test_phrase] == res)
@@ -90,17 +93,18 @@ class APIAuxFunctionTest(unittest.TestCase):
     # check desired results of sorting
     # valid param ascending
     def test_sort_by1(self):
-        args = {'sort_by': 'provider'}
+
+        args = ImmutableMultiDict([('sort_by', 'provider')])
         type_ = 0
         sort_str = main.sort_by(args, type_)
         self.assertTrue(sort_str == 'provider NULLS FIRST')
 
-        args = {'sort_by': 'price'}
+        args = ImmutableMultiDict([('sort_by', 'price')])
         type_ = 1
         sort_str = main.sort_by(args, type_)
         self.assertTrue(sort_str == 'price NULLS FIRST')
 
-        args = {'sort_by': 'jobtype'}
+        args = ImmutableMultiDict([('sort_by', 'jobtype')])
         type_ = 2
         sort_str = main.sort_by(args, type_)
         self.assertTrue(sort_str == 'jobtype NULLS FIRST')
@@ -108,20 +112,17 @@ class APIAuxFunctionTest(unittest.TestCase):
     # check desired results of sorting
     # valid param descending
     def test_sort_by2(self):
-        args = {'sort_by': 'provider',
-                'desc': 'TRUE'}
+        args = ImmutableMultiDict([('sort_by', 'provider'), ('desc','TRUE')])
         type_ = 0
         sort_str = main.sort_by(args, type_)
         self.assertTrue(sort_str == 'provider DESC NULLS LAST')
 
-        args = {'sort_by': 'price',
-                'desc': 'TRUE'}
+        args = ImmutableMultiDict([('sort_by', 'price'), ('desc','TRUE')])
         type_ = 1
         sort_str = main.sort_by(args, type_)
         self.assertTrue(sort_str == 'price DESC NULLS LAST')
 
-        args = {'sort_by': 'jobtype',
-                'desc': 'TRUE'}
+        args = ImmutableMultiDict([('sort_by', 'jobtype'), ('desc','TRUE')])
         type_ = 2
         sort_str = main.sort_by(args, type_)
         self.assertTrue(sort_str == 'jobtype DESC NULLS LAST')
@@ -129,7 +130,7 @@ class APIAuxFunctionTest(unittest.TestCase):
     # check desired results of sorting
     # invalid param
     def test_sort_by3(self):
-        args = {'sort_by': 'test'}
+        args = ImmutableMultiDict([('sort_by', 'test')])
         type_ = 0
         exception_str = ''
         sort_str = ''
@@ -139,7 +140,7 @@ class APIAuxFunctionTest(unittest.TestCase):
             exception_str = str(e)
         self.assertTrue(exception_str == 'test_invalid_parameter')
 
-        args = {'sort_by': 'test'}
+        args = ImmutableMultiDict([('sort_by', 'test')])
         type_ = 1
         exception_str = ''
         sort_str = ''
@@ -149,7 +150,7 @@ class APIAuxFunctionTest(unittest.TestCase):
             exception_str = str(e)
         self.assertTrue(exception_str == 'test_invalid_parameter')
 
-        args = {'sort_by': 'test'}
+        args = ImmutableMultiDict([('sort_by', 'test')])
         type_ = 2
         exception_str = ''
         sort_str = ''
@@ -162,17 +163,12 @@ class APIAuxFunctionTest(unittest.TestCase):
     # check desired results of sorting
     # valid param with dashes
     def test_sort_by4(self):
-        args = {'sort_by': 'num-courses'}
-        type_ = 0
-        sort_str = main.sort_by(args, type_)
-        self.assertTrue(sort_str == 'num_courses NULLS FIRST')
-
-        args = {'sort_by': 'subject-id'}
+        args = ImmutableMultiDict([('sort_by', 'subject-id')])
         type_ = 1
         sort_str = main.sort_by(args, type_)
         self.assertTrue(sort_str == 'subject_id NULLS FIRST')
 
-        args = {'sort_by': 'num-related-courses'}
+        args = ImmutableMultiDict([('sort_by', 'num-related-courses')])
         type_ = 2
         sort_str = main.sort_by(args, type_)
         self.assertTrue(sort_str == 'num_related_courses NULLS FIRST')
@@ -208,23 +204,23 @@ class APIAuxFunctionTest(unittest.TestCase):
         args = ImmutableMultiDict([('provider', 'Udemy')])
         type_ = 0
         where_clause, data = main.filter_query(args, type_)
-        self.assertTrue(where_clause == ' and ( (Subject.provider = %s))')
+        self.assertTrue(where_clause == ' and ( (UPPER(Subject.provider) = %s))')
         self.assertTrue(len(data) == 1)
-        self.assertTrue(data[0] == 'Udemy')
+        self.assertTrue(data[0] == 'UDEMY')
 
         args = ImmutableMultiDict([('provider', 'Udemy')])
         type_ = 1
         where_clause, data = main.filter_query(args, type_)
-        self.assertTrue(where_clause == ' and ( (Course.provider = %s))')
+        self.assertTrue(where_clause == ' and ( (UPPER(Course.provider) = %s))')
         self.assertTrue(len(data) == 1)
-        self.assertTrue(data[0] == 'Udemy')
+        self.assertTrue(data[0] == 'UDEMY')
 
         args = ImmutableMultiDict([('provider', 'Github Jobs')])
         type_ = 2
         where_clause, data = main.filter_query(args, type_)
-        self.assertTrue(where_clause == ' and ( (Job.provider = %s))')
+        self.assertTrue(where_clause == ' and ( (UPPER(Job.provider) = %s))')
         self.assertTrue(len(data) == 1)
-        self.assertTrue(data[0] == 'Github Jobs')
+        self.assertTrue(data[0] == 'GITHUB JOBS')
 
     # check desired results of filtering
     # single valid range params
@@ -253,23 +249,23 @@ class APIAuxFunctionTest(unittest.TestCase):
         args = ImmutableMultiDict([('provider', 'test')])
         type_ = 0
         where_clause, data = main.filter_query(args, type_)
-        self.assertTrue(where_clause == ' and ( (Subject.provider = %s))')
+        self.assertTrue(where_clause == ' and ( (UPPER(Subject.provider) = %s))')
         self.assertTrue(len(data) == 1)
-        self.assertTrue(data[0] == 'Test')
+        self.assertTrue(data[0] == 'TEST')
 
         args = ImmutableMultiDict([('provider', 'test')])
         type_ = 1
         where_clause, data = main.filter_query(args, type_)
-        self.assertTrue(where_clause == ' and ( (Course.provider = %s))')
+        self.assertTrue(where_clause == ' and ( (UPPER(Course.provider) = %s))')
         self.assertTrue(len(data) == 1)
-        self.assertTrue(data[0] == 'Test')
+        self.assertTrue(data[0] == 'TEST')
 
         args = ImmutableMultiDict([('provider', 'test')])
         type_ = 2
         where_clause, data = main.filter_query(args, type_)
-        self.assertTrue(where_clause == ' and ( (Job.provider = %s))')
+        self.assertTrue(where_clause == ' and ( (UPPER(Job.provider) = %s))')
         self.assertTrue(len(data) == 1)
-        self.assertTrue(data[0] == 'Test')
+        self.assertTrue(data[0] == 'TEST')
 
     # check desired results of filtering
     # multiple valid params
@@ -277,23 +273,26 @@ class APIAuxFunctionTest(unittest.TestCase):
         args = ImmutableMultiDict([('provider', 'Udemy'), ('num-courses', '0..10')])
         type_ = 0
         where_clause, data = main.filter_query(args, type_)
-        self.assertTrue(where_clause == ' and ( (Subject.provider = %s)) and ( (Subject.num_courses BETWEEN %s AND %s))')
+        self.assertTrue(where_clause == ' and ( (UPPER(Subject.provider) = %s)) and ( (Subject.num_courses BETWEEN %s AND %s))')
         self.assertTrue(len(data) == 3)
-        self.assertTrue(data[0] == 'Udemy')
+        self.assertTrue(data[0] == 'UDEMY')
+        self.assertTrue(data[1] == 0 and data[2] == 10)
 
         args = ImmutableMultiDict([('provider', 'Khan Academy'), ('price', '0..0')])
         type_ = 1
         where_clause, data = main.filter_query(args, type_)
-        self.assertTrue(where_clause == ' and ( (Course.provider = %s)) and ( (Course.price BETWEEN %s AND %s))')
+        self.assertTrue(where_clause == ' and ( (UPPER(Course.provider) = %s)) and ( (Course.price BETWEEN %s AND %s))')
         self.assertTrue(len(data) == 3)
-        self.assertTrue(data[0] == 'Khan Academy')
+        self.assertTrue(data[0] == 'KHAN ACADEMY')
+        self.assertTrue(data[1] == 0 and data[2] == 0)
 
         args = ImmutableMultiDict([('provider', 'Github Jobs'), ('num-related-courses', '0..100')])
         type_ = 2
         where_clause, data = main.filter_query(args, type_)
-        self.assertTrue(where_clause == ' and ( (Job.provider = %s)) and ( (Job.num_related_courses BETWEEN %s AND %s))')
+        self.assertTrue(where_clause == ' and ( (UPPER(Job.provider) = %s)) and ( (Job.num_related_courses BETWEEN %s AND %s))')
         self.assertTrue(len(data) == 3)
-        self.assertTrue(data[0] == 'Github Jobs')
+        self.assertTrue(data[0] == 'GITHUB JOBS')
+        self.assertTrue(data[1] == 0 and data[2] == 100)
 
     # check desired results of filtering
     # invalid param
@@ -307,7 +306,7 @@ class APIAuxFunctionTest(unittest.TestCase):
             where_clause, data = main.filter_query(args, type_)
         except Exception as e:
             error_str = str(e)
-        self.assertTrue(error_str == 'test_invalid_parameter')
+        self.assertTrue(error_str == 'test_invalid_filter')
 
         args = ImmutableMultiDict([('test', 'hello')])
         type_ = 1
@@ -318,7 +317,7 @@ class APIAuxFunctionTest(unittest.TestCase):
             where_clause, data = main.filter_query(args, type_)
         except Exception as e:
             error_str = str(e)
-        self.assertTrue(error_str == 'test_invalid_parameter')
+        self.assertTrue(error_str == 'test_invalid_filter')
 
         args = ImmutableMultiDict([('test', 'hello')])
         type_ = 2
@@ -329,7 +328,7 @@ class APIAuxFunctionTest(unittest.TestCase):
             where_clause, data = main.filter_query(args, type_)
         except Exception as e:
             error_str = str(e)
-        self.assertTrue(error_str == 'test_invalid_parameter')
+        self.assertTrue(error_str == 'test_invalid_filter')
 
 if __name__ == '__main__':
     unittest.main()
