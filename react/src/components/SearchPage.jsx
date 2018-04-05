@@ -17,7 +17,7 @@ class SearchPage extends Component{
 			value: "",
 			query: '',
       		url:'http://api.learning2earn.me/search',
-      		display:'0',
+      		display:0,
       		pageSize: 32,
       		page:'1',
       		jobs: [],
@@ -33,10 +33,9 @@ class SearchPage extends Component{
 		this.setState({display: newDisplay});
 	}
 	componentWillMount(){
-		console.log(this.props.match.params.query)
 		this.setState({query: this.props.match.params.query.toLowerCase()})
 		const url = this.state.url + "?q=" + this.props.match.params.query.toLowerCase();
-
+		console.log(url)
 	    fetch(url)
 	      .then((response) => {return response.json()})
 	      .then((searchJson) =>{
@@ -53,6 +52,7 @@ class SearchPage extends Component{
 	           this.setState({query: nextProps.match.params.query});
 		    }
 		const url = this.state.url + "?q=" + nextProps.match.params.query.toLowerCase();
+		console.log(url)
 
 	    fetch(url)
 	      .then((response) => {return response.json()})
