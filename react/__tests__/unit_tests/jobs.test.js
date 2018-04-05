@@ -25,4 +25,9 @@ describe('Jobs Component', () => {
     expect(jobs.find('.Filters')).to.have.length(1)
   })
 
+  it('contains a sort function', () => {
+    const jobs = mount(<Jobs />);
+    expect(jobs.hasClass('Sorting'));
+    expect(jobs.find('.Sorting')).to.have.length(1)
+  })
 })
