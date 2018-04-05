@@ -9,7 +9,7 @@ import unittest, time, re
 from pyvirtualdisplay import Display
 
 
-class subject_filter(unittest.TestCase):
+class SearchPage(unittest.TestCase):
     def setUp(self):
         self.display = Display(visible=0, size=(1920, 1080))
         self.display.start()
@@ -19,20 +19,25 @@ class subject_filter(unittest.TestCase):
         self.verificationErrors = []
         self.accept_next_alert = True
     
-    def test_subject_filter(self):
+    def test_search_page(self):
         driver = self.driver
         driver.get("http://www.learning2earn.me/")
-        driver.find_element_by_link_text("Subjects").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/h1").click()
-        driver.find_element_by_xpath("//span[@id='react-select-2--value']/div").click()
-        driver.find_element_by_xpath("//div[@id='react-select-2--list']/div/div/div/div[2]").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div/div/div").click()
-        driver.find_element_by_xpath("//div[@id='react-select-2--list']/div/div/div/div").click()
-        driver.find_element_by_xpath("//span[@id='react-select-3--value']/div").click()
-        driver.find_element_by_xpath("//div[@id='react-select-3--list']/div/div/div/div[2]").click()
-        driver.find_element_by_id("react-select-3--value-item").click()
-        driver.find_element_by_xpath("//div[@id='react-select-3--list']/div/div/div/div[3]").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/h1").click()
+        driver.find_element_by_link_text("Search").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/form/input").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/form/input").clear()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/form/input").send_keys("computer")
+        driver.find_element_by_xpath("//div[@id='root']/div/div/form/input").send_keys(Keys.ENTER)
+        driver.find_element_by_xpath("//div[@id='root']/div/div/table/tbody/div/tr/a/h3").click()
+        driver.find_element_by_link_text("Search").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/form/input").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/form/input").clear()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/form/input").send_keys("math")
+        driver.find_element_by_xpath("//div[@id='root']/div/div/form/input").send_keys(Keys.ENTER)
+        driver.find_element_by_xpath("//div[@id='root']/div/div/button[2]").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/button[3]").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/button[2]").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/button").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/table/tbody/div[3]/tr/a/h3/span/span").click()
     
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)
