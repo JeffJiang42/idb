@@ -172,7 +172,10 @@ def sort_by(args, type_):
     ret = TABLES[type_] + '.id'
     fields = FIELDS[type_]
     if 'sort_by' in args:
-        sort_val = args['sort_by']
+        sort_val = args.getlist('sort_by')
+        if len(sort_val)>1:
+            raise ValueError("too_many_sorts")
+        sort_val = sort_val[0]
         if sort_val not in fields:
             raise ValueError(sort_val + "_invalid_parameter")
         sort_val = sort_val.replace('-','_')
