@@ -4,6 +4,8 @@ import json
 from flask import Flask, request, Response
 from flask_cors import CORS
 import re
+from werkzeug.datastructures import ImmutableMultiDict
+
 
 COURSE_SEARCH = 'SELECT * FROM Course WHERE description LIKE %s OR course LIKE %s OR provider LIKE %s'
 SUBJECT_SEARCH = 'SELECT * FROM Subject WHERE subject LIKE %s OR provider LIKE %s'
@@ -206,6 +208,9 @@ def subjects():
     # check filters
     try:
         where_clause,where_data = filter_query(request.args,0)
+        print('ARGS: ' + str(request.args))
+        print('CLAUSE: ' + str(where_clause))
+        print('DATA: ' + str(where_data))
     except Exception as e:
         resp.data = '{"error": "' + str(e) + '"}'
         return resp

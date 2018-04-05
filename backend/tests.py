@@ -1,6 +1,7 @@
 import unittest
 import json
 import main
+from werkzeug.datastructures import ImmutableMultiDict
 
 class APIAuxFunctionTest(unittest.TestCase):
     
@@ -83,7 +84,7 @@ class APIAuxFunctionTest(unittest.TestCase):
                'provider': 'Authentic Jobs'}
         res2 = main.clean_data(type_,sub2)
         self.assertTrue(res2['name']=='lmao_lmao_lmao')
-        
+
 
     # check desired results of sorting
     # valid param ascending
@@ -170,6 +171,16 @@ class APIAuxFunctionTest(unittest.TestCase):
         type_ = 2
         sort_str = main.sort_by(args, type_)
         self.assertTrue(sort_str == 'num_related_courses NULLS FIRST')
+
+    # check desired results of filtering
+    # single valid param
+    def test_filter_query1(self):
+        args = ImmutableMultiDict([('provider', 'Udemy')])
+        type_ = 0
+        where_clause = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Subject.provider = %s))')
+        self.assertTrue(len(data) == 1)
+        self.assertTrue(data[0] == 'Udemy')
 
 
 
