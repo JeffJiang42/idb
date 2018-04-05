@@ -6,6 +6,7 @@ PFILES :=                   \
     test_navbar				\
     test_subjects			\
     test_courses			\
+    test_courses_filter_search\
 
 
 %.jsx: %.js
@@ -34,6 +35,8 @@ travis:
 	python test_navbar.py
 	python test_subjects.py
 	python test_courses.py
+	python test_courses_filter_search.py
 	python test_jobs.py
 	python test_about.py
+
 	ls -al
