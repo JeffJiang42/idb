@@ -104,7 +104,7 @@ def execute(statement, *formatted):
         try:
             with conn.cursor() as cur:
                 statement = cur.mogrify(statement, formatted)
-                print(statement)
+                # print(statement)
                 if statement in best_cache:
                     print('pulling from cache')
                     return best_cache[statement]

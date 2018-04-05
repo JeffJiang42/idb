@@ -1,5 +1,6 @@
 import unittest
 import json
+import re
 import main
 
 class APIAuxFunctionTest(unittest.TestCase):
@@ -27,7 +28,7 @@ class APIAuxFunctionTest(unittest.TestCase):
     def test_execute(self):
         test_phrase = b'SELECT * FROM Course LIMIT 5'
         res = main.execute(test_phrase)
-        print(main.best_cache)
+        # print(main.best_cache)
         self.assertFalse(len(res) == 1 and res[0][0] == 'error')
         self.assertTrue(test_phrase in main.best_cache)
         self.assertTrue(main.best_cache[test_phrase] == res)
@@ -171,8 +172,30 @@ class APIAuxFunctionTest(unittest.TestCase):
         sort_str = main.sort_by(args, type_)
         self.assertTrue(sort_str == 'num_related_courses NULLS FIRST')
 
-
-
+    def test_search1(self):
+        args = 'please-return-no-results-8y56VS^VSd65sdE'
+        res = main.search(args)
+        self.assertTrue(len(res) > 0)
+    
+    # test spaces
+    def test_search2(self):
+        args = 'to choose'
+        res = json.loads(main.search(args))
+        self.assertTrue('jobs' in res)
+        if len(res['jobs']) > 0:
+            self.assertTrue(re.search(args, json.dumps(res['jobs'][0]), re.IGNORECASE))
+        elif len(res['courses']) > 0:
+            self.assertTrue(re.search(args, json.dumps(res['courses'][0]), re.IGNORECASE))
+        elif len(res['subjects']) > 0:
+            self.assertTrue(re.search(args, json.dumps(res['subjects'][0]), re.IGNORECASE))
+        else:
+            self.assertTrue(False)
+            
+    # test special characters
+    def test_search3(self):
+        args='\''
+        res = main.search(args)
+        self.assertTrue(args in res)
 
 if __name__ == '__main__':
     unittest.main()
