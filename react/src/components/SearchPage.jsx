@@ -12,7 +12,6 @@ import SubjectCard from './SubjectCard.jsx';
 class SearchPage extends Component{
 	constructor(props) {
 		super(props);
-		console.log(props)
 			var query = props.match.query;
 			this.state = {
 			query: '',
@@ -25,6 +24,7 @@ class SearchPage extends Component{
       		subjects:[]
 
 		};
+		this.getSubject = this.getSubject.bind(this)
 		this.handleButtonClick = this.handleButtonClick.bind(this)
 	}
 
@@ -33,7 +33,7 @@ class SearchPage extends Component{
 	}
 	componentWillMount(){
 		this.setState({query: this.props.match.params.query})
-		const url = this.state.url + "?q=" + this.state.query;
+		const url = this.state.url + "?q=" + this.state.query.toLowerCase();
 
 	    fetch(url)
 	      .then((response) => {return response.json()})
@@ -50,7 +50,7 @@ class SearchPage extends Component{
 		    {
 	           this.setState({query: nextProps.match.params.query});
 		    }
-		const url = this.state.url + "?q=" + this.state.query;
+		const url = this.state.url + "?q=" + this.state.query.toLowerCase();
 
 	    fetch(url)
 	      .then((response) => {return response.json()})
@@ -61,6 +61,16 @@ class SearchPage extends Component{
 	      .then((info) => {this.setState({courses: info.courses, jobs: info.jobs, subjects: info.subjects, maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize), maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize), maxPageSubjects: Math.ceil(info.subjects.length / this.state.pageSize)})})
 
 	} 
+	getSubject(subjectID){
+		var subName = async() => {await fetch('http://api.learning2earn.me/subjects?subjectId=' + subjectID)
+		.then((response) => {return response.json()})
+	      .then((subjectJson) => {
+	        return subjectJson[0]
+	      })
+	      .then((sub) => {return sub})
+	      }
+	      return subName;
+	}
 
   render(){
 
@@ -75,11 +85,15 @@ class SearchPage extends Component{
     if(this.state.display == 0){
     	var lastInd = this.state.page * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
-	    var courseArr = courses.slice(firstInd, lastInd)
+	    var courseArr = courses.slice(firstInd, lastInd);
 
     	list = courseArr.map((course,i) =>
 	      	<tr>
-  				<h3> {course['course']} </h3>
+  				<h3> Course: {course['course']} </h3>
+  				<p> Provider: {course['provider']}</p>
+  				<p> Instructor: {course['instructor']}</p>
+  				<p> Description: {course['desc']}</p>
+  				<p> Related Subjects: {this.getSubject(course['subject-id']) }  </p>
 			</tr>
 	    )
     }
@@ -91,7 +105,8 @@ class SearchPage extends Component{
 
     	list = subjectsArr.map((subject,i) =>
 	      	<tr>
-  				<h3> {subject["subject"]} </h3>
+  				<h3> Subject: {subject["subject"]} </h3>
+  				<p> Provider: {subject.provider} </p>
 			</tr>
 	    )
     }
@@ -102,7 +117,11 @@ class SearchPage extends Component{
 	    var jobArr = jobs.slice(firstInd, lastInd)
     	list = jobArr.map((job,i) =>
 	      	<tr>
-  				<h3> {job.name} </h3>
+  				<h3>Job: {job.name} </h3>
+  				<p>Provider: {job.provider} </p>
+  				<p>Type: {job.jobtype} </p>
+  				<p>Location: {job.location} </p>
+  				<p>Description: {job.desc} </p>
 			</tr>
 	    )
     }
