@@ -223,10 +223,10 @@ class Courses extends Component{
 
     return(
       <div className='box'>
+        <h1 style={{'fontSize': '96px'}}>Courses</h1>
           <div className="col-sm=3">
             <div className='Filters'>
               <h1 onClick={() => this.setState({ filterOpen: !this.state.filterOpen })}>Filters</h1>
-              <br />
               <Collapse in={this.state.filterOpen}>
                 <div style={{width:"100%"}}>
                   <Select multi  options={providerOptions} simpleValue value={providerOption} placeholder="Provider" onChange={this.providerChange} />
@@ -235,10 +235,8 @@ class Courses extends Component{
                 </div>
               </Collapse>
             </div>
-            <br />
             <div className='Sorting'>
               <h1 onClick={() => this.setState({ sortOpen: !this.state.sortOpen})}>Sorting</h1>
-              <br />
               <Collapse in={this.state.sortOpen}>
                 <Select options={sortOptions} simpleValue value={this.state.sortOption} placeholder='Provider' onChange={this.sortChange} />
               </Collapse>
