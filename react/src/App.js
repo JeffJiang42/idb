@@ -27,6 +27,7 @@ class App extends Component {
           <Route path='/subjects/:id' component={SubjectData}/>
           <Route path='/jobs/:id' component={JobData} />
           <Route path='/search/:query' component={SearchPage} />
+          <Route path='/search' component={SearchPage} />
         </div>
     </Router>
     );
