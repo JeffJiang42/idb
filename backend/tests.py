@@ -271,7 +271,7 @@ class APIAuxFunctionTest(unittest.TestCase):
 
     # check desired results of filtering
     # invalid param
-    def test_filter_query1(self):
+    def test_filter_query5(self):
         args = ImmutableMultiDict([('test', 'hello')])
         type_ = 0
         where_clause = ''
