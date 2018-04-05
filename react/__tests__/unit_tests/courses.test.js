@@ -19,4 +19,10 @@ describe('Courses Component', () => {
     expect(courses.hasClass('ReactPaginate'));
   })
 
+  it('contains a Filter', () => {
+    const courses = mount(<Courses />);
+    expect(courses.hasClass('Filters'));
+    expect(courses.find('.Filters')).to.have.length(1)
+  })
+
 })

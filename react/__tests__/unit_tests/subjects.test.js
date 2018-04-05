@@ -19,4 +19,11 @@ describe('Subjects Component', () => {
     expect(subjects.hasClass('ReactPaginate'));
   })
 
+  it('contains a Filter', () => {
+    const subjects = mount(<Subjects />);
+    expect(subjects.hasClass('Filters'));
+    expect(subjects.find('.Filters')).to.have.length(1)
+  })
+
+
 })
