@@ -7,15 +7,16 @@ class Job {
     + int id
     + varchar[256] name
     + varchar[256] company
-    + text description
+    + text desc
     + varchar[256] image
     + varchar[256] link
     + varchar[256] provider
     + varchar[2048] subject
-    + varchar[2048] courses
+    + varchar[2048] course_ids
     + varchar[2048] subjects_ids
     + varchar[64] location
     + varchar[64] jobtype
+    + int num-related-courses
     }
 
 class Subject {
@@ -23,21 +24,22 @@ class Subject {
     + varchar[256] subject
     + varchar[256] provider
     + varchar[256] image
-    + varchar[2048] courses
-    + varchar[2048] jobs
+    + varchar[2048] course_ids
+    + varchar[2048] job_ids
+    + int num-courses
     }
 
 class Course {
     + int id
     + varchar[256] course
-    + text description
+    + text desc
     + varchar[256] image
     + varchar[256] instructor
     + varchar[256] link
-    + varchar[256] price
-    + varchar[2048] subject
+    + numeric price
     + varchar[256] provider
-    + varchar[2048] jobs
+    + varchar[2048] job_ids
     + int subject_id
+    + int num-relevant_jobs
     }
 @enduml
