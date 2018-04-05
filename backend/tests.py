@@ -29,10 +29,8 @@ class APIAuxFunctionTest(unittest.TestCase):
     def test_execute(self):
         test_phrase = b'SELECT * FROM Course LIMIT 5'
         res = main.execute(test_phrase)
-<<<<<<< HEAD
+
         # print(main.best_cache)
-=======
->>>>>>> 5fa3b01412aac766c00fde2197258105abfcdca8
         self.assertFalse(len(res) == 1 and res[0][0] == 'error')
         self.assertTrue(test_phrase in main.best_cache)
         self.assertTrue(main.best_cache[test_phrase] == res)
