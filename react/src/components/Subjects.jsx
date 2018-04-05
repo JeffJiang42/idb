@@ -114,6 +114,7 @@ class Subjects extends Component{
   componentWillMount(){
     const rehydrate = JSON.parse(localStorage.getItem('subjectSavedState'))
     this.setState(rehydrate)
+    this.setState({providerOption:'', sortOption:'', numCourseOption:''})
     const url = 'http://api.learning2earn.me/subjects';
 
     fetch(url)
@@ -163,7 +164,7 @@ class Subjects extends Component{
           <Collapse in={this.state.filterOpen}>
             <div>
             <Select multi options={providerOptions} simpleValue value={this.state.providerOption} placeholder='Provider' onChange={this.providerChange} />
-            <Select options={numCourseOptions} simpleValue value={this.state.numCourseOption} placeholder='Sort by' onChange={this.numCourseChange} />
+            <Select options={numCourseOptions} simpleValue value={this.state.numCourseOption} placeholder='Number of courses' onChange={this.numCourseChange} />
             </div>
           </Collapse>
         </div>

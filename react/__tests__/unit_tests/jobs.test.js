@@ -19,4 +19,10 @@ describe('Jobs Component', () => {
     expect(jobs.hasClass('ReactPaginate'));
   })
 
+  it('contains a Filter', () => {
+    const jobs = mount(<Jobs />);
+    expect(jobs.hasClass('Filters'));
+    expect(jobs.find('.Filters')).to.have.length(1)
+  })
+
 })

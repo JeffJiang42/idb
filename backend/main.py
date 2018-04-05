@@ -4,6 +4,8 @@ import json
 from flask import Flask, request, Response
 from flask_cors import CORS
 import re
+from werkzeug.datastructures import ImmutableMultiDict
+
 
 COURSE_SEARCH = 'SELECT * FROM Course WHERE description ILIKE %s OR course ILIKE %s OR provider ILIKE %s'
 SUBJECT_SEARCH = 'SELECT * FROM Subject WHERE subject ILIKE %s OR provider ILIKE %s'
@@ -30,7 +32,6 @@ COURSE_FILTERS = {'provider': 'exact',
 JOB_FILTERS = {'company': 'exact',
                'num-related-courses': 'range',
                'location': 'exact',
-               'course': 'exact',
                'provider': 'exact',
                'jobtype': 'exact',
                'sort_by': 'exact',
@@ -142,8 +143,8 @@ def filter_query(args,type_):
                 else:
                     query += ' or'
                 if filter_type == 'exact':
-                    query += ' (' + column + ' = %s)'
-                    parts.append(value.title())
+                    query += ' (UPPER(' + column + ') = %s)'
+                    parts.append(value.upper())
                 elif filter_type == 'range':
                     range_ = value.split('..')
                     if len(range_) != 2:
@@ -172,7 +173,10 @@ def sort_by(args, type_):
     ret = TABLES[type_] + '.id'
     fields = FIELDS[type_]
     if 'sort_by' in args:
-        sort_val = args['sort_by']
+        sort_val = args.getlist('sort_by')
+        if len(sort_val)>1:
+            raise ValueError("too_many_sorts")
+        sort_val = sort_val[0]
         if sort_val not in fields:
             raise ValueError(sort_val + "_invalid_parameter")
         sort_val = sort_val.replace('-','_')
@@ -401,7 +405,7 @@ def search(phrase):
 def queue():
     resp = Response()
     resp.headers['Content-Type'] = 'application/json'
-    if 'q' in request.args:
+    if 'q' in request.args and request.args['q']:
         phrase = request.args['q']
         resp.data = search(phrase)
     else:
