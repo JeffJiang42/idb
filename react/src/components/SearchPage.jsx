@@ -89,13 +89,15 @@ class SearchPage extends Component{
 	    var courseArr = courses.slice(firstInd, lastInd);
 
     	list = courseArr.map((course,i) =>
-	      	<tr>
-  				<h3> Course: {course['course']} </h3>
-  				<p> Provider: {course['provider']}</p>
-  				<p> Instructor: {course['instructor']}</p>
-  				<p> Description: {course['desc']}</p>
-  				<p> Related Subjects: {this.getSubject(course['subject-id']) }  </p>
-			</tr>
+    		<Link to={`/courses/${course.id}`}>
+		      	<tr>
+	  				<h3> Course: {course['course']} </h3>
+	  				<p> Provider: {course['provider']}</p>
+	  				<p> Instructor: {course['instructor']}</p>
+	  				<p> Description: {course['desc']}</p>
+	  				<p> Related Subjects: {this.getSubject(course['subject-id']) }  </p>
+				</tr>
+			</Link>
 	    )
     }
     //subjects
@@ -105,10 +107,12 @@ class SearchPage extends Component{
 	    var subjectsArr = subjects.slice(firstInd, lastInd)
 
     	list = subjectsArr.map((subject,i) =>
-	      	<tr>
-  				<h3> Subject: {subject["subject"]} </h3>
-  				<p> Provider: {subject.provider} </p>
-			</tr>
+    		<Link to={`/subjects/${subject.id}`}>
+		      	<tr>
+	  				<h3> Subject: {subject["subject"]} </h3>
+	  				<p> Provider: {subject.provider} </p>
+				</tr>
+			</Link>
 	    )
     }
     //jobs
@@ -117,13 +121,16 @@ class SearchPage extends Component{
 	    var firstInd = lastInd - this.state.pageSize
 	    var jobArr = jobs.slice(firstInd, lastInd)
     	list = jobArr.map((job,i) =>
-	      	<tr>
-  				<h3>Job: {job.name} </h3>
-  				<p>Provider: {job.provider} </p>
-  				<p>Type: {job.jobtype} </p>
-  				<p>Location: {job.location} </p>
-  				<p>Description: {job.desc} </p>
-			</tr>
+    	
+    		<Link to={`/jobs/${job.id}`}>
+		      	<tr>
+	  				<h3>Job: {job.name} </h3>
+	  				<p>Provider: {job.provider} </p>
+	  				<p>Type: {job.jobtype} </p>
+	  				<p>Location: {job.location} </p>
+	  				<p>Description: {job.desc} </p>
+				</tr>
+			</Link>
 	    )
     }
     return(
