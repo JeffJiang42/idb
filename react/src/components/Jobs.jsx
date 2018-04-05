@@ -10,6 +10,7 @@ var card_remove_border = {
 };
 
 const sortQueries  = ["name", "name&desc=TRUE", "company", "company&desc=TRUE", "provider", "provider&desc=TRUE", "location", "location&desc=TRUE", "num-related-courses", "num-related-courses&desc=TRUE"]
+const numCourse = ["0..200", "200..400", "400..600", "600..800", "800..1000", "1000..1200", "1200..1400"]
 
 class Jobs extends Component{
   constructor(props){
@@ -20,12 +21,14 @@ class Jobs extends Component{
       pageSize: 32,
       maxPage: 10,
       sortOpen: false,
+      filterOpen: false,
       queries: [],
       sortOption: ''
     }
     this.handlePageChange = this.handlePageChange.bind(this)
     this.makeQuery = this.makeQuery.bind(this)
     this.sortChange = this.sortChange.bind(this)
+    this.numCourseChange = this.numCourseChange.bind(this)
   }
 
   sortChange(choice){
@@ -37,6 +40,17 @@ class Jobs extends Component{
     }
     else{
       delete this.state.queries.sort
+    }
+    this.makeQuery()
+  }
+
+  numCourseChange(choice){
+    this.setState({numCourseOption: choice})
+    if (choice != null){
+      this.state.queries.numCourse = ("num-courses=" + numCourse[choice-1])
+    }
+    else{
+      delete this.state.queries.numCourse
     }
     this.makeQuery()
   }
@@ -89,6 +103,9 @@ class Jobs extends Component{
   }
 
   render(){
+    const  numCourseOptions = [{label: "between 0 and 200 courses", value: 1},{label: "between 200 and 400 courses", value: 2},
+    {label: "between 400 and 600 courses", value: 3}, {label: "between 600 and 800 courses"}, {label: "between 800 and 1000 courses", value: 4},
+    {label: "between 1000 and 1200 courses", value: 5}, {label: "between 1200 and 1400 courses", value: 6}]
     const sortOptions=[{label: "Name (alphabetical)",  value: 1}, {label: "Name (Descending alphabetical)", value: 2},
     {label: "Company (alphabetical)", value: 3}, {label: "Company (Descending alphabetical)", value: 4},
     {label: "Provider (alphabetical)", value: 5}, {label: "Provider (Descending alphabetical)", value: 6},
@@ -107,6 +124,16 @@ class Jobs extends Component{
     )
     return(
       <div className='box'>
+        <div className='Filters'>
+          <h1 onClick={() => this.setState({filterOpen: !this.state.filterOpen})}>Filters</h1>
+          <br />
+          <Collapse in={this.state.filterOpen}>
+            <div>
+              <Select options={numCourseOptions} simpleValue value={this.state.numCourseOption} placeholder='Sort by' onChange={this.numCourseChange} />
+            </div>
+          </Collapse>
+        </div>
+        <br />
         <div className='Sorting'>
           <h1 onClick={() => this.setState({ sortOpen: !this.state.sortOpen})}>Sorting</h1>
           <br />
