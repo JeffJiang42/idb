@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './styles/SearchPage.css';
-import { Row, Grid, Pagination, Button, Collapse } from 'react-bootstrap'
+import { Row, Grid, Pagination, Button, Collapse, Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import CourseCard from './CourseCard.jsx';
 import ReactPaginate from 'react-paginate'
 import JobCard from './JobCard.jsx';
@@ -14,6 +14,7 @@ class SearchPage extends Component{
 		super(props);
 			var query = props.match.query;
 			this.state = {
+			value: "",
 			query: '',
       		url:'http://api.learning2earn.me/search',
       		display:'0',
@@ -33,6 +34,9 @@ class SearchPage extends Component{
 	}
 	componentWillMount(){
 		console.log(this.props.match.params.query)
+		if (this.props.match.params.query == undefined){
+			return
+		}
 		this.setState({query: this.props.match.params.query.toLowerCase()})
 		const url = this.state.url + "?q=" + this.props.match.params.query.toLowerCase();
 
@@ -76,18 +80,13 @@ class SearchPage extends Component{
   render(){
 
     var {courses, jobs, subjects, maxPageCourses, maxPageJobs, maxPageSubjects} = this.state;
-
-
-
     var list;
-
     var results;
     //courses
     if(this.state.display == 0){
     	var lastInd = this.state.page * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var courseArr = courses.slice(firstInd, lastInd);
-
     	list = courseArr.map((course,i) =>
 				<Row key={i}>
     		<Link to={`/courses/${course.id}`}>
@@ -107,7 +106,6 @@ class SearchPage extends Component{
     	var lastInd = this.state.page * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var subjectsArr = subjects.slice(firstInd, lastInd)
-
     	list = subjectsArr.map((subject,i) =>
 				<Row key={i}>
     		<Link to={`/subjects/${subject.id}`}>
@@ -138,13 +136,21 @@ class SearchPage extends Component{
 			</Row>
 	    )
     }
+		if (list.length == 0){
+			list = <h1>No Search Results :(</h1>
+		}
     return(
 		<div>
-
+			<form onSubmit={(e) =>
+				{    e.preventDefault();
+					window.location.href = '/search/' + this.state.value}}>
+			<input placeholder="Search" onChange={(event) => {this.setState({value: event.target.value})}}/>
+			</form>
+			<br />
+			<br />
 	    	<button onClick={e => this.handleButtonClick(0)}> Courses </button>
 	    	<button onClick={e => this.handleButtonClick(1)}> Subjects </button>
 	    	<button onClick={e => this.handleButtonClick(2)}> Jobs </button>
-
 	      	<h2>Search Results: {results}</h2>
 	      	<table>
 	      		<tbody>
