@@ -90,17 +90,17 @@ class SearchPage extends Component{
 	    var courseArr = courses.slice(firstInd, lastInd);
     	list = courseArr.map((course,i) =>
 				<Row key={i}>
-    		<Link to={`/courses/${course.id}`}>
+    		
 		      	<tr>
-	  				<h3> Course: {this.highlight(course['course'])}
-
-	  				</h3>
+		      	<Link to={`/courses/${course.id}`}>
+	  				<h3> Course: {this.highlight(course['course'])} </h3>
+  				</Link>
 	  				<p> Provider: {this.highlight(course['provider'])}</p>
 	  				<p> Instructor: {this.highlight(course['instructor'])}</p>
 	  				<p> Description: {this.highlight(course['desc'])}</p>
 	  				<p> Related Subjects: {this.highlight(this.getSubject(course['subject-id'])) }  </p>
 				</tr>
-			</Link>
+			
 		</Row>
 	    )
     }
@@ -111,12 +111,13 @@ class SearchPage extends Component{
 	    var subjectsArr = subjects.slice(firstInd, lastInd)
     	list = subjectsArr.map((subject,i) =>
 				<Row key={i}>
-    		<Link to={`/subjects/${subject.id}`}>
 		      	<tr>
-	  				<h3> Subject: {this.highlight(subject["subject"])} </h3>
+    				<Link to={`/subjects/${subject.id}`}>
+	  					<h3> Subject: {this.highlight(subject["subject"])} </h3>
+					</Link>
+
 	  				<p> Provider: {this.highlight(subject.provider)} </p>
 				</tr>
-			</Link>
 		</Row>
 	    )
     }
@@ -127,15 +128,15 @@ class SearchPage extends Component{
 	    var jobArr = jobs.slice(firstInd, lastInd)
     	list = jobArr.map((job,i) =>
 			<Row key={i}>
-    		<Link to={`/jobs/${job.id}`}>
 		      	<tr>
-	  				<h3>Job: {this.highlight(job.name)} </h3>
+    				<Link to={`/jobs/${job.id}`}>
+	  					<h3>Job: {this.highlight(job.name)} </h3>
+					</Link>
 	  				<p>Provider: {this.highlight(job.provider)} </p>
 	  				<p>Type: {this.highlight(job.jobtype)} </p>
 	  				<p>Location: {this.highlight(job.location)} </p>
 	  				<p>Description: {this.highlight(job.desc)} </p>
 				</tr>
-			</Link>
 			</Row>
 	    )
     }
