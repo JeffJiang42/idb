@@ -9,6 +9,7 @@ PFILES :=                   \
     test_courses_filter_search\
     test_subjects_filter_search\
     test_jobs_filter_search\
+    test_search_page.py\
 
 
 
@@ -44,5 +45,6 @@ travis:
 	python test_jobs.py
 	python test_jobs_filter_search.py
 	python test_about.py
+	python test_search_page.py
 
 	ls -al
