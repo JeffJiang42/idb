@@ -10,16 +10,781 @@
 			"description": "",
 			"item": [
 				{
+					"name": "Subject Filtering",
+					"description": "",
+					"item": [
+						{
+							"name": "Provider",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "98384cdd-87bd-4868-8430-9c56a3bfacc8",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+											"    ",
+											"    for (let subject of jsonData){",
+											"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Provider\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let subject of jsonData){",
+											"       pm.expect(subject[\"provider\"]).to.equal(\"Khan Academy\");",
+											"   }",
+											"});",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?provider=Khan Academy",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "provider",
+											"value": "Khan Academy"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Union",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3ce49ad4-2442-4f94-a26d-45a4abf12610",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+											"    ",
+											"    for (let subject of jsonData){",
+											"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Provider Union\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let khan = 0;",
+											"   let udemy = 0;",
+											"   let bad = 0;",
+											"   for (let subject of jsonData){",
+											"       if (subject[\"provider\"]==\"Khan Academy\") {",
+											"           khan = 1;",
+											"       } else if (subject[\"provider\"]==\"Udemy\") {",
+											"           udemy = 1;",
+											"       } else{",
+											"           bad = 1;",
+											"       }",
+											"       ",
+											"   }",
+											"   pm.expect(bad).to.equal(0);",
+											"   pm.expect(khan).to.equal(1);",
+											"   pm.expect(udemy).to.equal(1);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?provider=Khan Academy&provider=Udemy",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "provider",
+											"value": "Khan Academy"
+										},
+										{
+											"key": "provider",
+											"value": "Udemy"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Intersection",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4c0fe8f6-1715-4ad3-bb90-d776602a47af",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+											"    ",
+											"    for (let subject of jsonData){",
+											"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Provider and Courses\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let subject of jsonData){",
+											"       pm.expect(subject[\"provider\"]).to.equal(\"Khan Academy\");",
+											"       pm.expect(subject[\"num-courses\"]).to.be.at.least(0);",
+											"       pm.expect(subject[\"num-courses\"]).to.be.at.most(100);",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?provider=Khan Academy&num-courses={{range}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "provider",
+											"value": "Khan Academy"
+										},
+										{
+											"key": "num-courses",
+											"value": "{{range}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d3e66033-ea30-4e22-bfb3-6100e29a5e71",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"pm.test(\"Error Check\", function() {",
+											"    pm.expect(pm.response.json().error).to.eql(\"ayy_invalid_filter\")",
+											"})",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?{{invalid_filter}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "{{invalid_filter}}",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ddebcbcd-78c1-4aa2-90c7-933a3a157f90",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+											"    ",
+											"    for (let subject of jsonData){",
+											"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Range\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let subject of jsonData){",
+											"       pm.expect(subject[\"num-courses\"]).to.be.at.least(0);",
+											"       pm.expect(subject[\"num-courses\"]).to.be.at.most(100);",
+											"   }",
+											"});",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?num-courses={{range}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "num-courses",
+											"value": "{{range}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Courses Lower",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5245fa1f-a1e0-43fe-b3c3-40f899be0692",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+											"    ",
+											"    for (let subject of jsonData){",
+											"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Range\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let subject of jsonData){",
+											"       pm.expect(subject[\"num-courses\"]).to.be.at.least(100);",
+											"   }",
+											"});",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?num-courses={{floor}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "num-courses",
+											"value": "{{floor}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Courses Upper",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c5dc9271-093c-443c-a3fe-4b545ff2b4a0",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+											"    ",
+											"    for (let subject of jsonData){",
+											"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Range\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let subject of jsonData){",
+											"       pm.expect(subject[\"num-courses\"]).to.be.at.most(200);",
+											"   }",
+											"});",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?num-courses={{ceil}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "num-courses",
+											"value": "{{ceil}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Subject Sorts",
+					"description": "",
+					"item": [
+						{
+							"name": "ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "33a7ed9f-8ea5-4d97-a940-ed8d00342596",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+											"    ",
+											"    for (let subject of jsonData){",
+											"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let subject of jsonData){",
+											"       if (last === null){",
+											"           last = subject[\"id\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(subject[\"id\"]).to.be.least(last);",
+											"       last = subject[\"id\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?sort_by=id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "id"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID Reverse",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c1f8e4b6-ca06-4fba-8c91-4e966b375c51",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+											"    ",
+											"    for (let subject of jsonData){",
+											"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let subject of jsonData){",
+											"       if (last === null){",
+											"           last = subject[\"id\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(subject[\"id\"]).to.be.most(last);",
+											"       last = subject[\"id\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?sort_by=id&desc=true",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "id"
+										},
+										{
+											"key": "desc",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4e1d19aa-5bdf-40be-91c3-12991be27bc9",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+											"    ",
+											"    for (let subject of jsonData){",
+											"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let subject of jsonData){",
+											"       if (last === null){",
+											"           last = subject[\"num-courses\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(subject[\"num-courses\"]).to.be.least(last);",
+											"       last = subject[\"num-courses\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?sort_by=num-courses",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "num-courses"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Courses Reverse",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7e56e09b-23db-4512-91bb-2d64fe9ca48b",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+											"    ",
+											"    for (let subject of jsonData){",
+											"        pm.expect(tv4.validate(subject,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let subject of jsonData){",
+											"       if (last === null){",
+											"           last = subject[\"num-courses\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(subject[\"num-courses\"]).to.be.most(last);",
+											"       last = subject[\"num-courses\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?sort_by=num-courses&desc=true",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "num-courses"
+										},
+										{
+											"key": "desc",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76adc481-a84a-4160-aa61-7a7faa8a4429",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"pm.test(\"Error Check\", function() {",
+											"    pm.expect(pm.response.json().error).to.eql(\"ayylmao_invalid_parameter\")",
+											"})"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?sort_by=ayylmao",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "ayylmao"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Multiple",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8ff5bd69-f47d-42af-8af3-db0ef4edc16c",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"pm.test(\"Error Check\", function() {",
+											"    pm.expect(pm.response.json().error).to.eql(\"too_many_sorts\")",
+											"})"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/subjects?sort_by=id&sort_by=num-courses",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"subjects"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "id"
+										},
+										{
+											"key": "sort_by",
+											"value": "num-courses"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "Subject - SubjectID",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b383f4ef-9b23-49e3-9710-6b7b997b3fa9",
+								"id": "5d91bddc-2f62-4de6-8da9-252c59240a98",
 								"type": "text/javascript",
 								"exec": [
 									"schema = { \t",
-									"\t\"required\": [\"id\",\"subject\", \"provider\",\"image\",\"course-ids\",\"job-ids\"],",
+									"\t\"required\": [\"id\",\"subject\", \"provider\",\"image\",\"course-ids\",\"job-ids\",\"num-courses\"],",
 									"  \t\"properties\": {",
 									"       \"id\": {",
 									"           \"type\": \"integer\",",
@@ -48,6 +813,11 @@
 									"        \t\"items\": {",
 									"        \t    \"type\": \"integer\"",
 									"        \t}",
+									"        },",
+									"        \"num-courses\": {",
+									"            \"anyOf\": [",
+									"                { \"type\": ['null', 'integer'] },",
+									"                ],",
 									"        }",
 									"\t}",
 									"};",
@@ -480,6 +1250,952 @@
 			"description": "",
 			"item": [
 				{
+					"name": "Course Filtering",
+					"description": "",
+					"item": [
+						{
+							"name": "Provider",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "826292b7-ad65-4e5c-82e5-636745b7a208",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Provider\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let course of jsonData){",
+											"       pm.expect(course[\"provider\"]).to.equal(\"Khan Academy\");",
+											"   }",
+											"});",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?provider=Khan Academy",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "provider",
+											"value": "Khan Academy"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Price",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "08287579-a22f-4c6c-8a20-5d1b58b22f53",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Range\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let course of jsonData){",
+											"       pm.expect(course[\"price\"]).to.be.at.least(0);",
+											"       pm.expect(course[\"price\"]).to.be.at.most(20);",
+											"   }",
+											"});",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?price=0..20",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "price",
+											"value": "0..20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Jobs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7c91e378-72c2-468f-9136-d1c502956e39",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Range\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let course of jsonData){",
+											"       pm.expect(course[\"num-relevant-jobs\"]).to.be.at.least(100);",
+											"       pm.expect(course[\"num-relevant-jobs\"]).to.be.at.most(200);",
+											"   }",
+											"});",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?num-relevant-jobs=100..200",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "num-relevant-jobs",
+											"value": "100..200"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Jobs Lower",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3cddedb1-bba9-4dfb-a45c-d0393e4284d6",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Range\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let course of jsonData){",
+											"       pm.expect(course[\"num-relevant-jobs\"]).to.be.at.least(100);",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?num-relevant-jobs={{floor}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "num-relevant-jobs",
+											"value": "{{floor}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Jobs Upper",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ccd14787-a0ae-470b-8c07-1f3f83cb22dd",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Range\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let course of jsonData){",
+											"       pm.expect(course[\"num-relevant-jobs\"]).to.be.at.most(5);",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?num-relevant-jobs=..5",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "num-relevant-jobs",
+											"value": "..5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Union",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4c122d0e-5c98-498b-9279-9acf6cd24689",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Price Union\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let twenty = 0;",
+											"   let thirty = 0;",
+											"   let bad = 0;",
+											"   for (let course of jsonData){",
+											"       if (course[\"price\"]<=20 && course[\"price\"]>=0) {",
+											"           twenty = 1;",
+											"       } else if (course[\"price\"]<=30 && course[\"price\"]>=25) {",
+											"           thirty = 1;",
+											"       } else{",
+											"           bad = 1;",
+											"       }",
+											"    }",
+											"    pm.expect(bad).to.equal(0);",
+											"    pm.expect(twenty).to.equal(1);",
+											"    pm.expect(thirty).to.equal(1);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?price=0..20&price=25..30",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "price",
+											"value": "0..20"
+										},
+										{
+											"key": "price",
+											"value": "25..30"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Intersection",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "43667deb-c96b-473e-9c84-cabbc3af492a",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Provider and Jobs\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let course of jsonData){",
+											"       pm.expect(course[\"provider\"]).to.equal(\"Khan Academy\");",
+											"       pm.expect(course[\"num-relevant-jobs\"]).to.be.at.least(0);",
+											"       pm.expect(course[\"num-relevant-jobs\"]).to.be.at.most(20);",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?provider=Khan Academy&num-relevant-jobs=0..10",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "provider",
+											"value": "Khan Academy"
+										},
+										{
+											"key": "num-relevant-jobs",
+											"value": "0..10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f69851b6-2c42-47b6-b140-65a89651999b",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"pm.test(\"Error Check\", function() {",
+											"    pm.expect(pm.response.json().error).to.eql(\"ayy_invalid_filter\")",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?{{invalid_filter}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "{{invalid_filter}}",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Course Sorts",
+					"description": "",
+					"item": [
+						{
+							"name": "ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "410bddcf-2ed4-4508-a471-8c39fb8fee3c",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let course of jsonData){",
+											"       if (last === null){",
+											"           last = course[\"id\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(course[\"id\"]).to.be.least(last);",
+											"       last = course[\"id\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?sort_by=id&limit=100",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "id"
+										},
+										{
+											"key": "limit",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID Reverse",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "052d657e-9722-43ae-b0c6-3f80f9ce1187",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let course of jsonData){",
+											"       if (last === null){",
+											"           last = course[\"id\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(course[\"id\"]).to.be.most(last);",
+											"       last = course[\"id\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?sort_by=id&desc=true&limit=100",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "id"
+										},
+										{
+											"key": "desc",
+											"value": "true"
+										},
+										{
+											"key": "limit",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Relevant-Jobs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ddb46196-62cb-4bed-aea3-868029027205",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let course of jsonData){",
+											"       if (last === null){",
+											"           last = course[\"num-relevant-jobs\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(course[\"num-relevant-jobs\"]).to.be.least(last);",
+											"       last = course[\"num-relevant-jobs\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?sort_by=num-relevant-jobs&limit=100",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "num-relevant-jobs"
+										},
+										{
+											"key": "limit",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Relevant-Jobs Reverse",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6159593e-f4e4-4574-a0bd-f47b828d26b3",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+											"    ",
+											"    for (let course of jsonData){",
+											"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let course of jsonData){",
+											"       if (last === null){",
+											"           last = course[\"num-relevant-jobs\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(course[\"num-relevant-jobs\"]).to.be.most(last);",
+											"       last = course[\"num-relevant-jobs\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?sort_by=num-relevant-jobs&desc=true&limit=100",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "num-relevant-jobs"
+										},
+										{
+											"key": "desc",
+											"value": "true"
+										},
+										{
+											"key": "limit",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76adc481-a84a-4160-aa61-7a7faa8a4429",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"pm.test(\"Error Check\", function() {",
+											"    pm.expect(pm.response.json().error).to.eql(\"ayylmao_invalid_parameter\")",
+											"})"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?sort_by=ayylmao",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "ayylmao"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Multiple",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8ff5bd69-f47d-42af-8af3-db0ef4edc16c",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"pm.test(\"Error Check\", function() {",
+											"    pm.expect(pm.response.json().error).to.eql(\"too_many_sorts\")",
+											"})"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/courses?sort_by=id&sort_by=num-courses",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"courses"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "id"
+										},
+										{
+											"key": "sort_by",
+											"value": "num-courses"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Course - CourseID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5af1fc27-8a03-4fbb-b990-10500bb9421a",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"    });",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    let jsonData = pm.response.json();",
+									"    let schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+									"    ",
+									"    for (let course of jsonData) {",
+									"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
+									"    }",
+									"    ",
+									"});",
+									"",
+									"pm.test(\"Single Check\", function () {",
+									"   let jsonData = pm.response.json();",
+									"   pm.expect(jsonData.length).to.equal(1); ",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d75d08e7-093e-4f61-b528-5c717cdf8b97",
+								"type": "text/javascript",
+								"exec": [
+									"var schema = {",
+									"    \t\"required\": ['id', 'course', 'desc', 'image', 'instructor', 'link', 'price', 'provider', 'job-ids', 'subject-id','num-relevant-jobs'],",
+									"      \t\"properties\": {",
+									"           \"id\": {",
+									"               \"type\": \"integer\",",
+									"               \"minimum\": 0",
+									"            },",
+									"            \"course\": {",
+									"                \"type\": \"string\",",
+									"                \"minLength\": 1",
+									"            },",
+									"            \"desc\": {",
+									"                \"anyOf\": [",
+									"                { \"type\": ['null', 'string'] }",
+									"                ]",
+									"            },",
+									"            \"image\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"instructor\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"link\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"price\": {",
+									"            \t\"type\": \"number\"",
+									"            },",
+									"            \"provider\": {",
+									"            \t\"type\": \"string\",",
+									"            \t\"minLength\": 1",
+									"            },",
+									"            \"job-ids\": {",
+									"            \t\"type\": \"array\",",
+									"            \t\"items\": {",
+									"            \t    \"type\": \"integer\"",
+									"            \t}",
+									"            },",
+									"            \"subject-id\": {",
+									"            \t\"type\": \"integer\",",
+									"            \t\"minimum\": 0",
+									"            },",
+									"            \"num-relevant-jobs\": {",
+									"                \"anyOf\": [",
+									"                { \"type\": ['null', 'integer'] },",
+									"                ],",
+									"            }",
+									"    \t}",
+									"};",
+									"pm.globals.set(\"courseSchema\", JSON.stringify(schema));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/courses?{{cid}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "{{cid}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Course - SubjectID",
 					"event": [
 						{
@@ -558,117 +2274,6 @@
 								},
 								{
 									"key": "{{limit}}",
-									"value": null
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Course - CourseID",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "5af1fc27-8a03-4fbb-b990-10500bb9421a",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Response Check\", function () {",
-									"        pm.response.to.be.ok;",
-									"    });",
-									"",
-									"// does most of our tests in one",
-									"pm.test(\"Schema Check\", function() {",
-									"    let jsonData = pm.response.json();",
-									"    let schema = JSON.parse(pm.globals.get(\"courseSchema\"));",
-									"    ",
-									"    for (let course of jsonData) {",
-									"        pm.expect(tv4.validate(course,schema,false,true),tv4.error).to.be.true;",
-									"    }",
-									"    ",
-									"});",
-									"",
-									"pm.test(\"Single Check\", function () {",
-									"   let jsonData = pm.response.json();",
-									"   pm.expect(jsonData.length).to.equal(1); ",
-									"});"
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "919ddcae-3dba-47c0-8716-e18d08da9600",
-								"type": "text/javascript",
-								"exec": [
-									"var schema = {",
-									"    \t\"required\": ['id', 'course', 'desc', 'image', 'instructor', 'link', 'price', 'provider', 'job-ids', 'subject-id'],",
-									"      \t\"properties\": {",
-									"           \"id\": {",
-									"               \"type\": \"integer\",",
-									"               \"minimum\": 0",
-									"            },",
-									"            \"course\": {",
-									"                \"type\": \"string\",",
-									"                \"minLength\": 1",
-									"            },",
-									"            \"desc\": {",
-									"            \t\"type\": \"string\",",
-									"            \t\"minLength\": 1",
-									"            },",
-									"            \"image\": {",
-									"            \t\"type\": \"string\",",
-									"            \t\"minLength\": 1",
-									"            },",
-									"            \"instructor\": {",
-									"            \t\"type\": \"string\",",
-									"            \t\"minLength\": 1",
-									"            },",
-									"            \"link\": {",
-									"            \t\"type\": \"string\",",
-									"            \t\"minLength\": 1",
-									"            },",
-									"            \"price\": {",
-									"            \t\"type\": \"string\",",
-									"            \t\"minLength\": 1",
-									"            },",
-									"            \"provider\": {",
-									"            \t\"type\": \"string\",",
-									"            \t\"minLength\": 1",
-									"            },",
-									"            \"job-ids\": {",
-									"            \t\"type\": \"array\",",
-									"            \t\"items\": {",
-									"            \t    \"type\": \"integer\"",
-									"            \t}",
-									"            },",
-									"            \"subject-id\": {",
-									"            \t\"type\": \"integer\",",
-									"            \t\"minimum\": 0",
-									"            }",
-									"    \t}",
-									"};",
-									"pm.globals.set(\"courseSchema\", JSON.stringify(schema));"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"url": {
-							"raw": "{{url}}/courses?{{cid}}",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"courses"
-							],
-							"query": [
-								{
-									"key": "{{cid}}",
 									"value": null
 								}
 							]
@@ -972,6 +2577,827 @@
 			"description": "",
 			"item": [
 				{
+					"name": "Job Filtering",
+					"description": "",
+					"item": [
+						{
+							"name": "Provider",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "db45363f-a605-4796-a7dd-899a0b54ffad",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Provider\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let job of jsonData){",
+											"       pm.expect(job[\"provider\"]).to.equal(\"Khan Academy\");",
+											"   }",
+											"});",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?provider=Khan Academy",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "provider",
+											"value": "Khan Academy"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Job Type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2f5614ae-8024-431c-8211-285ca919ab95",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Job Type\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let job of jsonData){",
+											"       pm.expect(job[\"jobtype\"].toUpperCase()).to.be.equal(\"PART-TIME\");",
+											"   }",
+											"});",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?jobtype=part-time",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "jobtype",
+											"value": "part-time"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d124ff72-7b46-49ac-8c78-cf4657af0e00",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Range\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let job of jsonData){",
+											"       pm.expect(job[\"num-related-courses\"]).to.be.at.least(100);",
+											"       pm.expect(job[\"num-related-courses\"]).to.be.at.most(200);",
+											"   }",
+											"});",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?num-related-courses=100..200",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "num-related-courses",
+											"value": "100..200"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Courses Lower",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "35105644-bf4e-41bb-bab4-727d64380258",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Range\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let job of jsonData){",
+											"       pm.expect(job[\"num-related-courses\"]).to.be.at.least(100);",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?num-related-courses={{floor}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "num-related-courses",
+											"value": "{{floor}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Jobs Upper",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "fa54a0b1-d4b4-4b93-b742-061f88cd49c7",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Range\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let job of jsonData){",
+											"       pm.expect(job[\"num-related-courses\"]).to.be.at.most(200);",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?num-related-courses={{ceil}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "num-related-courses",
+											"value": "{{ceil}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Union",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6965511a-ba5f-4891-85b9-92afc951bac3",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Job Type\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let first = 0;",
+											"   let second = 0;",
+											"   let bad = 0;",
+											"   for (let job of jsonData){",
+											"       let val = job[\"jobtype\"].toUpperCase();",
+											"       if (val==\"CONTRACT\"){",
+											"           first = 1;",
+											"       } else if (val==\"PART-TIME\"){",
+											"           second = 1;",
+											"       } else{",
+											"           bad = 1;",
+											"       }",
+											"   }",
+											"   pm.expect(bad).to.equal(0);",
+											"   pm.expect(first).to.equal(1);",
+											"   pm.expect(second).to.equal(1);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?jobtype=contract&jobtype=part-time",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "jobtype",
+											"value": "contract"
+										},
+										{
+											"key": "jobtype",
+											"value": "part-time"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Intersection",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f4f3626f-7572-4f14-9492-2e3bc5195235",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Provider and Jobs\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   for (let job of jsonData){",
+											"       pm.expect(job[\"provider\"]).to.equal(\"Authentic Jobs\");",
+											"       pm.expect(job[\"jobtype\"].toUpperCase()).to.equal(\"PART-TIME\");",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?provider=authentic jobs&jobtype=part-time",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "provider",
+											"value": "authentic jobs"
+										},
+										{
+											"key": "jobtype",
+											"value": "part-time"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "92b6b1c1-86e5-45cc-9b79-e433c2fcaa61",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"pm.test(\"Error Check\", function() {",
+											"    pm.expect(pm.response.json().error).to.eql(\"ayy_invalid_filter\")",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?{{invalid_filter}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "{{invalid_filter}}",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Job Sorts",
+					"description": "",
+					"item": [
+						{
+							"name": "ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "dc4d885b-3443-4ea7-857c-e126f1fb7f6f",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let job of jsonData){",
+											"       if (last === null){",
+											"           last = job[\"id\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(job[\"id\"]).to.be.least(last);",
+											"       last = job[\"id\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?sort_by=id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "id"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID Reverse",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "91ecb62f-caa1-4e2b-a068-4ec012659fc3",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let job of jsonData){",
+											"       if (last === null){",
+											"           last = job[\"id\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(job[\"id\"]).to.be.most(last);",
+											"       last = job[\"id\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?sort_by=id&desc=true",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "id"
+										},
+										{
+											"key": "desc",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Relevant-Jobs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2997926c-6f64-49f4-a302-85251d8aadeb",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let job of jsonData){",
+											"       if (last === null){",
+											"           last = job[\"num-related-courses\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(job[\"num-related-courses\"]).to.be.least(last);",
+											"       last = job[\"num-related-courses\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?sort_by=num-related-courses&limit=20",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "num-related-courses"
+										},
+										{
+											"key": "limit",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Num-Relevant-Jobs Reverse",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8334e4be-92c8-4ec4-b012-4a63d3fe9cc6",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"// does most of our tests in one",
+											"pm.test(\"Schema Check\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    const schema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+											"    ",
+											"    for (let job of jsonData){",
+											"        pm.expect(tv4.validate(job,schema,false,true),tv4.error).to.be.true;",
+											"    }",
+											"});",
+											"    ",
+											"pm.test(\"Correct Sort\", function () {",
+											"   let jsonData = pm.response.json();",
+											"   let last = null;",
+											"   for (let job of jsonData){",
+											"       if (last === null){",
+											"           last = job[\"num-related-courses\"];",
+											"           continue;",
+											"       }",
+											"       pm.expect(job[\"num-related-courses\"]).to.be.most(last);",
+											"       last = job[\"num-related-courses\"];",
+											"   }",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?sort_by=num-related-courses&desc=true&limit=20",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "num-related-courses"
+										},
+										{
+											"key": "desc",
+											"value": "true"
+										},
+										{
+											"key": "limit",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76adc481-a84a-4160-aa61-7a7faa8a4429",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"pm.test(\"Error Check\", function() {",
+											"    pm.expect(pm.response.json().error).to.eql(\"ayylmao_invalid_parameter\")",
+											"})"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?sort_by=ayylmao",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "ayylmao"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Multiple",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8ff5bd69-f47d-42af-8af3-db0ef4edc16c",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Response Check\", function () {",
+											"        pm.response.to.be.ok;",
+											"});",
+											"",
+											"pm.test(\"Error Check\", function() {",
+											"    pm.expect(pm.response.json().error).to.eql(\"too_many_sorts\")",
+											"})"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/jobs?sort_by=id&sort_by=num-related-courses",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "id"
+										},
+										{
+											"key": "sort_by",
+											"value": "num-related-courses"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "Job - JobID",
 					"event": [
 						{
@@ -1005,11 +3431,11 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "6132bf9e-06b9-4dbb-a8e9-04fe4e707104",
+								"id": "30dbd21d-7de2-4393-9947-5375b054e5c8",
 								"type": "text/javascript",
 								"exec": [
 									"var schema = {",
-									"    \t\"required\": ['id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'course-ids', 'subject-ids', 'location', 'jobtype'],",
+									"    \t\"required\": ['id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'course-ids', 'subject-ids', 'location', 'jobtype','num-related-courses'],",
 									"      \t\"properties\": {",
 									"           \"id\": {",
 									"               \"type\": \"integer\",",
@@ -1058,6 +3484,11 @@
 									"            \"jobtype\": {",
 									"                \"type\": \"string\",",
 									"                \"minLength\": 1",
+									"            },",
+									"            \"num-related-courses\": {",
+									"                anyOf: [",
+									"                { type: ['null', 'integer'] },",
+									"                ],",
 									"            }",
 									"    \t}",
 									"};",
@@ -1457,6 +3888,182 @@
 								{
 									"key": "limit",
 									"value": "-5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"description": "",
+			"item": [
+				{
+					"name": "Basic Search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0488ac53-fe8b-4df6-ae31-98c715d09d7e",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"});",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    const subjectSchema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+									"    const courseSchema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+									"    const jobSchema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+									"    ",
+									"    for (let key in jsonData){",
+									"        if (jsonData.hasOwnProperty(key)){",
+									"            model = jsonData[key];",
+									"            for (let result of model) {",
+									"                if (key == \"courses\") {",
+									"                    pm.expect(tv4.validate(result,courseSchema,false,true),tv4.error).to.be.true;",
+									"                } else if (key == \"jobs\") {",
+									"                    pm.expect(tv4.validate(result,jobSchema,false,true),tv4.error).to.be.true;",
+									"                } else {",
+									"                    pm.expect(tv4.validate(result,subjectSchema,false,true),tv4.error).to.be.true;",
+									"                }",
+									"        }",
+									"        }",
+									"        ",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Contains Search\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    ",
+									"    for (let key in jsonData){",
+									"        if (jsonData.hasOwnProperty(key)){",
+									"            model = jsonData[key];",
+									"            for (let result of model) {",
+									"                let ok = 0;",
+									"                if (key == \"courses\") {",
+									"                    if (result[\"course\"].toUpperCase().includes(\"COMPUTER\") || result[\"desc\"].toUpperCase().includes(\"COMPUTER\")){",
+									"                        ok = 1;",
+									"                    }",
+									"                } else if (key == \"jobs\") {",
+									"                    if (result[\"name\"].toUpperCase().includes(\"COMPUTER\") || result[\"desc\"].toUpperCase().includes(\"COMPUTER\")){",
+									"                        ok = 1;",
+									"                    }",
+									"                } else {",
+									"                    if (result[\"subject\"].toUpperCase().includes(\"COMPUTER\") || result[\"desc\"].toUpperCase().includes(\"COMPUTER\")){",
+									"                        ok = 1;",
+									"                    }",
+									"                }",
+									"                pm.expect(ok).to.be.equal(1);",
+									"            }",
+									"        }",
+									"        ",
+									"    }",
+									"});",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/search?q=computer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "computer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty Search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4d482549-ed3d-45ae-8b46-a7546df03b13",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response Check\", function () {",
+									"        pm.response.to.be.ok;",
+									"});",
+									"",
+									"// does most of our tests in one",
+									"pm.test(\"Schema Check\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    const subjectSchema = JSON.parse(pm.globals.get(\"subjectSchema\"));",
+									"    const courseSchema = JSON.parse(pm.globals.get(\"courseSchema\"));",
+									"    const jobSchema = JSON.parse(pm.globals.get(\"jobSchema\"));",
+									"    ",
+									"    for (let key in jsonData){",
+									"        if (jsonData.hasOwnProperty(key)){",
+									"            model = jsonData[key];",
+									"            for (let result of model) {",
+									"                if (key == \"courses\") {",
+									"                    pm.expect(tv4.validate(result,courseSchema,false,true),tv4.error).to.be.true;",
+									"                } else if (key == \"jobs\") {",
+									"                    pm.expect(tv4.validate(result,jobSchema,false,true),tv4.error).to.be.true;",
+									"                } else {",
+									"                    pm.expect(tv4.validate(result,subjectSchema,false,true),tv4.error).to.be.true;",
+									"                }",
+									"        }",
+									"        }",
+									"        ",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Empty Search\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    ",
+									"    for (let key in jsonData){",
+									"        if (jsonData.hasOwnProperty(key)){",
+									"            model = jsonData[key];",
+									"            pm.expect(model.length).to.be.equal(0);",
+									"        }",
+									"        ",
+									"    }",
+									"});",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/search?q=asdfasldfkj",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "asdfasldfkj"
 								}
 							]
 						}
