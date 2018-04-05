@@ -10,7 +10,9 @@ var card_remove_border = {
     'borderStyle': 'none'
 };
 
-const sortQueries = ["provider", "provider&desc=TRUE", "num-courses", "num-courses&desc=TRUE"]
+const providers = ["Khan Academy", "Udemy"]
+const sortQueries = ["subject", "subject&desc=TRUE", "provider", "provider&desc=TRUE", "num-courses", "num-courses&desc=TRUE"]
+const numCourse = ["0..20", "20..40", "40..60", "60..80", "80..100", "100.."]
 
 class Subjects extends Component{
   constructor(props){
@@ -24,34 +26,84 @@ class Subjects extends Component{
       filterOpen: false,
       providerOption: '',
       sortOption: '',
+      numCourseOption:'',
+      queries: [],
       url:'http://api.learning2earn.me/subjects'
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.sortChange = this.sortChange.bind(this)
+    this.makeQuery = this.makeQuery.bind(this)
+    this.providerChange = this.providerChange.bind(this)
+    this.numCourseChange = this.numCourseChange.bind(this)
+  }
+
+  providerChange(choice){
+    this.setState({providerOption: choice})
+    var choiceArr = choice.split(',')
+    choiceArr = choiceArr.map((a) => {return encodeURI(providers[parseInt(a)-1])})
+    console.log(choiceArr)
+    if (!(choiceArr.includes(NaN) || choice == '' || choice == null)){
+        this.state.queries.providers = ''
+        for (let c in choiceArr){
+          console.log('Choices ' + choiceArr[c])
+          this.state.queries.providers += 'provider=' + choiceArr[c]
+          if (c < choiceArr.length -1){
+            this.state.queries.providers += '&'
+          }
+        }
+    console.log(this.state.queries)
+    }
+    else{
+      delete this.state.queries.providers
+    }
+    this.makeQuery()
+  }
+
+  numCourseChange(choice){
+    this.setState({numCourseOption: choice})
+    if (choice != null){
+      this.state.queries.numCourse = ("num-courses=" + numCourse[choice-1])
+    }
+    else{
+      delete this.state.queries.numCourse
+    }
+    this.makeQuery()
   }
 
   sortChange(choice){
     this.setState({sortOption: choice})
-    var url = ''
-    if (choice != null){
-      //TODO make this work with filtering (using & instead of ?) when it's there
-      url = this.state.url + '?sort_by=' + sortQueries[choice - 1]
-      fetch(url)
-        .then((response) => {return response.json()})
-        .then((json) => {
-          var sorted = json
-          this.setState({subjectList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
-        })
+    //console.log(this.state.queries)
+    if(choice != null){
+      this.state.queries.sort = ("sort_by=" + sortQueries[choice-1])
+      //console.log(this.state.queries)
     }
     else{
-      url = this.state.url
-      fetch(url)
-        .then((response) => {return response.json()})
-        .then((json) => {
-          var sorted = json
-          this.setState({subjectList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
-        })
+      delete this.state.queries.sort
+    }
+    this.makeQuery()
+  }
+
+  makeQuery(){
+    var url = 'http://api.learning2earn.me/subjects'
+    var first = true
+    var queries = this.state.queries
+    console.log(queries)
+    for (let key in queries){
+      if (first){
+        url += '?' + queries[key]
+        first = false
       }
+      else{
+        url += '&' + queries[key]
+      }
+    }
+    console.log(url)
+    fetch(url)
+      .then((response) => {return response.json()})
+      .then((json) => {
+        var sorted = json
+        this.setState({subjectList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
+      })
   }
 
   handlePageChange(event){
@@ -62,6 +114,7 @@ class Subjects extends Component{
   componentWillMount(){
     const rehydrate = JSON.parse(localStorage.getItem('subjectSavedState'))
     this.setState(rehydrate)
+    this.setState({providerOption:'', sortOption:'', numCourseOption:''})
     const url = 'http://api.learning2earn.me/subjects';
 
     fetch(url)
@@ -75,13 +128,21 @@ class Subjects extends Component{
   }
 
   componentWillUnmount(){
-    localStorage.setItem('subjectSavedState', JSON.stringify(this.state))
+    var toSave = {
+      page: this.state.page,
+      providerOption: this.state.providerOption,
+      sortOption: this.state.sortOption
+    };
+    localStorage.setItem('subjectSavedState', JSON.stringify(toSave))
   }
 
   render(){
-      const filterOptions=[{label:"Provider", value: 1}]
-      const sortOptions=[{label: "Provider (Alphabetical)", value: 1}, {label:"Provider (Descending alphabetical)", value: 2},
-      {label: "Number of courses", value: 3}, {label:"Number of courses (Descending)", value: 4}]
+      const providerOptions=[{label:"Khan Academy", value: 1}, {label: "Udemy", value: 2}]
+      const numCourseOptions=[{label:"less than 20", value: 1}, {label:"between 20 and 40", value: 2},{label:"between 40 and 60", value: 3},
+      {label:"between 60 and 80", value: 4}, {label: "between 80 and 100", value: 5}, {label:"greater than 100", value: 6}]
+      const sortOptions=[{label: "Subject name (Alphabetical)", value: 1}, {label: "Subject name (Descending alphabetical)", value:2},
+      {label: "Provider (Alphabetical)", value: 3}, {label:"Provider (Descending alphabetical)", value: 4},
+      {label: "Number of courses", value: 5}, {label:"Number of courses (Descending)", value: 6}]
       //console.log(this.state.page);
       var {subjectList, page, pageSize, maxPage} = this.state
       var lastInd = page * pageSize
@@ -99,12 +160,18 @@ class Subjects extends Component{
         <div className='box'>
         <div className='Filters'>
           <h1 onClick={() => this.setState({filterOpen: !this.state.filterOpen})}>Filters</h1>
+          <br />
           <Collapse in={this.state.filterOpen}>
-            <Select options={filterOptions} />
+            <div>
+            <Select multi options={providerOptions} simpleValue value={this.state.providerOption} placeholder='Provider' onChange={this.providerChange} />
+            <Select options={numCourseOptions} simpleValue value={this.state.numCourseOption} placeholder='Number of courses' onChange={this.numCourseChange} />
+            </div>
           </Collapse>
         </div>
+        <br />
         <div className='Sorting'>
           <h1 onClick={() => this.setState({ sortOpen: !this.state.sortOpen})}>Sorting</h1>
+          <br />
           <Collapse in={this.state.sortOpen}>
             <Select options={sortOptions} simpleValue value={this.state.sortOption} placeholder='Sort by' onChange={this.sortChange} />
           </Collapse>
