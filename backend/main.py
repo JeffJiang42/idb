@@ -32,7 +32,6 @@ COURSE_FILTERS = {'provider': 'exact',
 JOB_FILTERS = {'company': 'exact',
                'num-related-courses': 'range',
                'location': 'exact',
-               'course': 'exact',
                'provider': 'exact',
                'jobtype': 'exact',
                'sort_by': 'exact',
@@ -144,8 +143,8 @@ def filter_query(args,type_):
                 else:
                     query += ' or'
                 if filter_type == 'exact':
-                    query += ' (' + column + ' = %s)'
-                    parts.append(value.title())
+                    query += ' (UPPER(' + column + ') = %s)'
+                    parts.append(value.upper())
                 elif filter_type == 'range':
                     range_ = value.split('..')
                     if len(range_) != 2:
