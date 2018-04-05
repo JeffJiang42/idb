@@ -51,6 +51,7 @@
 }
 
 .Filters, .Sorting {
+    background-color: white;
     border: solid 1px;
     border-color: #dddddd;
     border-radius: 5px;
