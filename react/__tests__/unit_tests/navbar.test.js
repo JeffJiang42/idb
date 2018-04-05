@@ -13,8 +13,9 @@ describe('Navigation Component', () => {
     const navbar = mount(<MyNavbar />)
     expect(navbar.find('img')).to.have.length(1)
   })
-  // it('5 links rendered', () => {
-  //   const navbar = mount(<MyNavbar />)
-  //   expect(navbar.find('NavItem')).to.have.length(4)
-  // })
+  it('5 links rendered', () => {
+    const navbar = mount(<MyNavbar />)
+    expect(navbar.find('NavItem')).to.have.length(5)
+  })
+
 })
