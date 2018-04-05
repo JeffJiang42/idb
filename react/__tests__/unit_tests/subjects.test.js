@@ -25,5 +25,9 @@ describe('Subjects Component', () => {
     expect(subjects.find('.Filters')).to.have.length(1)
   })
 
-
+  it('contains a sort function', () => {
+    const subjects = mount(<Subjects />);
+    expect(subjects.hasClass('Sorting'));
+    expect(subjects.find('.Sorting')).to.have.length(1)
+  })
 })
