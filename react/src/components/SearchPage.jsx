@@ -34,9 +34,6 @@ class SearchPage extends Component{
 	}
 	componentWillMount(){
 		console.log(this.props.match.params.query)
-		if (this.props.match.params.query == undefined){
-			return
-		}
 		this.setState({query: this.props.match.params.query.toLowerCase()})
 		const url = this.state.url + "?q=" + this.props.match.params.query.toLowerCase();
 
@@ -119,7 +116,7 @@ class SearchPage extends Component{
     }
     //jobs
     else{
-        var lastInd = this.state.page * this.state.pageSize
+      var lastInd = this.state.page * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var jobArr = jobs.slice(firstInd, lastInd)
     	list = jobArr.map((job,i) =>
