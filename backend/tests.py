@@ -140,6 +140,8 @@ class APIAuxFunctionTest(unittest.TestCase):
 
         args = {'sort_by': 'test'}
         type_ = 1
+        exception_str = ''
+        sort_str = ''
         try:
             sort_str = main.sort_by(args, type_)
         except Exception as e:
@@ -148,6 +150,8 @@ class APIAuxFunctionTest(unittest.TestCase):
 
         args = {'sort_by': 'test'}
         type_ = 2
+        exception_str = ''
+        sort_str = ''
         try:
             sort_str = main.sort_by(args, type_)
         except Exception as e:
@@ -177,10 +181,131 @@ class APIAuxFunctionTest(unittest.TestCase):
     def test_filter_query1(self):
         args = ImmutableMultiDict([('provider', 'Udemy')])
         type_ = 0
-        where_clause = main.filter_query(args, type_)
+        where_clause, data = main.filter_query(args, type_)
         self.assertTrue(where_clause == ' and ( (Subject.provider = %s))')
         self.assertTrue(len(data) == 1)
         self.assertTrue(data[0] == 'Udemy')
+
+        args = ImmutableMultiDict([('provider', 'Udemy')])
+        type_ = 1
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Course.provider = %s))')
+        self.assertTrue(len(data) == 1)
+        self.assertTrue(data[0] == 'Udemy')
+
+        args = ImmutableMultiDict([('provider', 'Github Jobs')])
+        type_ = 2
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Job.provider = %s))')
+        self.assertTrue(len(data) == 1)
+        self.assertTrue(data[0] == 'Github Jobs')
+
+    # check desired results of filtering
+    # single valid range params
+    def test_filter_query2(self):
+        args = ImmutableMultiDict([('num-courses', '0..10')])
+        type_ = 0
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Subject.num_courses BETWEEN %s AND %s))')
+        self.assertTrue(len(data) == 2)
+
+        args = ImmutableMultiDict([('price', '100..200')])
+        type_ = 1
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Course.price BETWEEN %s AND %s))')
+        self.assertTrue(len(data) == 2)
+
+        args = ImmutableMultiDict([('num-related-courses', '5..100')])
+        type_ = 2
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Job.num_related_courses BETWEEN %s AND %s))')
+        self.assertTrue(len(data) == 2)
+
+    # check desired results of filtering
+    # valid param, value doesnt exist
+    def test_filter_query3(self):
+        args = ImmutableMultiDict([('provider', 'test')])
+        type_ = 0
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Subject.provider = %s))')
+        self.assertTrue(len(data) == 1)
+        self.assertTrue(data[0] == 'Test')
+
+        args = ImmutableMultiDict([('provider', 'test')])
+        type_ = 1
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Course.provider = %s))')
+        self.assertTrue(len(data) == 1)
+        self.assertTrue(data[0] == 'Test')
+
+        args = ImmutableMultiDict([('provider', 'test')])
+        type_ = 2
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Job.provider = %s))')
+        self.assertTrue(len(data) == 1)
+        self.assertTrue(data[0] == 'Test')
+
+    # check desired results of filtering
+    # multiple valid params
+    def test_filter_query4(self):
+        args = ImmutableMultiDict([('provider', 'Udemy'), ('num-courses', '0..10')])
+        type_ = 0
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Subject.provider = %s)) and ( (Subject.num_courses BETWEEN %s AND %s))')
+        self.assertTrue(len(data) == 3)
+        self.assertTrue(data[0] == 'Udemy')
+
+        args = ImmutableMultiDict([('provider', 'Khan Academy'), ('price', '0..0')])
+        type_ = 1
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Course.provider = %s)) and ( (Course.price BETWEEN %s AND %s))')
+        self.assertTrue(len(data) == 3)
+        self.assertTrue(data[0] == 'Khan Academy')
+
+        args = ImmutableMultiDict([('provider', 'Github Jobs'), ('num-related-courses', '0..100')])
+        type_ = 2
+        where_clause, data = main.filter_query(args, type_)
+        self.assertTrue(where_clause == ' and ( (Job.provider = %s)) and ( (Job.num_related_courses BETWEEN %s AND %s))')
+        self.assertTrue(len(data) == 3)
+        self.assertTrue(data[0] == 'Github Jobs')
+
+    # check desired results of filtering
+    # invalid param
+    def test_filter_query1(self):
+        args = ImmutableMultiDict([('test', 'hello')])
+        type_ = 0
+        where_clause = ''
+        data = []
+        error_str = ''
+        try:
+            where_clause, data = main.filter_query(args, type_)
+        except Exception as e:
+            error_str = str(e)
+        self.assertTrue(error_str == 'test_invalid_parameter')
+
+        args = ImmutableMultiDict([('test', 'hello')])
+        type_ = 1
+        where_clause = ''
+        data = []
+        error_str = ''
+        try:
+            where_clause, data = main.filter_query(args, type_)
+        except Exception as e:
+            error_str = str(e)
+        self.assertTrue(error_str == 'test_invalid_parameter')
+
+        args = ImmutableMultiDict([('test', 'hello')])
+        type_ = 2
+        where_clause = ''
+        data = []
+        error_str = ''
+        try:
+            where_clause, data = main.filter_query(args, type_)
+        except Exception as e:
+            error_str = str(e)
+        self.assertTrue(error_str == 'test_invalid_parameter')
+        
+
 
 
 
