@@ -32,8 +32,9 @@ class SearchPage extends Component{
 		this.setState({display: newDisplay});
 	}
 	componentWillMount(){
-		this.setState({query: this.props.match.params.query})
-		const url = this.state.url + "?q=" + this.state.query.toLowerCase();
+		console.log(this.props.match.params.query)
+		this.setState({query: this.props.match.params.query.toLowerCase()})
+		const url = this.state.url + "?q=" + this.props.match.params.query.toLowerCase();
 
 	    fetch(url)
 	      .then((response) => {return response.json()})
@@ -50,7 +51,7 @@ class SearchPage extends Component{
 		    {
 	           this.setState({query: nextProps.match.params.query});
 		    }
-		const url = this.state.url + "?q=" + this.state.query.toLowerCase();
+		const url = this.state.url + "?q=" + nextProps.match.params.query.toLowerCase();
 
 	    fetch(url)
 	      .then((response) => {return response.json()})
