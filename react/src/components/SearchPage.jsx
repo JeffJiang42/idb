@@ -43,7 +43,7 @@ class SearchPage extends Component{
 	      })
 	      .catch((error) => {console.log(error.message); return []})
 	      .then((info) => {this.setState({courses: info.courses, jobs: info.jobs, subjects: info.subjects, maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize), maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize), maxPageSubjects: Math.ceil(info.subjects.length / this.state.pageSize)})})
-	      
+
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -61,7 +61,7 @@ class SearchPage extends Component{
 	      .catch((error) => {console.log(error.message); return []})
 	      .then((info) => {this.setState({courses: info.courses, jobs: info.jobs, subjects: info.subjects, maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize), maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize), maxPageSubjects: Math.ceil(info.subjects.length / this.state.pageSize)})})
 
-	} 
+	}
 	getSubject(subjectID){
 		var subName = async() => {await fetch('http://api.learning2earn.me/subjects?subjectId=' + subjectID)
 		.then((response) => {return response.json()})
@@ -89,6 +89,7 @@ class SearchPage extends Component{
 	    var courseArr = courses.slice(firstInd, lastInd);
 
     	list = courseArr.map((course,i) =>
+				<Row key={i}>
     		<Link to={`/courses/${course.id}`}>
 		      	<tr>
 	  				<h3> Course: {course['course']} </h3>
@@ -98,6 +99,7 @@ class SearchPage extends Component{
 	  				<p> Related Subjects: {this.getSubject(course['subject-id']) }  </p>
 				</tr>
 			</Link>
+		</Row>
 	    )
     }
     //subjects
@@ -107,12 +109,14 @@ class SearchPage extends Component{
 	    var subjectsArr = subjects.slice(firstInd, lastInd)
 
     	list = subjectsArr.map((subject,i) =>
+				<Row key={i}>
     		<Link to={`/subjects/${subject.id}`}>
 		      	<tr>
 	  				<h3> Subject: {subject["subject"]} </h3>
 	  				<p> Provider: {subject.provider} </p>
 				</tr>
 			</Link>
+		</Row>
 	    )
     }
     //jobs
@@ -121,7 +125,7 @@ class SearchPage extends Component{
 	    var firstInd = lastInd - this.state.pageSize
 	    var jobArr = jobs.slice(firstInd, lastInd)
     	list = jobArr.map((job,i) =>
-    	
+			<Row key={i}>
     		<Link to={`/jobs/${job.id}`}>
 		      	<tr>
 	  				<h3>Job: {job.name} </h3>
@@ -131,6 +135,7 @@ class SearchPage extends Component{
 	  				<p>Description: {job.desc} </p>
 				</tr>
 			</Link>
+			</Row>
 	    )
     }
     return(

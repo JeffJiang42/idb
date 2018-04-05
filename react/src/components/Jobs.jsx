@@ -169,7 +169,7 @@ class Jobs extends Component{
       .then((response) => {return response.json()})
       .then((json) => {
         var sorted = json
-        this.setState({jobList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
+        this.setState({jobList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)}, ()=>{console.log("length: " + this.state.jobList.length)})
       })
   }
 
