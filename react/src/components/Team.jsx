@@ -44,7 +44,7 @@ var info = [{
     'name': 'Kurtis David',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 69,
+    'unit_tests': 267,
     'image': 'https://i.imgur.com/cUfxaZU.jpg',
     'bio': kurtis_bio,
     'resp':kurtis_resp
@@ -52,7 +52,7 @@ var info = [{
     'name': 'William Chia',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 7,
+    'unit_tests': 17,
     'image': 'https://i.imgur.com/0PUOsTj.jpg',
     'bio': william_bio,
     'resp': william_resp
@@ -60,7 +60,7 @@ var info = [{
     'name': 'Brandon Chan',
     'commits': 0,
     'issues': 0,
-    'unit_tests': 25,
+    'unit_tests': 29,
     'image': 'https://i.imgur.com/3LhRT5l.jpg',
     'bio': brandon_bio,
     'resp': brandon_resp
