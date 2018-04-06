@@ -19,8 +19,13 @@ class SearchPage extends Component{
 			query: '',
       		url:'http://api.learning2earn.me/search',
       		display:0,
-      		pageSize: 32,
-      		page:'1',
+      		pageSize: 15,
+					coursePage: 1,
+					subjectPage: 1,
+					jobPage: 1,
+					maxPageJobs: 1,
+					maxPageSubjects: 1,
+					maxPageCourses: 1,
       		jobs: [],
       		courses: [],
       		subjects:[]
@@ -29,11 +34,27 @@ class SearchPage extends Component{
 		this.getSubject = this.getSubject.bind(this)
 		this.handleButtonClick = this.handleButtonClick.bind(this)
 		this.highlight = this.highlight.bind(this)
+		this.handleCoursePageChange = this.handleCoursePageChange.bind(this)
+		this.handleSubjectPageChange = this.handleSubjectPageChange.bind(this)
+		this.handleJobPageChange = this.handleJobPageChange.bind(this)
+	}
+
+	handleCoursePageChange(event){
+		this.setState({coursePage: event.selected+1})
+	}
+
+	handleSubjectPageChange(event){
+		this.setState({coursePage: event.selected+1})
+	}
+
+	handleJobPageChange(event){
+		this.setState({coursePage: event.selected+1})
 	}
 
 	handleButtonClick(newDisplay){
-		this.setState({display: newDisplay});
+		this.setState({display: newDisplay });
 	}
+
 	componentWillMount(){
 		this.setState({query: this.props.match.params.query.toLowerCase()})
 		const url = this.state.url + "?q=" + this.props.match.params.query.toLowerCase();
@@ -76,7 +97,7 @@ class SearchPage extends Component{
 	      return subName;
 	}
   	highlight(words){
-  		return <Highlighter searchWords={[this.state.query]} textToHighlight= {words}/> 
+  		return <Highlighter searchWords={[this.state.query]} textToHighlight= {words}/>
   	}
 
   render(){
@@ -85,12 +106,12 @@ class SearchPage extends Component{
     var results;
     //courses
     if(this.state.display == 0){
-    	var lastInd = this.state.page * this.state.pageSize
+    	var lastInd = this.state.coursePage * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var courseArr = courses.slice(firstInd, lastInd);
     	list = courseArr.map((course,i) =>
 				<Row key={i}>
-    		
+
 		      	<tr>
 		      	<Link to={`/courses/${course.id}`}>
 	  				<h3> Course: {this.highlight(course['course'])} </h3>
@@ -100,13 +121,13 @@ class SearchPage extends Component{
 	  				<p> Description: {this.highlight(course['desc'])}</p>
 	  				<p> Related Subjects: {this.highlight(this.getSubject(course['subject-id'])) }  </p>
 				</tr>
-			
+
 		</Row>
 	    )
     }
     //subjects
     else if(this.state.display == 1){
-    	var lastInd = this.state.page * this.state.pageSize
+    	var lastInd = this.state.subjectPage * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var subjectsArr = subjects.slice(firstInd, lastInd)
     	list = subjectsArr.map((subject,i) =>
@@ -123,7 +144,7 @@ class SearchPage extends Component{
     }
     //jobs
     else{
-      var lastInd = this.state.page * this.state.pageSize
+      var lastInd = this.state.jobPage * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var jobArr = jobs.slice(firstInd, lastInd)
     	list = jobArr.map((job,i) =>
@@ -143,8 +164,71 @@ class SearchPage extends Component{
 		if (list.length == 0){
 			list = <h1>No Search Results :(</h1>
 		}
-    return(
-		<div>
+		var courseStyle = ''
+		var subjectStyle = ''
+		var jobStyle = ''
+		if (this.state.display == 0){
+			courseStyle = {'dummy': 1}
+			subjectStyle = {display: 'none'}
+			jobStyle = {display: 'none'}
+		}
+		if (this.state.display == 1){
+			courseStyle = {'display': 'none'}
+			subjectStyle = {'dummy': 1}
+			jobStyle = {'display': 'none'}
+		}
+		if (this.state.display == 2){
+			courseStyle = {'display': 'none'}
+			subjectStyle = {'display': 'none'}
+			jobStyle = {'dummy': 1}
+		}
+		var coursePagination = 		<div style={courseStyle} >
+				<ReactPaginate
+										initialPage={this.state.coursePage-1}
+										previousLabel={"previous"}
+										nextLabel={"next"}
+										breakLabel={<a>...</a>}
+										breakClassName={"break-me"}
+										pageCount={this.state.maxPageCourses}
+										marginPagesDisplayed={2}
+										pageRangeDisplayed={5}
+										onPageChange={this.handleCoursePageChange}
+										containerClassName={"pagination"}
+										subContainerClassName={"pages pagination"}
+										activeClassName={"active"} />
+				 </div>
+		var subjectPagination = 		<div style={subjectStyle} >
+				<ReactPaginate
+										initialPage={this.state.subjectPage-1}
+										previousLabel={"previous"}
+										nextLabel={"next"}
+										breakLabel={<a>...</a>}
+										breakClassName={"break-me"}
+										pageCount={this.state.maxPageSubjects}
+										marginPagesDisplayed={2}
+										pageRangeDisplayed={5}
+										onPageChange={this.handlePageChange}
+										containerClassName={"pagination"}
+										subContainerClassName={"pages pagination"}
+										activeClassName={"active"} />
+				 </div>
+		var jobPagination = 		<div style={jobStyle} >
+				<ReactPaginate
+										initialPage={this.state.jobPage -1}
+										previousLabel={"previous"}
+										nextLabel={"next"}
+										breakLabel={<a>...</a>}
+										breakClassName={"break-me"}
+										pageCount={this.state.maxPageJobs}
+										marginPagesDisplayed={2}
+										pageRangeDisplayed={5}
+										onPageChange={this.handlePageChange}
+										containerClassName={"pagination"}
+										subContainerClassName={"pages pagination"}
+										activeClassName={"active"} />
+				 </div>
+
+	return	(<div>
 			<form onSubmit={(e) =>
 				{    e.preventDefault();
 					window.location.href = '/search/' + this.state.value}}>
@@ -161,6 +245,12 @@ class SearchPage extends Component{
 	      			{list}
 	      		</tbody>
 	      	</table>
+					<div>
+					{coursePagination}
+					{subjectPagination}
+					{jobPagination}
+					<br />
+				</div>
       	</div>
     );
   }
