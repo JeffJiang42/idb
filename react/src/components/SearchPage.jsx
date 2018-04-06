@@ -8,7 +8,9 @@ import JobCard from './JobCard.jsx';
 import SubjectCard from './SubjectCard.jsx';
 import Highlighter from "react-highlight-words";
 
-
+var subj_filter = 'search_filter'
+var course_filter = 'search_filter'
+var jobs_filter = 'search_filter'
 
 class SearchPage extends Component{
 	constructor(props) {
@@ -48,7 +50,7 @@ class SearchPage extends Component{
 	}
 
 	handleJobPageChange(event){
-		this.setState({coursePage: event.selected+1})
+		this.setState({jobPage: event.selected+1})
 	}
 
 	handleButtonClick(newDisplay){
@@ -106,27 +108,34 @@ class SearchPage extends Component{
     var results;
     //courses
     if(this.state.display == 0){
+        
+        subj_filter = 'search_filter'
+        jobs_filter = 'search_filter'
+        course_filter = 'search_filter search_active'
+        
     	var lastInd = this.state.coursePage * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var courseArr = courses.slice(firstInd, lastInd);
     	list = courseArr.map((course,i) =>
 				<Row key={i}>
-
 		      	<tr>
 		      	<Link to={`/courses/${course.id}`}>
 	  				<h3> Course: {this.highlight(course['course'])} </h3>
   				</Link>
-	  				<p> Provider: {this.highlight(course['provider'])}</p>
+	  				<p class="search_top"> Provider: {this.highlight(course['provider'])}</p>
 	  				<p> Instructor: {this.highlight(course['instructor'])}</p>
 	  				<p> Description: {this.highlight(course['desc'])}</p>
-	  				<p> Related Subjects: {this.highlight(this.getSubject(course['subject-id'])) }  </p>
 				</tr>
-
 		</Row>
 	    )
     }
     //subjects
     else if(this.state.display == 1){
+        
+        course_filter = 'search_filter'
+        jobs_filter = 'search_filter'
+        subj_filter = 'search_filter search_active'
+        
     	var lastInd = this.state.subjectPage * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var subjectsArr = subjects.slice(firstInd, lastInd)
@@ -137,13 +146,18 @@ class SearchPage extends Component{
 	  					<h3> Subject: {this.highlight(subject["subject"])} </h3>
 					</Link>
 
-	  				<p> Provider: {this.highlight(subject.provider)} </p>
+	  				<p class="search_top"> Provider: {this.highlight(subject.provider)} </p>
 				</tr>
 		</Row>
 	    )
     }
     //jobs
     else{
+        
+        course_filter = 'search_filter'
+        jobs_filter = 'search_filter search_active'
+        subj_filter = 'search_filter'
+        
       var lastInd = this.state.jobPage * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var jobArr = jobs.slice(firstInd, lastInd)
@@ -153,7 +167,7 @@ class SearchPage extends Component{
     				<Link to={`/jobs/${job.id}`}>
 	  					<h3>Job: {this.highlight(job.name)} </h3>
 					</Link>
-	  				<p>Provider: {this.highlight(job.provider)} </p>
+	  				<p class="search_top">Provider: {this.highlight(job.provider)} </p>
 	  				<p>Type: {this.highlight(job.jobtype)} </p>
 	  				<p>Location: {this.highlight(job.location)} </p>
 	  				<p>Description: {this.highlight(job.desc)} </p>
@@ -222,25 +236,29 @@ class SearchPage extends Component{
 										pageCount={this.state.maxPageJobs}
 										marginPagesDisplayed={2}
 										pageRangeDisplayed={5}
-										onPageChange={this.handlePageChange}
+										onPageChange={this.handleJobPageChange}
 										containerClassName={"pagination"}
 										subContainerClassName={"pages pagination"}
 										activeClassName={"active"} />
 				 </div>
 
 	return	(<div>
+            <div id="search_bar">
 			<form onSubmit={(e) =>
 				{    e.preventDefault();
 					window.location.href = '/search/' + this.state.value}}>
-			<input placeholder="Search" onChange={(event) => {this.setState({value: event.target.value})}}/>
+            <img src="https://i.imgur.com/g16hr23.png" width="80"/>
+			<input placeholder="Search" onChange={(event) => {this.setState({value: event.target.value})}}/>            
 			</form>
-			<br />
-			<br />
-	    	<button onClick={e => this.handleButtonClick(0)}> Courses </button>
-	    	<button onClick={e => this.handleButtonClick(1)}> Subjects </button>
-	    	<button onClick={e => this.handleButtonClick(2)}> Jobs </button>
-	      	<h2>Search Results: {results}</h2>
+            <div class="search_filters">
+            <div class={course_filter} onClick={e => this.handleButtonClick(0)}> Courses </div>
+	    	<div class={subj_filter} onClick={e => this.handleButtonClick(1)}> Subjects </div>
+	    	<div class={jobs_filter} onClick={e => this.handleButtonClick(2)}> Jobs </div>
+            </div>
+			</div>
+	    
 	      	<table>
+            <h2 class="search_desc" >Search Results: {results}</h2>
 	      		<tbody>
 	      			{list}
 	      		</tbody>
