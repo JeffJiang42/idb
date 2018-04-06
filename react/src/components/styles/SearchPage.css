@@ -1,0 +1,38 @@
+div > table {
+    margin-left: 5%;
+}
+
+form {
+    padding: 20px;
+}
+
+form > input {
+    box-shadow: 0px 2px 5px #aaaaaa;
+    border: solid 1px;
+    border-color: #cccccc;
+    border-radius: 2px;
+    font-size: 16px;
+    padding: 10px 8px 8px 8px;
+    width: 640px;
+}
+
+h2 {
+   color: #888888; 
+   font-size: 12px;
+}
+
+a {
+    color: #1a0dab;
+}
+
+tr {
+    font-size: 12px;
+}
+
+tr > p {
+    margin: 0px;
+}
+
+tbody > div {
+    margin: 20px;
+}
