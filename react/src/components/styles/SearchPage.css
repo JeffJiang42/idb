@@ -28,13 +28,14 @@
 
 .search_desc {
    margin-top: 12px;
+   margin-left: -16px;
    color: #888888; 
    font-size: 14px;
    font-weight: normal;
 }
 
 div > table {
-    margin-left: 50px;
+    margin-left: 70px;
 }
 
 form {
