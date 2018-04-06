@@ -32,7 +32,11 @@ describe('SearchPage Component', () => {
       },
     };
     const searchpage = mount(<SearchPage {...props} />);
-    expect(searchpage.find('button')).to.have.length(3);
+    expect(searchpage.hasClass('search_filters'));
+    expect(searchpage.hasClass('course_filter'));
+    expect(searchpage.hasClass('subj_filter'));
+    expect(searchpage.hasClass('jobs_filter'));
+
   })
 
   it('default search results pertains to courses', () => {
