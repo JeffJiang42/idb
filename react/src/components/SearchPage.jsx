@@ -176,7 +176,13 @@ class SearchPage extends Component{
 	    )
     }
 		if (list.length == 0){
-			list = <h1>No Search Results :(</h1>
+			list = <p style={{'fontSize': '16px', 'marginTop':'30px'}}>Your search - <span style={{'fontWeight': 'bold'}}>{this.state.query}</span> - did not match any documents.<br /><br />Suggestions:<br />
+            <ul>
+                <li>Make sure all words are spelled correctly.</li>
+                <li>Try different keywords.</li>
+                <li>Try more general keywords.</li>
+            </ul>
+            </p>
 		}
 		var courseStyle = ''
 		var subjectStyle = ''
