@@ -30,15 +30,99 @@ class Courses extends Component{
       filterOpen: false,
       sortOpen: false,
       url:'http://api.learning2earn.me/courses',
-      sortOption: ''
+      sortOption: '',
+      queries:[]
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.providerChange = this.providerChange.bind(this)
     this.priceChange = this.priceChange.bind(this)
     this.jobChange = this.jobChange.bind(this)
     this.sortChange = this.sortChange.bind(this)
+    this.makeQuery = this.makeQuery.bind(this)
   }
 
+  providerChange(choice){
+    this.setState({providerOption: choice})
+    var choiceArr = choice.split(',')
+    choiceArr = choiceArr.map((a) => {return encodeURI(providers[parseInt(a)-1])})
+    console.log(choiceArr)
+    if (!(choiceArr.includes(NaN) || choice == '' || choice == null)){
+        this.state.queries.providers = ''
+        for (let c in choiceArr){
+          console.log('Choices ' + choiceArr[c])
+          this.state.queries.providers += 'provider=' + choiceArr[c]
+          if (c < choiceArr.length -1){
+            this.state.queries.providers += '&'
+          }
+        }
+    console.log(this.state.queries)
+    }
+    else{
+      delete this.state.queries.providers
+    }
+    this.makeQuery()
+  }
+
+  jobChange(choice){
+    console.log("hello?")
+    this.setState({relJobOption: choice})
+    if (choice != null){
+      this.state.queries.jobs = ("num-relevant-jobs=" + relJobRanges[choice - 1])
+    }
+    else{
+      delete this.state.queries.jobs
+    }
+    this.makeQuery()
+  }
+
+  priceChange(choice){
+    this.setState({priceOption: choice})
+    if (choice != null){
+      this.state.queries.price = ("price=" + priceRanges[choice - 1])
+    }
+    else{
+      delete this.state.queries.price
+    }
+    this.makeQuery()
+  }
+
+
+  sortChange(choice){
+    this.setState({sortOption: choice})
+    //console.log(this.state.queries)
+    if(choice != null){
+      this.state.queries.sort = ("sort_by=" + sortQueries[choice-1])
+      //console.log(this.state.queries)
+    }
+    else{
+      delete this.state.queries.sort
+    }
+    this.makeQuery()
+  }
+
+  makeQuery(){
+    var url = 'http://api.learning2earn.me/courses'
+    var first = true
+    var queries = this.state.queries
+    console.log(queries)
+    for (let key in queries){
+      if (first){
+        url += '?' + queries[key]
+        first = false
+      }
+      else{
+        url += '&' + queries[key]
+      }
+    }
+    console.log(url)
+    fetch(url)
+      .then((response) => {return response.json()})
+      .then((json) => {
+        var sorted = json
+        this.setState({courseList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
+      })
+  }
+/*
   providerChange(choice){
     this.setState({ providerOption: choice });
     var choiceArr = choice.split(',')
@@ -113,7 +197,8 @@ class Courses extends Component{
         })
     }
   }
-
+*/
+/*
   priceChange(choice){
     if(choice == null){
       choice = ''
@@ -121,7 +206,8 @@ class Courses extends Component{
     this.state.priceOption = choice
     this.providerChange(this.state.providerOption);
   }
-
+  */
+/*
   jobChange(choice){
     if(choice == null){
       choice = ''
@@ -162,8 +248,8 @@ class Courses extends Component{
         })
     }
     this.state.url = url
-    */
   }
+  */
 
   handlePageChange(event){
     //console.log(event.selected)
@@ -205,7 +291,7 @@ class Courses extends Component{
     {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}, {label:"greater than $200", value:6}]
     const relJobOptions=[{label:"More than 10", value:1},{label:"More than 20", value:2},{label:"More than 30", value:3},
     {label:"More than 40", value:4},{label:"More than 50", value:5}]
-    const sortOptions=[{label: "Course Name (Alphabetical)", value: 1}, {label: "Course Name (Descnding alphabetical)", value: 2},{label: "Provider (Alphabetical)", value: 3},
+    const sortOptions=[{label: "Course Name (Alphabetical)", value: 1}, {label: "Course Name (Descending alphabetical)", value: 2},{label: "Provider (Alphabetical)", value: 3},
     {label:"Provider (Descending alphabetical)", value: 4}, {label: "Price", value: 5}, {label: "Price (Descending)", value: 6},
     {label: "Relevant jobs", value: 7}, {label:"Relevant jobs (Descending)", value: 8}]
     //console.log(this.state.page);
