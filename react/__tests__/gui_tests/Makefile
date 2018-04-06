@@ -42,7 +42,7 @@ travis:
 	# python test_subjects_filter_sort.py
 	python test_courses.py
 	python test_jobs.py
-	python test_jobs_filter_sort.py
+	# python test_jobs_filter_sort.py
 	python test_about.py
 	python test_search_page.py
 
