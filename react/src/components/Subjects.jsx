@@ -158,6 +158,7 @@ class Subjects extends Component{
 
       return(
         <div className='box'>
+        <h1 style={{'fontSize': '96px'}}>Subjects</h1>
         <div className='Filters'>
           <h1 onClick={() => this.setState({filterOpen: !this.state.filterOpen})}>Filters</h1>
           <br />

@@ -10,21 +10,57 @@
   background-position: center;
 }
 
+.cards {
+    padding-top: 36px;
+}
+
 .col-sm-3 > .card {
   margin-top: 15px;
   margin-bottom: 15px;
 }
 
-.pagination{
+.box {
+    text-align: center;
+}
+
+.pagination {
   position: absolute;
   margin-bottom: 0;
   margin-left: 35%
 }
 
-.Select-control{
+.Select-control {
   width: 40%
 }
 
-.Select-menu-outer{
+.Select {
+    text-align: left;
+    font-size: 16px;
+}
+
+.Select-menu-outer {
   width: 40%
+}
+
+.Filters {
+    left: 10%;
+}
+
+.Sorting {
+    right: 10%;
+}
+
+.Filters, .Sorting {
+    background-color: white;
+    border: solid 1px;
+    border-color: #dddddd;
+    border-radius: 5px;
+    z-index: 5;
+    position: absolute;
+    top: 128px;
+    text-align: center;
+    width: 30%;
+    display: inline-block;
+    padding-top: 0;
+    cursor: pointer;
 }
