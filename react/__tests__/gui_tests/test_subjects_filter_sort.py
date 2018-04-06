@@ -25,14 +25,12 @@ class subject_filter(unittest.TestCase):
         driver.find_element_by_link_text("Subjects").click()
         driver.find_element_by_xpath("//div[@id='root']/div/div/div/h1").click()
         driver.find_element_by_xpath("//span[@id='react-select-2--value']/div").click()
-        driver.find_element_by_xpath("//div[@id='react-select-2--list']/div/div/div/div[2]").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div/div/div").click()
         driver.find_element_by_xpath("//div[@id='react-select-2--list']/div/div/div/div").click()
         driver.find_element_by_xpath("//span[@id='react-select-3--value']/div").click()
-        driver.find_element_by_xpath("//div[@id='react-select-3--list']/div/div/div/div[2]").click()
-        driver.find_element_by_id("react-select-3--value-item").click()
-        driver.find_element_by_xpath("//div[@id='react-select-3--list']/div/div/div/div[3]").click()
+        driver.find_element_by_xpath("//div[@id='react-select-3--list']/div/div/div/div").click()
         driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/h1").click()
+        driver.find_element_by_xpath("//span[@id='react-select-4--value']/div").click()
+    
     
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)
