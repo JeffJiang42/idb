@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-
-
 class JobData extends Component{
   constructor(props){
     super(props)
@@ -84,6 +82,7 @@ class JobData extends Component{
         <p className="card-text"><strong>Location</strong>: {job.location}</p>
 				<p className="card-text"><strong>Link</strong>: <a href={job.link}>{job.link}</a></p>
 				<p className="card-text"><strong>Description</strong>:{job.desc}</p>
+
 				{courseTemp}
         {subTemp}
 			  </div>
