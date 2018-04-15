@@ -5,7 +5,9 @@ import { Timeline } from 'react-twitter-widgets'
 class TwitterFeed extends Component{
   constructor(props){
     super(props)
+    console.log(props)
     this.state = {
+    	provider: this.props.provider
     }
   }
 
@@ -16,7 +18,7 @@ class TwitterFeed extends Component{
 	  	<Timeline
 		    dataSource={{
 		      sourceType: 'profile',
-		      screenName: 'khanacademy'
+		      screenName: this.state.provider
 		    }}
 		    options={{
 		      username: 'TwitterDev',
