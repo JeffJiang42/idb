@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import TwitterTimeline from 'react-twitter-embedded-timeline';
+import { Timeline } from 'react-twitter-widgets'
 
-class JobData extends Component{
+class TwitterFeed extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -12,7 +12,21 @@ class JobData extends Component{
  
 
   render(){
-        <TwitterTimeline widgetId="695868534455275520" chrome="noborders noheader" height={300} />
+	  return(
+	  	<Timeline
+		    dataSource={{
+		      sourceType: 'profile',
+		      screenName: 'khanacademy'
+		    }}
+		    options={{
+		      username: 'TwitterDev',
+		      height: '400',
+		      width: '300'
+		    }}
+		    onLoad={() => console.log('Timeline is loaded!')}
+		  />
+	  )
+        
   }
 }
 
