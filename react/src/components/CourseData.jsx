@@ -84,6 +84,9 @@ class CourseData extends Component{
     else{
       jobTemp = <p className="card-text"><strong>Related Jobs:</strong> {jobTemp}</p>
     }
+    if (course.price === 0){
+      course.price = "Free"
+    }
     return(
 	     <div className="container h-100">
 	  	<div className="row h-100 justify-content-center align-items-center">

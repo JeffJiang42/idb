@@ -299,6 +299,13 @@ class Courses extends Component{
     var lastInd = page * pageSize
     var firstInd = lastInd - pageSize
     var courseArr = courseList.slice(firstInd,lastInd)
+
+    for (let course of courseArr){
+      if (course["price"] === 0){
+        course["price"] = "Free"
+      }
+    }
+    
     var courseCards = courseArr.map((course, i) =>
       <div className="col-sm-3" key={i} >
       <div className='card' style={card_remove_border}>
