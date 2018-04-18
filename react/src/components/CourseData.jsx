@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './styles/ModelData.css';
+import SubjectCard from './SubjectCard';
+import _ from 'lodash'
 
 class CourseData extends Component{
   constructor(props){
     super(props)
     this.state = {
-      subject:'',
+      subject:{},
       jobs:[],
       info: {}
     }
@@ -24,9 +26,10 @@ class CourseData extends Component{
         if (temp.provider === 'Udemy'){
             temp.link = 'https://udemy.com' + temp.link
           }
-        this.setState({info: temp})
-        this.getSubject()
-        this.getJobs()
+        this.setState({info: temp}, () => {
+          this.getSubject()
+          this.getJobs()
+        })
       })
   }
 
@@ -38,7 +41,7 @@ class CourseData extends Component{
       .then((subjectJson) => {
         return subjectJson[0]
       })
-      .then((sub) => {this.setState({subject:sub.subject})})
+      .then((sub) => {this.setState({subject:sub})})
   }
 
   getJobs(){
@@ -63,6 +66,15 @@ class CourseData extends Component{
 
 
   render(){
+    if (_.isEmpty(this.state.jobs)){
+      return <p>Loading</p>
+    }
+
+    if (_.isEmpty(this.state.subject)){
+      console.log("UNDEFINED SUBJECT?")
+      return <p>Loading</p>
+    }
+    console.log(JSON.stringify(this.state.subject))
     var course = this.state.info
     var jobTemp = []
     if (this.state.jobs.length == 0){
@@ -87,6 +99,8 @@ class CourseData extends Component{
     if (course.price === 0){
       course.price = "Free"
     }
+    var sub = this.state.subject
+    console.log(sub)
     return(
 	     <div className="container h-100">
 	  	<div className="row h-100 justify-content-center align-items-center">
@@ -99,8 +113,7 @@ class CourseData extends Component{
 				<p className="card-text"><strong>Instructor</strong>: {course.instructor}</p>
 				<p className="card-text"><strong>Link</strong>: <a href={course.link}>{course.link}</a></p>
 				<p className="card-text"><strong>Description</strong>: {course.desc}</p>
-				<p className="card-text"><strong>Related Subjects</strong>: <Link to={`/subjects/${course['subject-id']}`} >{this.state.subject}</Link></p>
-				{jobTemp}
+        <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length} totalJobs={sub['job-ids'].length}/>
 			  </div>
 			</div>
 		</div>
