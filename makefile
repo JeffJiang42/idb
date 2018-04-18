@@ -1,6 +1,7 @@
 GithubID = JeffJiang42
 RepoName = idb
 SHA      = hello
+WilliamID = Acciaccatura
 
 githubid:
 	@echo "${GithubID}"
@@ -66,13 +67,13 @@ report:
 
 # make apidoc   - prints link to api documentation
 apidoc:
-	@echo "http://${GithubID}.gitbooks.io/api/"
+	@echo "http://${WilliamID}.gitbooks.io/api/"
 
 # make self     - prints link to self critique
 self:
-	@echo "http://${GithubID}.gitbooks.io/api/path-to-self-critique"
+	@echo "http://${GithubID}.gitbooks.io/api/self-critique"
 
 # make other    - prints link to other critique
 other:
-	@echo "http://${GithubID}.gitbooks.io/api/path-to-other-critique"
+	@echo "http://${GithubID}.gitbooks.io/api/other-critique"
 
