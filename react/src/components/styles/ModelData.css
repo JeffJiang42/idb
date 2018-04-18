@@ -1,4 +1,14 @@
+.box{
+  position: relative;
+}
+
 .linkList {
   text-align: left;
   font-size: 16px;
+}
+
+.pagination {
+  position: absolute;
+  margin-bottom: 0;
+  margin-left: 35%
 }

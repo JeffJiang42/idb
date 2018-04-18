@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { BarLoader } from 'react-spinners'
+import _ from 'lodash'
+import JobCard from './JobCard.jsx'
+import CourseCard from './CourseCard.jsx'
 
+var card_remove_border = {
+    'borderStyle': 'none'
+};
 
 class SubjectData extends Component{
   constructor(props){
@@ -8,7 +15,11 @@ class SubjectData extends Component{
     this.state = {
       courses:[],
       jobs:[],
-      info: {  'course-ids':[], 'job-ids':[] }
+      info: {  'course-ids':[], 'job-ids':[] },
+      coursePage: 1,
+      jobPage: 1,
+      pageSize: 6,
+      maxPage: 10
     }
     this.getCourses = this.getCourses.bind(this);
     this.getJobs = this.getJobs.bind(this);
@@ -64,15 +75,31 @@ class SubjectData extends Component{
   }
 
   render(){
+    if (_.isEmpty(this.state.jobs)){
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
+    }
+
+    if (_.isEmpty(this.state.courses)){
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
+    }
+
     var sub = this.state.info
     var jobTemp = []
     if (this.state.jobs.length == 0){
       jobTemp = <p>No relevant jobs for this course</p>
     }
     else{
-      for (let job of this.state.jobs){
+      var i = 0
+      var lastInd = this.state.jobPage * this.state.pageSize
+      var firstInd = lastInd - this.state.pageSize
+      var jobArr = this.state.jobs.slice(firstInd, lastInd)
+      for (let job of jobArr){
         jobTemp.push(
-          <li><Link to={`/jobs/${job.id}`}>{job.name}</Link></li>
+          <div className='col-sm-4' key={i++}>
+            <div className='card' style={card_remove_border}>
+              <JobCard jobId={job.id} name={job.name} company={job.company} image={job.image} provider={job.provider} numCourses={job['num-related-courses']} jobType={job.jobtype} location={job.location}/>
+            </div>
+          </div>
         )
       }
     }
@@ -86,9 +113,17 @@ class SubjectData extends Component{
       jobTemp = <p className="card-text"><strong>Related Jobs:</strong> {jobTemp}</p>
     }
     var courseTemp = []
-    for (let course of this.state.courses){
+    var i = 0
+    var lastInd = this.state.jobPage * this.state.pageSize
+    var firstInd = lastInd - this.state.pageSize
+    var courseArr = this.state.courses.slice(firstInd, lastInd)
+    for (let course of courseArr){
       courseTemp.push(
-        <li><Link to={`/courses/${course.id}`}>{course.course}</Link></li>
+        <div className="col-sm-4" key={i++} >
+        <div className='card' style={card_remove_border}>
+          <CourseCard provider={course["provider"]} price={course["price"]} courseId={course["id"]} courseName={course["course"]} image={course["image"]} relJobs={course['job-ids'].length}/>
+        </div>
+        </div>
       )
     }
     courseTemp = <div>

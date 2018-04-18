@@ -5,6 +5,7 @@ import SubjectCard from './SubjectCard';
 import JobCard from './JobCard';
 import _ from 'lodash'
 import { BarLoader } from 'react-spinners'
+import ReactPaginate from 'react-paginate'
 
 var card_remove_border = {
     'borderStyle': 'none'
@@ -17,10 +18,17 @@ class CourseData extends Component{
       subject:{},
       jobs:[],
       info: {},
-      jobPage: 1
+      jobPage: 1,
+      pageSize: 6,
+      maxPage: 10
     }
     this.getSubject = this.getSubject.bind(this);
     this.getJobs = this.getJobs.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+  }
+
+  handlePageChange(event){
+    this.setState({jobPage: Number(event.selected+1)})
   }
 
   componentWillMount(){
@@ -66,7 +74,7 @@ class CourseData extends Component{
         .then((jobJson) => {
           var temp = this.state.jobs
           temp.push(jobJson[0])
-          this.setState({jobs: temp})
+          this.setState({jobs: temp, maxPage: Math.ceil(temp.length / this.state.pageSize) })
         })
     }
   }
@@ -88,9 +96,12 @@ class CourseData extends Component{
     }
     else{
       var i = 0
-      for (let job of this.state.jobs){
+      var lastInd = this.state.jobPage * this.state.pageSize
+      var firstInd = lastInd - this.state.pageSize
+      var jobArr = this.state.jobs.slice(firstInd,lastInd)
+      for (let job of jobArr){
         jobTemp.push(
-          <div className='col-sm-3' key={i++}>
+          <div className='col-sm-4' key={i++}>
             <div className='card' style={card_remove_border}>
               <JobCard jobId={job.id} name={job.name} company={job.company} image={job.image} provider={job.provider} numCourses={job['num-related-courses']} jobType={job.jobtype} location={job.location}/>
             </div>
@@ -113,6 +124,7 @@ class CourseData extends Component{
     var sub = this.state.subject
     console.log(sub)
     return(
+      <div className="box">
 	     <div className="container h-100">
 	  	<div className="row h-100 justify-content-center align-items-center">
 			<div className="card h-100" align = "center">
@@ -130,10 +142,22 @@ class CourseData extends Component{
             </div>
         {jobTemp}
 			  </div>
+        <ReactPaginate previousLabel={"previous"}
+                    initialPage={this.state.jobPage-1}
+                    nextLabel={"next"}
+                    breakLabel={<a>...</a>}
+                    breakClassName={"break-me"}
+                    pageCount={this.state.maxPage}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageChange}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"} />
 			</div>
 		</div>
 	</div>
-    );
+</div>);
   }
 }
 
