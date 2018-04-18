@@ -6,6 +6,7 @@ import JobCard from './JobCard';
 import _ from 'lodash'
 import { BarLoader } from 'react-spinners'
 import ReactPaginate from 'react-paginate'
+import TwitterFeed from './TwitterFeed.jsx'
 
 var card_remove_border = {
     'borderStyle': 'none'
@@ -142,6 +143,7 @@ class CourseData extends Component{
                 <div className='card' style={card_remove_border} >
                   <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length} totalJobs={sub['job-ids'].length}/>
                 </div>
+                <TwitterFeed provider={course.provider} />
                 {jobTemp}
                 <div style={{'marginTop': finalLength }}>
                   <ReactPaginate previousLabel={"previous"}

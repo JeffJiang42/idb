@@ -5,6 +5,7 @@ import _ from 'lodash'
 import JobCard from './JobCard.jsx'
 import CourseCard from './CourseCard.jsx'
 import ReactPaginate from 'react-paginate'
+import TwitterFeed from './TwitterFeed.jsx'
 
 var card_remove_border = {
     'borderStyle': 'none'
@@ -171,6 +172,7 @@ class SubjectData extends Component{
               activeClassName={"active"} />
           </div>
         </div>
+        <TwitterFeed provider={sub.provider} />
         <div style={{ 'marginTop': (courseLength + 100) }}>
           {jobTemp}
           <div style={{ 'marginTop': jobLength }}>
