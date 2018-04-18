@@ -123,6 +123,7 @@ class Courses extends Component{
   handlePageChange(event){
     //console.log(event.selected)
     this.setState({page: Number(event.selected+1)})
+    window.scrollTo(0,0)
   }
 
 
@@ -144,6 +145,10 @@ class Courses extends Component{
     console.log('Goodbye!')
     var toSave = this.state
     toSave.courseList = []
+    /*
+    toSave.filterOpen = false
+    toSave.sortOpen = false
+    */ 
     console.log(JSON.stringify(toSave))
     localStorage.setItem('coursesSavedState', JSON.stringify(toSave))
   }
@@ -176,7 +181,6 @@ class Courses extends Component{
       </div>
       </div>
     );
-
     return(
       <div className='box'>
         <h1 style={{'fontSize': '96px'}}>Courses</h1>
@@ -203,7 +207,7 @@ class Courses extends Component{
          </Row>
          <div className='pages' >
          <ReactPaginate previousLabel={"previous"}
-                     initialPage={this.state.page-1}
+                     initialPage={this.state.page - 1}
                      nextLabel={"next"}
                      breakLabel={<a>...</a>}
                      breakClassName={"break-me"}
