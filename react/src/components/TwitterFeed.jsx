@@ -5,28 +5,29 @@ import { Timeline } from 'react-twitter-widgets'
 class TwitterFeed extends Component{
   constructor(props){
     super(props)
-    console.log(props)
-    this.state = {
-    	provider: this.props.provider
-    }
   }
 
  
 
   render(){
+  	var provider = this.props.provider
+    provider = String(provider).toLowerCase().replace(/\s/g,'')
+
 	  return(
-	  	<Timeline
-		    dataSource={{
-		      sourceType: 'profile',
-		      screenName: this.state.provider
-		    }}
-		    options={{
-		      username: 'TwitterDev',
-		      height: '400',
-		      width: '300'
-		    }}
-		    onLoad={() => console.log('Timeline is loaded!')}
-		  />
+	  	<div>
+      <Timeline
+			    dataSource={{
+			      sourceType: 'profile',
+			      screenName: provider
+			    }}
+			    options={{
+			      username: 'TwitterDev',
+			      height: '400',
+			      width: '300'
+			    }}
+			    onLoad={() => console.log('Timeline is loaded!')}
+			  />
+      </div>
 	  )
         
   }

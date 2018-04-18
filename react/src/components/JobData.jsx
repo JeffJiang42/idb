@@ -48,6 +48,8 @@ class JobData extends Component{
     this.getSubject()
     this.getCourses()
     var job = this.state.info
+    var variable = job.provider
+    //console.log(typeof(variable) + ' this is provider')
     var courseTemp = []
     for (let course of this.state.courses){
       courseTemp.push(
@@ -83,7 +85,7 @@ class JobData extends Component{
         <p className="card-text"><strong>Location</strong>: {job.location}</p>
 				<p className="card-text"><strong>Link</strong>: <a href={job.link}>{job.link}</a></p>
 				<p className="card-text"><strong>Description</strong>:{job.desc}</p>
-        <TwitterFeed provider={'githubjobs'} />
+        <TwitterFeed provider={job.provider} />
 				{courseTemp}
         {subTemp}
 			  </div>
