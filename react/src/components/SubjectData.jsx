@@ -97,6 +97,7 @@ class SubjectData extends Component{
 
     var sub = this.state.info
     var jobTemp = []
+    var jobLength = 0
     if (this.state.jobs.length == 0){
       jobTemp = <p>No relevant jobs for this course</p>
     }
@@ -114,6 +115,7 @@ class SubjectData extends Component{
           </div>
         )
       }
+      jobLength = Math.ceil(jobTemp.length / 3) * 400
     }
     if (jobTemp.constructor === Array){
       jobTemp = <div>
@@ -125,6 +127,7 @@ class SubjectData extends Component{
       jobTemp = <p className="card-text"><strong>Related Jobs:</strong> {jobTemp}</p>
     }
     var courseTemp = []
+    var courseLength = 0
     var i = 0
     var lastInd = this.state.coursePage * this.state.pageSize
     var firstInd = lastInd - this.state.pageSize
@@ -138,6 +141,7 @@ class SubjectData extends Component{
         </div>
       )
     }
+    courseLength = Math.ceil(courseTemp.length / 3) * 400
     courseTemp = <div>
       <p className="card-text"><strong>Related Courses:</strong></p>
       <ul className='linkList'>{courseTemp}</ul>
@@ -150,33 +154,41 @@ class SubjectData extends Component{
 				<div className="card-body">
 				<h4 className="card-title">{sub.subject}</h4>
 				<p className="card-text"><strong>Provider</strong>: {sub.provider}</p>
-				{courseTemp}
-				{jobTemp}
-			  </div>
-        <ReactPaginate previousLabel={"previous"}
-                    initialPage={this.state.coursePage-1}
-                    nextLabel={"next"}
-                    breakLabel={<a>...</a>}
-                    breakClassName={"break-me"}
-                    pageCount={this.state.courseMaxPage}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={this.handleCoursePageChange}
-                    containerClassName={"pagination"}
-                    subContainerClassName={"pages pagination"}
-                    activeClassName={"active"} />
-        <ReactPaginate previousLabel={"previous"}
-                    initialPage={this.state.jobPage-1}
-                    nextLabel={"next"}
-                    breakLabel={<a>...</a>}
-                    breakClassName={"break-me"}
-                    pageCount={this.state.jobMaxPage}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={this.handleJobPageChange}
-                    containerClassName={"pagination"}
-                    subContainerClassName={"pages pagination"}
-                    activeClassName={"active"} />
+        <div>
+          {courseTemp}
+          <div style={{ 'marginTop': courseLength }}>
+            <ReactPaginate previousLabel={"previous"}
+              initialPage={this.state.coursePage-1}
+              nextLabel={"next"}
+              breakLabel={<a>...</a>}
+              breakClassName={"break-me"}
+              pageCount={this.state.courseMaxPage}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={this.handleCoursePageChange}
+              containerClassName={"pagination"}
+              subContainerClassName={"pages pagination"}
+              activeClassName={"active"} />
+          </div>
+        </div>
+        <div style={{ 'marginTop': (courseLength + 100) }}>
+          {jobTemp}
+          <div style={{ 'marginTop': jobLength }}>
+            <ReactPaginate previousLabel={"previous"}
+              initialPage={this.state.jobPage-1}
+              nextLabel={"next"}
+              breakLabel={<a>...</a>}
+              breakClassName={"break-me"}
+              pageCount={this.state.jobMaxPage}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={this.handleJobPageChange}
+              containerClassName={"pagination"}
+              subContainerClassName={"pages pagination"}
+              activeClassName={"active"} />
+          </div>
+        </div>
+      </div>
     </div>
 		</div>
 		</div>
