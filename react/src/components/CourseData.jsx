@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './styles/ModelData.css';
 import SubjectCard from './SubjectCard';
 import _ from 'lodash'
+import { BarLoader } from 'react-spinners'
 
 class CourseData extends Component{
   constructor(props){
@@ -67,12 +68,11 @@ class CourseData extends Component{
 
   render(){
     if (_.isEmpty(this.state.jobs)){
-      return <p>Loading</p>
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
 
     if (_.isEmpty(this.state.subject)){
-      console.log("UNDEFINED SUBJECT?")
-      return <p>Loading</p>
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
     console.log(JSON.stringify(this.state.subject))
     var course = this.state.info
