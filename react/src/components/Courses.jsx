@@ -71,40 +71,57 @@ class Courses extends Component{
   }
 
   jobChange(choice){
-    console.log("hello?")
     this.setState({relJobOption: choice})
+    var str = ''
     if (choice != null){
-      this.state.queries.jobs = ("num-relevant-jobs=" + relJobRanges[choice - 1])
+      //this.state.queries.jobs = ("num-relevant-jobs=" + relJobRanges[choice - 1])
+      str = 'num-relevant-jobs=' + relJobRanges[choice - 1]
     }
     else{
-      delete this.state.queries.jobs
+      //delete this.state.queries.jobs
+      str = ''
     }
-    this.makeQuery()
+    var temp = this.state.queries
+    temp.jobs = str
+    this.setState({queries: temp}, this.makeQuery())
+    //this.makeQuery()
   }
 
   priceChange(choice){
     this.setState({priceOption: choice})
+    var str = ''
     if (choice != null){
-      this.state.queries.price = ("price=" + priceRanges[choice - 1])
+      //this.state.queries.price = ("price=" + priceRanges[choice - 1])
+      str = 'price=' + priceRanges[choice - 1]
     }
     else{
-      delete this.state.queries.price
+      //delete this.state.queries.price
+      str = ''
     }
-    this.makeQuery()
+    var temp = this.state.queries
+    temp.price = str
+    this.setState({queries: temp}, this.makeQuery())
+    //this.makeQuery()
   }
 
 
   sortChange(choice){
     this.setState({sortOption: choice})
     //console.log(this.state.queries)
+    var str = ''
     if(choice != null){
-      this.state.queries.sort = ("sort_by=" + sortQueries[choice-1])
+      //this.state.queries.sort = ("sort_by=" + sortQueries[choice-1])
+      str = 'sort_by=' + sortQueries[choice - 1]
       //console.log(this.state.queries)
     }
     else{
-      delete this.state.queries.sort
+      //delete this.state.queries.sort
+      str = ''
     }
-    this.makeQuery()
+    var temp = this.state.queries
+    temp.sort = str
+    this.setState({queries: temp}, this.makeQuery())
+    //this.makeQuery()
   }
 
   makeQuery(){
@@ -172,7 +189,7 @@ class Courses extends Component{
     {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}, {label:"greater than $200", value:6}]
     const relJobOptions=[{label:"More than 10", value:1},{label:"More than 20", value:2},{label:"More than 30", value:3},
     {label:"More than 40", value:4},{label:"More than 50", value:5}]
-    const sortOptions=[{label: "Course Name (Alphabetical)", value: 1}, {label: "Course Name (Descending alphabetical)", value: 2},{label: "Provider (Alphabetical)", value: 3},
+    const sortOptions=[{label: "Name (Alphabetical)", value: 1}, {label: "Name (Descending alphabetical)", value: 2},{label: "Provider (Alphabetical)", value: 3},
     {label:"Provider (Descending alphabetical)", value: 4}, {label: "Price", value: 5}, {label: "Price (Descending)", value: 6},
     {label: "Relevant jobs", value: 7}, {label:"Relevant jobs (Descending)", value: 8}]
     console.log(this.state.page);
