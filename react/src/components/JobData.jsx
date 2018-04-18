@@ -8,7 +8,8 @@ class JobData extends Component{
     this.state = {
       subjects: [],
       courses:[],
-      info: {}
+      info: {},
+      prov: ''
     }
     this.getSubject = this.getSubject.bind(this);
     this.getCourses = this.getCourses.bind(this);
@@ -72,7 +73,14 @@ class JobData extends Component{
       <p className="card-text"><strong>Related Subjects:</strong></p>
       <ul className='linkList'>{subTemp}</ul>
     </div>
-
+    //console.log(job.provider)
+    if (job.provider == 'GitHub Jobs'){
+      this.state.prov = 'githubjobs'
+    }
+    if (job.provider == 'Authentic Jobs'){
+      this.state.prov = 'authenticjobs'
+    }
+    //console.log(this.state.prov)
     return(
 	<div className="container h-100">
 	  	<div className="row h-100 justify-content-center align-items-center">

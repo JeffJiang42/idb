@@ -7,7 +7,9 @@ class TwitterFeed extends Component{
     super(props)
   }
 
- 
+  componentWillReceiveProps(props){
+    this.prov = props.prov
+  }
 
   render(){
   	var provider = this.props.provider
@@ -28,9 +30,9 @@ class TwitterFeed extends Component{
 			    onLoad={() => console.log('Timeline is loaded!')}
 			  />
       </div>
+
 	  )
-        
+
   }
 }
-
 export default TwitterFeed;
