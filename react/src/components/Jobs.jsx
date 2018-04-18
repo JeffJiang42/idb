@@ -201,7 +201,6 @@ class Jobs extends Component{
 
   resetState(){
     const rehydrate = JSON.parse(localStorage.getItem('jobsSavedState'))
-    console.log(rehydrate.companyOption)
     if (rehydrate != null){
       this.state = rehydrate
     }

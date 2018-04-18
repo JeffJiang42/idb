@@ -6,6 +6,7 @@ import { Row, Grid, Pagination, Button, Collapse } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
 import Select from "react-virtualized-select";
 import CourseCard from './CourseCard.jsx';
+import { BarLoader } from 'react-spinners'
 
 var card_remove_border = {
     'borderStyle': 'none'
@@ -31,7 +32,8 @@ class Courses extends Component{
       sortOpen: false,
       url:'http://api.learning2earn.me/courses',
       sortOption: '',
-      queries:{}
+      queries:{},
+      ready: false
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.providerChange = this.providerChange.bind(this)
@@ -115,7 +117,7 @@ class Courses extends Component{
       .then((response) => {return response.json()})
       .then((json) => {
         var sorted = json
-        this.setState({courseList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize)}, this.saveState())
+        this.setState({courseList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, this.saveState())
       })
   }
 
@@ -148,12 +150,15 @@ class Courses extends Component{
     /*
     toSave.filterOpen = false
     toSave.sortOpen = false
-    */ 
+    */
     console.log(JSON.stringify(toSave))
     localStorage.setItem('coursesSavedState', JSON.stringify(toSave))
   }
 
   render(){
+    if (!this.state.ready){
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
+    }
     const providerOptions = [{label: 'Khan Academy', value: 1}, {label:'Udemy', value: 2}]
     const priceOptions=[{label:"Free", value: 1},{label:"less than $50", value:2},{label:"between $50 and $100", value:3},
     {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}, {label:"greater than $200", value:6}]
@@ -162,7 +167,7 @@ class Courses extends Component{
     const sortOptions=[{label: "Name (Alphabetical)", value: 1}, {label: "Name (Descending alphabetical)", value: 2},{label: "Provider (Alphabetical)", value: 3},
     {label:"Provider (Descending alphabetical)", value: 4}, {label: "Price", value: 5}, {label: "Price (Descending)", value: 6},
     {label: "Relevant jobs", value: 7}, {label:"Relevant jobs (Descending)", value: 8}]
-    console.log(this.state.page);
+    //console.log(this.state.page);
     var {courseList, page, pageSize, maxPage, providerOption} = this.state
     var lastInd = page * pageSize
     var firstInd = lastInd - pageSize
