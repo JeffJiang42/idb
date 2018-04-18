@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import TwitterFeed from './TwitterFeed.jsx'
 import ReactPaginate from 'react-paginate'
+import { BarLoader } from 'react-spinners'
+import _ from 'lodash'
 
 class JobData extends Component{
   constructor(props){
@@ -10,7 +12,6 @@ class JobData extends Component{
       subjects: [],
       courses:[],
       info: {},
-      prov: ''
     }
     this.getSubject = this.getSubject.bind(this);
     this.getCourses = this.getCourses.bind(this);
@@ -47,6 +48,13 @@ class JobData extends Component{
   }
 
   render(){
+    if (_.isEmpty(this.state.subjects)){
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
+    }
+
+    if (_.isEmpty(this.state.courses)){
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
+    }
     this.getSubject()
     this.getCourses()
     var job = this.state.info
@@ -74,14 +82,6 @@ class JobData extends Component{
       <p className="card-text"><strong>Related Subjects:</strong></p>
       <ul className='linkList'>{subTemp}</ul>
     </div>
-    //console.log(job.provider)
-    if (job.provider == 'GitHub Jobs'){
-      this.state.prov = 'githubjobs'
-    }
-    if (job.provider == 'Authentic Jobs'){
-      this.state.prov = 'authenticjobs'
-    }
-    //console.log(this.state.prov)
     return(
 	<div className="container h-100">
 	  	<div className="row h-100 justify-content-center align-items-center">
