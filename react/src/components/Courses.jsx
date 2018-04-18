@@ -11,7 +11,7 @@ var card_remove_border = {
     'borderStyle': 'none'
 };
 
-const providers = ["Khan Academy", "Udemy"]
+const providersList = ["Khan Academy", "Udemy"]
 const priceRanges = ["0..0","0..50", "50..100","100..150","150..200",'200..']
 const relJobRanges = ["10..", "20..", "30..", "40..", "50.."]
 const sortQueries = ["course", "course&desc=TRUE", "provider", "provider&desc=TRUE", "price", "price&desc=TRUE", "num-relevant-jobs", "num-relevant-jobs&desc=TRUE"]
@@ -31,7 +31,7 @@ class Courses extends Component{
       sortOpen: false,
       url:'http://api.learning2earn.me/courses',
       sortOption: '',
-      queries:[]
+      queries:{}
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.providerChange = this.providerChange.bind(this)
@@ -44,64 +44,51 @@ class Courses extends Component{
   providerChange(choice){
     this.setState({providerOption: choice})
     var choiceArr = choice.split(',')
-    choiceArr = choiceArr.map((a) => {return encodeURI(providers[parseInt(a)-1])})
+    choiceArr = choiceArr.map((a) => {return encodeURI(providersList[parseInt(a)-1])})
     //console.log(choiceArr)
     var str = ''
     if (!(choiceArr.includes(NaN) || choice == '' || choice == null)){
-        //this.state.queries.providers = ''
         for (let c in choiceArr){
-          //console.log('Choices ' + choiceArr[c])
-          //this.state.queries.providers += 'provider=' + choiceArr[c]
           str += 'provider=' + choiceArr[c]
           if (c < choiceArr.length -1){
-            //this.state.queries.providers += '&'
             str += '&'
           }
         }
-    //console.log(this.state.queries)
     }
     else{
-      //this.state.queries.providers = ''
       str = ''
     }
     var temp = this.state.queries
     temp.providers = str
     this.setState({queries: temp}, this.makeQuery())
-    //this.makeQuery()
   }
 
   jobChange(choice){
     this.setState({relJobOption: choice})
     var str = ''
     if (choice != null){
-      //this.state.queries.jobs = ("num-relevant-jobs=" + relJobRanges[choice - 1])
       str = 'num-relevant-jobs=' + relJobRanges[choice - 1]
     }
     else{
-      //delete this.state.queries.jobs
       str = ''
     }
     var temp = this.state.queries
     temp.jobs = str
     this.setState({queries: temp}, this.makeQuery())
-    //this.makeQuery()
   }
 
   priceChange(choice){
     this.setState({priceOption: choice})
     var str = ''
     if (choice != null){
-      //this.state.queries.price = ("price=" + priceRanges[choice - 1])
       str = 'price=' + priceRanges[choice - 1]
     }
     else{
-      //delete this.state.queries.price
       str = ''
     }
     var temp = this.state.queries
     temp.price = str
     this.setState({queries: temp}, this.makeQuery())
-    //this.makeQuery()
   }
 
 
@@ -110,18 +97,14 @@ class Courses extends Component{
     //console.log(this.state.queries)
     var str = ''
     if(choice != null){
-      //this.state.queries.sort = ("sort_by=" + sortQueries[choice-1])
       str = 'sort_by=' + sortQueries[choice - 1]
-      //console.log(this.state.queries)
     }
     else{
-      //delete this.state.queries.sort
       str = ''
     }
     var temp = this.state.queries
     temp.sort = str
     this.setState({queries: temp}, this.makeQuery())
-    //this.makeQuery()
   }
 
   makeQuery(){
@@ -157,29 +140,15 @@ class Courses extends Component{
   componentWillMount(){
     const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
     console.log(rehydrate)
-    //this.setState(rehydrate, this.makeQuery())
-    this.setState({providerOption:'', priceOption:'', relJobOption:''})
-    const url = 'http://api.learning2earn.me/courses';
-
-    fetch(url)
-      .then((response) => {return response.json()})
-      .then((courseJson) =>{
-        return courseJson
-      })
-      .catch((error) => {console.log(url); console.log(error.message); return []})
-      .then((info) => {this.setState({courseList: info, maxPage: Math.ceil(info.length / this.state.pageSize)})})
-
+    //this.setState(rehydrate, () => {var temp = this.state; console.log(temp)})
+    this.state = rehydrate
+    this.makeQuery()
   }
 
   componentWillUnmount(){
-    var toSave = {
-      page: this.state.page,
-      providerOption: this.state.providerOption,
-      priceOption: this.state.priceOption,
-      relJobOption: this.state.relJobOption,
-      sortOption: this.state.sortOption,
-      queries: this.state.queries
-    };
+    var toSave = this.state
+    toSave.courseList = []
+    console.log(JSON.stringify(toSave))
     localStorage.setItem('coursesSavedState', JSON.stringify(toSave))
   }
 
