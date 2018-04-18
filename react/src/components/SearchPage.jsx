@@ -7,6 +7,7 @@ import ReactPaginate from 'react-paginate'
 import JobCard from './JobCard.jsx';
 import SubjectCard from './SubjectCard.jsx';
 import Highlighter from "react-highlight-words";
+import { BarLoader } from 'react-spinners'
 
 var subj_filter = 'search_filter'
 var course_filter = 'search_filter'
@@ -17,6 +18,7 @@ class SearchPage extends Component{
 		super(props);
 			var query = props.match.query;
 			this.state = {
+			ready: false,
 			value: "",
 			query: '',
       		url:'http://api.learning2earn.me/search',
@@ -67,7 +69,12 @@ class SearchPage extends Component{
 	        return searchJson
 	      })
 	      .catch((error) => {console.log(error.message); return []})
-	      .then((info) => {this.setState({courses: info.courses, jobs: info.jobs, subjects: info.subjects, maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize), maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize), maxPageSubjects: Math.ceil(info.subjects.length / this.state.pageSize)})})
+	      .then((info) => {this.setState({courses: info.courses, jobs: info.jobs, subjects: info.subjects,
+					maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize),
+					maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize),
+					maxPageSubjects: Math.ceil(info.subjects.length / this.state.pageSize)}, () => {
+						this.setState({ready: true})
+					})})
 
 	}
 
@@ -85,7 +92,10 @@ class SearchPage extends Component{
 	        return searchJson
 	      })
 	      .catch((error) => {console.log(error.message); return []})
-	      .then((info) => {this.setState({courses: info.courses, jobs: info.jobs, subjects: info.subjects, maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize), maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize), maxPageSubjects: Math.ceil(info.subjects.length / this.state.pageSize)})})
+	      .then((info) => {this.setState({courses: info.courses, jobs: info.jobs, subjects: info.subjects,
+					maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize),
+					maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize),
+					maxPageSubjects: Math.ceil(info.subjects.length / this.state.pageSize)})})
 
 	}
 	getSubject(subjectID){
@@ -103,16 +113,20 @@ class SearchPage extends Component{
   	}
 
   render(){
+		if (!this.state.ready){
+			return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
+		}
     var {courses, jobs, subjects, maxPageCourses, maxPageJobs, maxPageSubjects} = this.state;
     var list;
     var results;
+		console.log(courses.length == 0)
     //courses
     if(this.state.display == 0){
-        
+
         subj_filter = 'search_filter'
         jobs_filter = 'search_filter'
         course_filter = 'search_filter search_active'
-        
+
     	var lastInd = this.state.coursePage * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var courseArr = courses.slice(firstInd, lastInd);
@@ -131,11 +145,11 @@ class SearchPage extends Component{
     }
     //subjects
     else if(this.state.display == 1){
-        
+
         course_filter = 'search_filter'
         jobs_filter = 'search_filter'
         subj_filter = 'search_filter search_active'
-        
+
     	var lastInd = this.state.subjectPage * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var subjectsArr = subjects.slice(firstInd, lastInd)
@@ -153,11 +167,11 @@ class SearchPage extends Component{
     }
     //jobs
     else{
-        
+
         course_filter = 'search_filter'
         jobs_filter = 'search_filter search_active'
         subj_filter = 'search_filter'
-        
+
       var lastInd = this.state.jobPage * this.state.pageSize
 	    var firstInd = lastInd - this.state.pageSize
 	    var jobArr = jobs.slice(firstInd, lastInd)
@@ -254,7 +268,7 @@ class SearchPage extends Component{
 				{    e.preventDefault();
 					window.location.href = '/search/' + this.state.value}}>
             <img src="https://i.imgur.com/g16hr23.png" width="80"/>
-			<input placeholder="Search" onChange={(event) => {this.setState({value: event.target.value})}}/>            
+			<input placeholder="Search" onChange={(event) => {this.setState({value: event.target.value})}}/>
 			</form>
             <div class="search_filters">
             <div class={course_filter} onClick={e => this.handleButtonClick(0)}> Courses </div>
@@ -262,7 +276,7 @@ class SearchPage extends Component{
 	    	<div class={jobs_filter} onClick={e => this.handleButtonClick(2)}> Jobs </div>
             </div>
 			</div>
-	    
+
 	      	<table>
             <h2 class="search_desc" >Search Results: {results}</h2>
 	      		<tbody>

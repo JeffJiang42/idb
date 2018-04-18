@@ -42,7 +42,6 @@ class Subjects extends Component{
     this.setState({providerOption: choice})
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return encodeURI(providerList[parseInt(a)-1])})
-    //console.log(choiceArr)
     var str = ''
     if (!(choiceArr.includes(NaN) || choice == '' || choice == null)){
         for (let c in choiceArr){
@@ -51,12 +50,10 @@ class Subjects extends Component{
             str += '&'
           }
         }
-    //console.log(this.state.queries)
     }
     var temp = this.state.queries
     temp.providers = str
     this.setState({queries: temp}, this.makeQuery())
-    //this.makeQuery()
   }
 
   numCourseChange(choice){
@@ -68,22 +65,17 @@ class Subjects extends Component{
     var temp = this.state.queries
     temp.numCourse = str
     this.setState({queries: temp}, this.makeQuery())
-    //this.makeQuery()
   }
 
   sortChange(choice){
     this.setState({sortOption: choice})
-    //console.log(this.state.queries)
     var str = ''
     if(choice != null){
-      //this.state.queries.sort = ("sort_by=" + sortQueries[choice-1])
-      //console.log(this.state.queries)
       str = 'sort_by=' + sortQueries[choice - 1]
     }
     var temp = this.state.queries
     temp.sort = str
     this.setState({queries: temp}, this.makeQuery())
-    //this.makeQuery()
   }
 
   makeQuery(){
@@ -111,6 +103,7 @@ class Subjects extends Component{
 
   handlePageChange(event){
     this.setState({page: Number(event.selected+1)})
+    window.scrollTo(0,0)
   }
 
 
@@ -130,6 +123,10 @@ class Subjects extends Component{
     console.log('Goodbye!')
     var toSave = this.state
     toSave.subjectList = []
+    /*
+    toSave.filterOpen = false
+    toSave.sortOpen = false
+    */
     localStorage.setItem('subjectSavedState', JSON.stringify(toSave))
   }
 
