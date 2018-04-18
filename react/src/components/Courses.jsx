@@ -39,6 +39,7 @@ class Courses extends Component{
     this.jobChange = this.jobChange.bind(this)
     this.sortChange = this.sortChange.bind(this)
     this.makeQuery = this.makeQuery.bind(this)
+    this.saveState = this.saveState.bind(this)
   }
 
   providerChange(choice){
@@ -55,9 +56,6 @@ class Courses extends Component{
           }
         }
     }
-    else{
-      str = ''
-    }
     var temp = this.state.queries
     temp.providers = str
     this.setState({queries: temp}, this.makeQuery())
@@ -69,9 +67,6 @@ class Courses extends Component{
     if (choice != null){
       str = 'num-relevant-jobs=' + relJobRanges[choice - 1]
     }
-    else{
-      str = ''
-    }
     var temp = this.state.queries
     temp.jobs = str
     this.setState({queries: temp}, this.makeQuery())
@@ -82,9 +77,6 @@ class Courses extends Component{
     var str = ''
     if (choice != null){
       str = 'price=' + priceRanges[choice - 1]
-    }
-    else{
-      str = ''
     }
     var temp = this.state.queries
     temp.price = str
@@ -98,9 +90,6 @@ class Courses extends Component{
     var str = ''
     if(choice != null){
       str = 'sort_by=' + sortQueries[choice - 1]
-    }
-    else{
-      str = ''
     }
     var temp = this.state.queries
     temp.sort = str
@@ -126,7 +115,7 @@ class Courses extends Component{
       .then((response) => {return response.json()})
       .then((json) => {
         var sorted = json
-        this.setState({courseList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
+        this.setState({courseList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize)}, this.saveState())
       })
   }
 
@@ -146,6 +135,11 @@ class Courses extends Component{
   }
 
   componentWillUnmount(){
+    this.saveState()
+  }
+
+  saveState(){
+    console.log('Goodbye!')
     var toSave = this.state
     toSave.courseList = []
     console.log(JSON.stringify(toSave))

@@ -10,7 +10,7 @@ var card_remove_border = {
     'borderStyle': 'none'
 };
 
-const providers = ["Khan Academy", "Udemy"]
+const providerList = ["Khan Academy", "Udemy"]
 const sortQueries = ["subject", "subject&desc=TRUE", "provider", "provider&desc=TRUE", "num-courses", "num-courses&desc=TRUE"]
 const numCourse = ["0..20", "20..40", "40..60", "60..80", "80..100", "100.."]
 
@@ -40,23 +40,26 @@ class Subjects extends Component{
   providerChange(choice){
     this.setState({providerOption: choice})
     var choiceArr = choice.split(',')
-    choiceArr = choiceArr.map((a) => {return encodeURI(providers[parseInt(a)-1])})
-    console.log(choiceArr)
+    choiceArr = choiceArr.map((a) => {return encodeURI(providerList[parseInt(a)-1])})
+    //console.log(choiceArr)
+    var str = ''
     if (!(choiceArr.includes(NaN) || choice == '' || choice == null)){
-        this.state.queries.providers = ''
+        //this.state.queries.providers = ''
         for (let c in choiceArr){
-          console.log('Choices ' + choiceArr[c])
-          this.state.queries.providers += 'provider=' + choiceArr[c]
+          //console.log('Choices ' + choiceArr[c])
+          //this.state.queries.providers += 'provider=' + choiceArr[c]
+          str += 'provider=' + choiceArr[c]
           if (c < choiceArr.length -1){
-            this.state.queries.providers += '&'
+            //this.state.queries.providers += '&'
+            str += '&'
           }
         }
-    console.log(this.state.queries)
+    //console.log(this.state.queries)
     }
-    else{
-      delete this.state.queries.providers
-    }
-    this.makeQuery()
+    var temp = this.state.queries
+    temp.providers = str
+    this.setState({queries:temp}, this.makeQuery())
+    //this.makeQuery()
   }
 
   numCourseChange(choice){
@@ -140,7 +143,7 @@ class Subjects extends Component{
       const providerOptions=[{label:"Khan Academy", value: 1}, {label: "Udemy", value: 2}]
       const numCourseOptions=[{label:"less than 20", value: 1}, {label:"between 20 and 40", value: 2},{label:"between 40 and 60", value: 3},
       {label:"between 60 and 80", value: 4}, {label: "between 80 and 100", value: 5}, {label:"greater than 100", value: 6}]
-      const sortOptions=[{label: "Subject name (Alphabetical)", value: 1}, {label: "Subject name (Descending alphabetical)", value:2},
+      const sortOptions=[{label: "Name (Alphabetical)", value: 1}, {label: "Name (Descending alphabetical)", value:2},
       {label: "Provider (Alphabetical)", value: 3}, {label:"Provider (Descending alphabetical)", value: 4},
       {label: "Number of courses", value: 5}, {label:"Number of courses (Descending)", value: 6}]
       //console.log(this.state.page);
