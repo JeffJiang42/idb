@@ -7,18 +7,20 @@ class TwitterFeed extends Component{
     super(props)
     console.log(props)
     this.state = {
-    	provider: this.props.provider
+    	prov: ''
     }
   }
 
- 
+  componentWillReceiveProps(props){
+    this.prov = props.prov
+  }
 
   render(){
 	  return(
 	  	<Timeline
 		    dataSource={{
 		      sourceType: 'profile',
-		      screenName: this.state.provider
+		      screenName: this.state.prov
 		    }}
 		    options={{
 		      username: 'TwitterDev',
@@ -28,8 +30,7 @@ class TwitterFeed extends Component{
 		    onLoad={() => console.log('Timeline is loaded!')}
 		  />
 	  )
-        
+
   }
 }
-
 export default TwitterFeed;

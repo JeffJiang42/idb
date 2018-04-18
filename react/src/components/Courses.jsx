@@ -130,7 +130,9 @@ class Courses extends Component{
     const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
     console.log(rehydrate)
     //this.setState(rehydrate, () => {var temp = this.state; console.log(temp)})
-    this.state = rehydrate
+    if (rehydrate != null){
+      this.state = rehydrate
+    }
     this.makeQuery()
   }
 
