@@ -4,6 +4,12 @@ import TwitterFeed from './TwitterFeed.jsx'
 import ReactPaginate from 'react-paginate'
 import { BarLoader } from 'react-spinners'
 import _ from 'lodash'
+import CourseCard from './CourseCard.jsx'
+import SubjectCard from './SubjectCard.jsx'
+
+var card_remove_border = {
+    'borderStyle': 'none'
+};
 
 class JobData extends Component{
   constructor(props){
@@ -12,9 +18,24 @@ class JobData extends Component{
       subjects: [],
       courses:[],
       info: {},
+      coursePage: 1,
+      subjectPage: 1,
+      courseMaxPage: 10,
+      subjectMaxPage: 10,
+      pageSize: 6
     }
     this.getSubject = this.getSubject.bind(this);
     this.getCourses = this.getCourses.bind(this);
+    this.handleCoursePageChange = this.handleCoursePageChange.bind(this)
+    this.handleSubjectPageChange = this.handleSubjectPageChange.bind(this)
+  }
+
+  handleCoursePageChange(event){
+    this.setState({coursePage: Number(event.selected+1)})
+  }
+
+  handleSubjectPageChange(event){
+
   }
 
   getSubject(){
@@ -22,7 +43,7 @@ class JobData extends Component{
     fetch(url)
       .then((response) => { return response.json()})
       .then((subJson) => {
-        this.setState({subjects: subJson})
+        this.setState({subjects: subJson,  subjectMaxPage: Math.ceil(subJson.length / this.state.pageSize)})
       })
   }
 
@@ -31,7 +52,7 @@ class JobData extends Component{
     fetch(url)
       .then((response) => { return response.json()})
       .then((courseJson) => {
-        this.setState({courses: courseJson})
+        this.setState({courses: courseJson, courseMaxPage: Math.ceil(courseJson.length / this.state.pageSize)})
       })
   }
 
@@ -61,9 +82,17 @@ class JobData extends Component{
     var variable = job.provider
     //console.log(typeof(variable) + ' this is provider')
     var courseTemp = []
-    for (let course of this.state.courses){
+    var i = 0
+    var lastInd = this.state.coursePage * this.state.pageSize
+    var firstInd = lastInd - this.state.pageSize
+    var courseArr = this.state.courses.slice(firstInd, lastInd)
+    for (let course of courseArr){
       courseTemp.push(
-        <li><Link to={`/courses/${course.id}`}>{course.course}</Link></li>
+        <div className="col-sm-4" key={i++} >
+        <div className='card' style={card_remove_border}>
+          <CourseCard provider={course["provider"]} price={course["price"]} courseId={course["id"]} courseName={course["course"]} image={course["image"]} relJobs={course['job-ids'].length}/>
+        </div>
+        </div>
       )
     }
     courseTemp = <div>
@@ -72,9 +101,17 @@ class JobData extends Component{
     </div>
 
     var subTemp = []
-    for (let sub of this.state.subjects){
+    i = 0
+    lastInd = this.state.coursePage * this.state.pageSize
+    firstInd = lastInd - this.state.pageSize
+    var subArr = this.state.subjects.slice(firstInd, lastInd)
+    for (let sub of subArr){
       subTemp.push(
-        <li><Link to={`/subjects/${sub.id}`}>{sub.subject}</Link></li>
+        <div className='col-sm-4' key={i++}>
+          <div className='card' style={card_remove_border} >
+          <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length} totalJobs={sub['job-ids'].length}/>
+          </div>
+      </div>
       )
     }
 
@@ -98,6 +135,30 @@ class JobData extends Component{
 				{courseTemp}
         {subTemp}
 			  </div>
+        <ReactPaginate previousLabel={"previous"}
+                    initialPage={this.state.coursePage-1}
+                    nextLabel={"next"}
+                    breakLabel={<a>...</a>}
+                    breakClassName={"break-me"}
+                    pageCount={this.state.courseMaxPage}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handleCoursePageChange}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"} />
+        <ReactPaginate previousLabel={"previous"}
+                    initialPage={this.state.subjectPage-1}
+                    nextLabel={"next"}
+                    breakLabel={<a>...</a>}
+                    breakClassName={"break-me"}
+                    pageCount={this.state.subjectMaxPage}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handleCoursePageChange}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"} />
 			</div>
 		</div>
 	</div>
