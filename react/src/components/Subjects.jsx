@@ -5,6 +5,7 @@ import _ from 'lodash'
 import { Row, Grid, Pagination, Collapse } from 'react-bootstrap'
 import Select from "react-virtualized-select";
 import ReactPaginate from 'react-paginate'
+import { BarLoader } from 'react-spinners'
 
 var card_remove_border = {
     'borderStyle': 'none'
@@ -28,7 +29,8 @@ class Subjects extends Component{
       sortOption: '',
       numCourseOption:'',
       queries: {},
-      url:'http://api.learning2earn.me/subjects'
+      url:'http://api.learning2earn.me/subjects',
+      ready: false
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.sortChange = this.sortChange.bind(this)
@@ -97,7 +99,7 @@ class Subjects extends Component{
       .then((response) => {return response.json()})
       .then((json) => {
         var sorted = json
-        this.setState({subjectList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize)}, this.saveState())
+        this.setState({subjectList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, this.saveState())
       })
   }
 
@@ -131,6 +133,9 @@ class Subjects extends Component{
   }
 
   render(){
+    if (!this.state.ready){
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
+    }
       const providerOptions=[{label:"Khan Academy", value: 1}, {label: "Udemy", value: 2}]
       const numCourseOptions=[{label:"less than 20", value: 1}, {label:"between 20 and 40", value: 2},{label:"between 40 and 60", value: 3},
       {label:"between 60 and 80", value: 4}, {label: "between 80 and 100", value: 5}, {label:"greater than 100", value: 6}]

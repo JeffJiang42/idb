@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import TwitterFeed from './TwitterFeed.jsx'
+import ReactPaginate from 'react-paginate'
 
 class JobData extends Component{
   constructor(props){

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Row, Collapse} from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
 import Select from "react-virtualized-select";
+import { BarLoader } from 'react-spinners'
 
 var card_remove_border = {
     'borderStyle': 'none'
@@ -33,7 +34,8 @@ class Jobs extends Component{
       companyList:[],
       companyNames: '',
       companyOption: '',
-      typeOption:''
+      typeOption:'',
+      ready: false
     }
     this.handlePageChange = this.handlePageChange.bind(this)
     this.makeQuery = this.makeQuery.bind(this)
@@ -166,7 +168,7 @@ class Jobs extends Component{
       .then((response) => {return response.json()})
       .then((json) => {
         var sorted = json
-        this.setState({jobList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)}, this.saveState())
+        this.setState({jobList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, this.saveState())
       })
 
   }
@@ -225,6 +227,9 @@ class Jobs extends Component{
   }
 
   render(){
+    if (!this.state.ready){
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
+    }
     const providerOptions = [{label: "Authentic Jobs", value: 1}, {label: "GitHub Jobs", value: 2}]
     const  numCourseOptions = [{label: "between 0 and 200 courses", value: 1},{label: "between 200 and 400 courses", value: 2},
     {label: "between 400 and 600 courses", value: 3}, {label: "between 600 and 800 courses"}, {label: "between 800 and 1000 courses", value: 4},
