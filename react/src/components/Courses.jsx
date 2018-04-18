@@ -45,22 +45,29 @@ class Courses extends Component{
     this.setState({providerOption: choice})
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return encodeURI(providers[parseInt(a)-1])})
-    console.log(choiceArr)
+    //console.log(choiceArr)
+    var str = ''
     if (!(choiceArr.includes(NaN) || choice == '' || choice == null)){
-        this.state.queries.providers = ''
+        //this.state.queries.providers = ''
         for (let c in choiceArr){
-          console.log('Choices ' + choiceArr[c])
-          this.state.queries.providers += 'provider=' + choiceArr[c]
+          //console.log('Choices ' + choiceArr[c])
+          //this.state.queries.providers += 'provider=' + choiceArr[c]
+          str += 'provider=' + choiceArr[c]
           if (c < choiceArr.length -1){
-            this.state.queries.providers += '&'
+            //this.state.queries.providers += '&'
+            str += '&'
           }
         }
-    console.log(this.state.queries)
+    //console.log(this.state.queries)
     }
     else{
-      delete this.state.queries.providers
+      //this.state.queries.providers = ''
+      str = ''
     }
-    this.makeQuery()
+    var temp = this.state.queries
+    temp.providers = str
+    this.setState({queries: temp}, this.makeQuery())
+    //this.makeQuery()
   }
 
   jobChange(choice){
@@ -119,137 +126,10 @@ class Courses extends Component{
       .then((response) => {return response.json()})
       .then((json) => {
         var sorted = json
-        this.setState({courseList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
+        this.setState({courseList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
       })
   }
-/*
-  providerChange(choice){
-    this.setState({ providerOption: choice });
-    var choiceArr = choice.split(',')
-    choiceArr = choiceArr.map((a) => {return parseInt(a)})
-    var priceFilter = this.state.priceOption
-    var jobFilter = this.state.relJobOption
-    var sortOption = this.state.sortOption
-    console.log(choice)
-    if (choiceArr.includes(NaN) || choice == '' || choice == null){
-      var url = 'http://api.learning2earn.me/courses'
-      if (priceFilter != ''){
-        url += '?price=' + priceRanges[parseInt(priceFilter)-1]
-      }
-      if (jobFilter != ''){
-        if(priceFilter != ''){
-          url += '&num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
-        }
-        else{
-          url += '?num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
-        }
-      }
-      if (sortOption != ''){
-        if (jobFilter != ''  || priceFilter != ''){
-          url += '&sort_by=' + sortQueries[sortOption-1]
-        }
-        else{
-          url += '?sort_by=' + sortQueries[sortOption-1]
-        }
-      }
-      console.log("url = " + url)
-      this.state.url = url
-      fetch(url)
-        .then((response) => {return response.json()})
-        .then((courseJson) =>{
-          return courseJson
-        })
-        .catch((error) => {console.log(error.message); return []})
-        .then((info) => {this.setState({courseList: info, page: 1, maxPage: Math.ceil(info.length / this.state.pageSize)})})
-    }
-    else {
-      this.setState({courseList:[]})
-      var url = 'http://api.learning2earn.me/courses'
-      var first = true
-      for (let i of choiceArr){
-        var provider = providers[i-1];
-        var queryChar = '&'
-        if (first){
-          queryChar = '?'
-          first = false
-        }
-        url = url + queryChar + 'provider=' + encodeURI(provider)
-        if (priceFilter != ''){
-          url += '&price=' + priceRanges[parseInt(priceFilter)-1]
-        }
-        if (jobFilter != ''){
-          url += '&num-relevant-jobs=' + relJobRanges[parseInt(jobFilter)-1]
-        }
 
-        if (sortOption != ''){
-          url += '&sort_by=' + sortQueries[sortOption-1]
-        }
-      }
-      console.log(url)
-      this.state.url = url
-      fetch(url)
-        .then((response) => {return response.json()})
-        .then((courseJson) => {
-          var filtered = courseJson;
-          if (filtered.length > 0){
-            this.setState({courseList: this.state.courseList.concat(filtered), page: 1, maxPage: Math.ceil(this.state.courseList.concat(filtered).length / this.state.pageSize)})
-          }
-        })
-    }
-  }
-*/
-/*
-  priceChange(choice){
-    if(choice == null){
-      choice = ''
-    }
-    this.state.priceOption = choice
-    this.providerChange(this.state.providerOption);
-  }
-  */
-/*
-  jobChange(choice){
-    if(choice == null){
-      choice = ''
-    }
-    this.state.relJobOption = choice
-    this.providerChange(this.state.providerOption);
-    //console.log(choice)
-  }
-
-  sortChange(choice){
-    this.state.sortOption = choice
-    var url = this.state.url
-    console.log("state url = " + url)
-    this.providerChange(this.state.providerOption)
-    /*
-    if (choice != null){
-      if (this.state.providerOption == '' && this.state.priceOption == '' && this.state.relJobOption == ''){
-        url = url + "?sort_by=" + sortQueries[choice-1]
-      }
-      else{
-        url = url + "&sort_by=" + sortQueries[choice-1]
-      }
-      console.log(url)
-      fetch(url)
-        .then((response) => {return response.json()})
-        .then((json) => {
-          var sorted = json;
-          this.setState({courseList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
-        })
-    }
-    else{
-      url = this.state.url
-      fetch(url)
-        .then((response) => {return response.json()})
-        .then((json) => {
-          var sorted = json;
-          this.setState({courseList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize)})
-        })
-    }
-    this.state.url = url
-  }
-  */
 
   handlePageChange(event){
     //console.log(event.selected)
@@ -259,7 +139,8 @@ class Courses extends Component{
 
   componentWillMount(){
     const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
-    this.setState(rehydrate)
+    console.log(rehydrate)
+    //this.setState(rehydrate, this.makeQuery())
     this.setState({providerOption:'', priceOption:'', relJobOption:''})
     const url = 'http://api.learning2earn.me/courses';
 
@@ -279,8 +160,8 @@ class Courses extends Component{
       providerOption: this.state.providerOption,
       priceOption: this.state.priceOption,
       relJobOption: this.state.relJobOption,
-      url: this.state.url,
-      sortOption: this.state.sortOption
+      sortOption: this.state.sortOption,
+      queries: this.state.queries
     };
     localStorage.setItem('coursesSavedState', JSON.stringify(toSave))
   }
@@ -294,7 +175,7 @@ class Courses extends Component{
     const sortOptions=[{label: "Course Name (Alphabetical)", value: 1}, {label: "Course Name (Descending alphabetical)", value: 2},{label: "Provider (Alphabetical)", value: 3},
     {label:"Provider (Descending alphabetical)", value: 4}, {label: "Price", value: 5}, {label: "Price (Descending)", value: 6},
     {label: "Relevant jobs", value: 7}, {label:"Relevant jobs (Descending)", value: 8}]
-    //console.log(this.state.page);
+    console.log(this.state.page);
     var {courseList, page, pageSize, maxPage, providerOption} = this.state
     var lastInd = page * pageSize
     var firstInd = lastInd - pageSize
@@ -305,7 +186,7 @@ class Courses extends Component{
         course["price"] = "Free"
       }
     }
-    
+
     var courseCards = courseArr.map((course, i) =>
       <div className="col-sm-3" key={i} >
       <div className='card' style={card_remove_border}>
