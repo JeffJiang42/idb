@@ -122,7 +122,6 @@ class Subjects extends Component{
   }
 
   saveState(){
-    console.log('Goodbye!')
     var toSave = this.state
     toSave.subjectList = []
     /*
@@ -142,7 +141,6 @@ class Subjects extends Component{
       const sortOptions=[{label: "Name (Alphabetical)", value: 1}, {label: "Name (Descending alphabetical)", value:2},
       {label: "Provider (Alphabetical)", value: 3}, {label:"Provider (Descending alphabetical)", value: 4},
       {label: "Number of courses", value: 5}, {label:"Number of courses (Descending)", value: 6}]
-      //console.log(this.state.page);
       var {subjectList, page, pageSize, maxPage} = this.state
       var lastInd = page * pageSize
       var firstInd = lastInd - pageSize

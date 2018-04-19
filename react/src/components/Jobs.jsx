@@ -58,26 +58,21 @@ class Jobs extends Component{
 
   typeChange(choice){
     this.setState({typeOption: choice})
-    //console.log(choice)
     var str = ''
     if (choice != null){
-      //this.state.queries.jobType = ("jobtype=" + jobType[choice-1])
       str = 'jobtype=' + jobType[choice - 1]
     }
     var temp = this.state.queries
     temp.jobType = str
     this.setState({queries: temp}, this.makeQuery())
-    //this.makeQuery()
   }
 
   subjectChange(choice){
     this.setState({subjectOption: choice})
     var str = ''
     if (choice != null){
-      //console.log(this.state.subjectIdList)
       str = 'subjectId=' + this.state.subjectIdList[choice - 1]
     }
-    console.log(str)
     var temp = this.state.queries
     temp.subject = str
     this.setState({queries: temp}, this.makeQuery())
@@ -85,19 +80,13 @@ class Jobs extends Component{
 
   locationChange(choice){
     this.setState({locationOption: choice})
-    //console.log(choice)
     var choiceArr = choice.split(',')
-    //console.log(choiceArr)
     choiceArr = choiceArr.map((a) => {return encodeURI(this.state.locationNames[parseInt(a)-1])})
-    //console.log(choiceArr)
     var str = ''
     if (!(choiceArr.includes(NaN) || choice == '' || choice == null)){
-      //this.state.queries.locations = ''
       for (let c in choiceArr) {
-        //this.state.queries.locations += 'location=' + choiceArr[c]
         str = 'location=' + choiceArr[c]
         if (c < choiceArr.length -1){
-          //this.state.queries.locations += '&'
           str += '&'
         }
       }
@@ -106,7 +95,6 @@ class Jobs extends Component{
     var temp = this.state.queries
     temp.locations = str
     this.setState({queries: temp}, this.makeQuery())
-    //this.makeQuery()
   }
 
   companyChange(choice){
@@ -209,24 +197,18 @@ class Jobs extends Component{
       }
     }
     var ids = Array.from(subjectIds)
-    //console.log(Array.from(subjectIds).length)
     this.setState({subjectIdList: ids}, this.getSubjectNames(ids))
-    //this.getSubjectNames(Array.from(subjectIds))
   }
 
   getSubjectNames(subjectIds){
-    //console.log(subjectIds.length)
     if (subjectIds.length == 0){
       return;
     }
     var url = 'http://api.learning2earn.me/subjects?subjectId=' + subjectIds.pop()
-    //console.log(url)
     fetch(url)
       .then((response) => {return response.json()})
       .then((json) => {
         var temp = this.state.subjectList.filter(name => name != null)
-        //temp = new Set(temp)
-        //temp = Array.from(temp)
         temp.push(json[0])
         this.setState({subjectList: temp}, () => {
           this.getSubjectNames(subjectIds)})
@@ -271,11 +253,6 @@ class Jobs extends Component{
   saveState(){
     var toSave = this.state
     toSave.jobList = []
-    /*
-    toSave.filterOpen = false
-    toSave.sortOpen = false
-    */
-    console.log(JSON.stringify(toSave.queries))
     localStorage.setItem('jobsSavedState', JSON.stringify(toSave))
   }
 
@@ -303,15 +280,11 @@ class Jobs extends Component{
     var subjectOptions = []
     var subjectIds = []
     var i = 1
-    console.log(this.state.subjectList)
     for (let sub of this.state.subjectList){
       subjectOptions.push({label: sub.subject, value: i++})
       subjectIds.push(sub.id)
     }
     this.state.subjectIdList = subjectIds;
-    //var subjectOptions = this.state.subjectList
-    //console.log(subjectOptions.length)
-    //subjectOptions = subjectOptions.map((sub, i) => {return {label: sub.subject, value: sub.id}})
 
     var {jobList, page, pageSize, maxPage} = this.state
     var lastInd = page * pageSize

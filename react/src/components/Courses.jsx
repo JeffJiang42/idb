@@ -54,30 +54,23 @@ class Courses extends Component{
   getSubjects(){
     var subjectIds = new Set()
     for (let course of this.state.courseList){
-      //console.log(course)
       subjectIds.add(course['subject-id'])
     }
     var ids = Array.from(subjectIds)
-    //console.log(ids)
     this.setState({courseList: this.state.courseList}, this.getSubjectNames(ids))
-    //this.getSubjectNames(ids)
-    //this.getSubjectNames(Array.from(subjectIds))
   }
 
   getSubjectNames(subjectIds){
-    //console.log(subjectIds.length)
     if (subjectIds.length == 0){
       return;
     }
     var url = 'http://api.learning2earn.me/subjects?subjectId=' + subjectIds.pop()
-    //console.log(url)
     fetch(url)
       .then((response) => {return response.json()})
       .then((json) => {
         var temp = this.state.subjectList.filter(name => (name != null && name != undefined))
         temp = new Set(temp)
         temp = Array.from(temp)
-        //console.log(json[0])
         temp.push(json[0])
         this.setState({subjectList: temp}, () => {
           this.getSubjectNames(subjectIds)})
@@ -88,10 +81,8 @@ class Courses extends Component{
     this.setState({subjectOption: choice})
     var str = ''
     if (choice != null){
-      //console.log(this.state.subjectIdList)
       str = 'subjectId=' + this.state.subjectIdList[choice - 1]
     }
-    console.log(str)
     var temp = this.state.queries
     temp.subject = str
     this.setState({queries: temp}, this.makeQuery())
@@ -101,7 +92,6 @@ class Courses extends Component{
     this.setState({providerOption: choice})
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return encodeURI(providersList[parseInt(a)-1])})
-    //console.log(choiceArr)
     var str = ''
     if (!(choiceArr.includes(NaN) || choice == '' || choice == null)){
         for (let c in choiceArr){
@@ -141,7 +131,6 @@ class Courses extends Component{
 
   sortChange(choice){
     this.setState({sortOption: choice})
-    //console.log(this.state.queries)
     var str = ''
     if(choice != null){
       str = 'sort_by=' + sortQueries[choice - 1]
@@ -176,23 +165,9 @@ class Courses extends Component{
 
 
   handlePageChange(event){
-    //console.log(event.selected)
     this.setState({page: Number(event.selected+1)})
     window.scrollTo(0,0)
   }
-
-/*
-  componentWillMount(){
-    const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
-    //console.log(rehydrate)
-    //this.setState(rehydrate, () => {var temp = this.state; console.log(temp)})
-    if (rehydrate != null){
-      this.state = rehydrate
-    }
-    //this.getSubjects()
-    this.makeQuery()
-  }
-  */
 
   componentWillMount(){
     const url = 'http://api.learning2earn.me/courses';
@@ -221,14 +196,8 @@ class Courses extends Component{
   }
 
   saveState(){
-    console.log('Goodbye!')
     var toSave = this.state
     toSave.courseList = []
-    /*
-    toSave.filterOpen = false
-    toSave.sortOpen = false
-    */
-    //console.log(JSON.stringify(toSave))
     localStorage.setItem('coursesSavedState', JSON.stringify(toSave))
   }
 
@@ -260,8 +229,6 @@ class Courses extends Component{
       subjectIds.push(sub.id)
     }
     this.state.subjectIdList = subjectIds;
-    console.log(subjectIds)
-    //console.log(this.state.page);
     var {courseList, page, pageSize, maxPage, providerOption} = this.state
     var lastInd = page * pageSize
     var firstInd = lastInd - pageSize
