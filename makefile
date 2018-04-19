@@ -54,8 +54,9 @@ frontend:
 	@(cd react; npm install; npm test)
 
 # make backend  - runs backend tests
-backend:
-	python backend/tests.py
+backend: FORCE
+	python3 backend/tests.py
+FORCE: ;
 
 # make website  - prints link to a website
 website:
