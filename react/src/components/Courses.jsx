@@ -33,6 +33,9 @@ class Courses extends Component{
       url:'http://api.learning2earn.me/courses',
       sortOption: '',
       queries:{},
+      subjectList:[],
+      subjectIdList: [],
+      subjectOption: '',
       ready: false
     };
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -42,6 +45,56 @@ class Courses extends Component{
     this.sortChange = this.sortChange.bind(this)
     this.makeQuery = this.makeQuery.bind(this)
     this.saveState = this.saveState.bind(this)
+    this.getSubjects = this.getSubjects.bind(this)
+    this.getSubjectNames = this.getSubjectNames.bind(this)
+    this.subjectChange = this.subjectChange.bind(this)
+  }
+
+
+  getSubjects(){
+    var subjectIds = new Set()
+    for (let course of this.state.courseList){
+      //console.log(course)
+      subjectIds.add(course['subject-id'])
+    }
+    var ids = Array.from(subjectIds)
+    //console.log(ids)
+    this.setState({courseList: this.state.courseList}, this.getSubjectNames(ids))
+    //this.getSubjectNames(ids)
+    //this.getSubjectNames(Array.from(subjectIds))
+  }
+
+  getSubjectNames(subjectIds){
+    //console.log(subjectIds.length)
+    if (subjectIds.length == 0){
+      return;
+    }
+    var url = 'http://api.learning2earn.me/subjects?subjectId=' + subjectIds.pop()
+    //console.log(url)
+    fetch(url)
+      .then((response) => {return response.json()})
+      .then((json) => {
+        var temp = this.state.subjectList.filter(name => (name != null && name != undefined))
+        temp = new Set(temp)
+        temp = Array.from(temp)
+        //console.log(json[0])
+        temp.push(json[0])
+        this.setState({subjectList: temp}, () => {
+          this.getSubjectNames(subjectIds)})
+      })
+  }
+
+  subjectChange(choice){
+    this.setState({subjectOption: choice})
+    var str = ''
+    if (choice != null){
+      //console.log(this.state.subjectIdList)
+      str = 'subjectId=' + this.state.subjectIdList[choice - 1]
+    }
+    console.log(str)
+    var temp = this.state.queries
+    temp.subject = str
+    this.setState({queries: temp}, this.makeQuery())
   }
 
   providerChange(choice){
@@ -117,7 +170,7 @@ class Courses extends Component{
       .then((response) => {return response.json()})
       .then((json) => {
         var sorted = json
-        this.setState({courseList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, this.saveState())
+        this.setState({courseList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, () => {this.setState({courseList: this.state.courseList},this.saveState())})
       })
   }
 
@@ -128,14 +181,38 @@ class Courses extends Component{
     window.scrollTo(0,0)
   }
 
-
+/*
   componentWillMount(){
     const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
-    console.log(rehydrate)
+    //console.log(rehydrate)
     //this.setState(rehydrate, () => {var temp = this.state; console.log(temp)})
     if (rehydrate != null){
       this.state = rehydrate
     }
+    //this.getSubjects()
+    this.makeQuery()
+  }
+  */
+
+  componentWillMount(){
+    const url = 'http://api.learning2earn.me/courses';
+    fetch(url)
+      .then((response) => {return response.json()})
+      .catch((error) => {console.log(error.message)})
+      .then((info) => {this.setState({courseList: info, maxPage: Math.ceil(info.length / this.state.pageSize)},
+        () => {
+          this.getSubjects()
+          this.resetState()
+        })})
+      .catch((error) => {console.log(error.message)})
+  }
+
+  resetState(){
+    const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
+    if (rehydrate != null){
+      this.state = rehydrate
+    }
+    this.setState(rehydrate)
     this.makeQuery()
   }
 
@@ -151,7 +228,7 @@ class Courses extends Component{
     toSave.filterOpen = false
     toSave.sortOpen = false
     */
-    console.log(JSON.stringify(toSave))
+    //console.log(JSON.stringify(toSave))
     localStorage.setItem('coursesSavedState', JSON.stringify(toSave))
   }
 
@@ -159,6 +236,11 @@ class Courses extends Component{
     if (!this.state.ready){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
+
+    if(this.state.subjectList == undefined || this.state.subjectList.length < 140){
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
+    }
+
     const providerOptions = [{label: 'Khan Academy', value: 1}, {label:'Udemy', value: 2}]
     const priceOptions=[{label:"Free", value: 1},{label:"less than $50", value:2},{label:"between $50 and $100", value:3},
     {label:"between $100 and $150", value:4},{label:"between $150 and $200", value:5}, {label:"greater than $200", value:6}]
@@ -167,6 +249,18 @@ class Courses extends Component{
     const sortOptions=[{label: "Name (Alphabetical)", value: 1}, {label: "Name (Descending alphabetical)", value: 2},{label: "Provider (Alphabetical)", value: 3},
     {label:"Provider (Descending alphabetical)", value: 4}, {label: "Price", value: 5}, {label: "Price (Descending)", value: 6},
     {label: "Relevant jobs", value: 7}, {label:"Relevant jobs (Descending)", value: 8}]
+    var subjectOptions = []
+    var subjectIds = []
+    var i = 1
+    for (let sub of this.state.subjectList){
+      if(subjectIds.includes(sub.id)){
+        continue
+      }
+      subjectOptions.push({label: sub.subject, value: i++})
+      subjectIds.push(sub.id)
+    }
+    this.state.subjectIdList = subjectIds;
+    console.log(subjectIds)
     //console.log(this.state.page);
     var {courseList, page, pageSize, maxPage, providerOption} = this.state
     var lastInd = page * pageSize
@@ -197,6 +291,7 @@ class Courses extends Component{
                   <Select multi  options={providerOptions} simpleValue value={providerOption} placeholder="Provider" onChange={this.providerChange} />
                   <Select options={priceOptions} simpleValue value={this.state.priceOption} placeholder="Price" onChange={this.priceChange}/>
                   <Select options={relJobOptions} simpleValue value={this.state.relJobOption} placeholder="Number of Relevant Jobs" onChange={this.jobChange}/>
+                  <Select options={subjectOptions} simpleValue value={this.state.subjectOption} placeholder='Subject' onChange={this.subjectChange} />
                 </div>
               </Collapse>
             </div>

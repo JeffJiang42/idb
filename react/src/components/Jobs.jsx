@@ -269,7 +269,6 @@ class Jobs extends Component{
   }
 
   saveState(){
-    console.log('Goodbye!')
     var toSave = this.state
     toSave.jobList = []
     /*
@@ -304,6 +303,7 @@ class Jobs extends Component{
     var subjectOptions = []
     var subjectIds = []
     var i = 1
+    console.log(this.state.subjectList)
     for (let sub of this.state.subjectList){
       subjectOptions.push({label: sub.subject, value: i++})
       subjectIds.push(sub.id)
