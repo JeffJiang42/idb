@@ -44,7 +44,7 @@ uml:
 
 # make selenium - runs selenium tests
 selenium:
-	- @(cd react/__tests__//gui_tests; pip install pyvirtualdisplay selenium; make travis)
+	- @(cd react/__tests__//gui_tests; pip install -r requirements.txt; make travis)
 
 postman:
 	@npm install newman; node_modules/.bin/newman run postman_tests.json -g postman_globals.json
@@ -71,9 +71,9 @@ apidoc:
 
 # make self     - prints link to self critique
 self:
-	@echo "http://${GithubID}.gitbooks.io/api/self-critique"
+	@echo "http://${GithubID}.gitbooks.io/report/content/self-critique.html"
 
 # make other    - prints link to other critique
 other:
-	@echo "http://${GithubID}.gitbooks.io/api/other-critique"
+	@echo "http://${GithubID}.gitbooks.io/report/content/other-critique.html"
 

@@ -13,7 +13,7 @@ class JobFilter(unittest.TestCase):
     def setUp(self):
         self.display = Display(visible=0, size=(1920, 1080))
         self.display.start()
-        self.driver = webdriver.Chrome('../chromedriver2')
+        self.driver = webdriver.Chrome('../linux_chrome')
         self.driver.delete_all_cookies()
         
         self.driver.implicitly_wait(30)
