@@ -153,8 +153,6 @@ def filter_logic(query,parts,filter_type,column,value):
         query += ' (' + column + ' BETWEEN %s AND %s)'
         parts.extend([min_,max_])
     # print(query)
-    print(parts)
-    print(query)
     return query
 
 def filter_query(args,type_):
