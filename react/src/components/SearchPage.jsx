@@ -44,14 +44,17 @@ class SearchPage extends Component{
 	}
 
 	handleCoursePageChange(event){
+		//Page change for course tab
 		this.setState({coursePage: event.selected+1})
 	}
 
 	handleSubjectPageChange(event){
+		//Page change for subject tab
 		this.setState({coursePage: event.selected+1})
 	}
 
 	handleJobPageChange(event){
+		//page change for job tab
 		this.setState({jobPage: event.selected+1})
 	}
 
@@ -112,8 +115,8 @@ class SearchPage extends Component{
           info.jobs = (info.jobs ? info.jobs : [])
           info.subjects = (info.subjects ? info.subjects : [])
           this.setState({
-            courses: info.courses, 
-            jobs: info.jobs, 
+            courses: info.courses,
+            jobs: info.jobs,
             subjects: info.subjects,
             maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize),
             maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize),
@@ -124,6 +127,7 @@ class SearchPage extends Component{
     )
 	}
 	getSubject(subjectID){
+		//Fetches subject info
 		var subName = async() => {await fetch('http://api.learning2earn.me/subjects?subjectId=' + subjectID)
 		.then((response) => {return response.json()})
 	      .then((subjectJson) => {
@@ -138,6 +142,7 @@ class SearchPage extends Component{
   	}
 
   render(){
+		//Loading if seach isn't done
 		if (!this.state.ready){
 			return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
 		}
@@ -243,6 +248,9 @@ class SearchPage extends Component{
 			subjectStyle = {'display': 'none'}
 			jobStyle = {'dummy': 1}
 		}
+		/*Hacky solution for pagination -- only one component is visible
+		* at a time depending on the current tab
+		*/
 		var coursePagination = 		<div style={courseStyle} >
 				<ReactPaginate
 										initialPage={this.state.coursePage-1}
