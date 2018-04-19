@@ -56,7 +56,7 @@ class Subjects extends Component{
     }
     var temp = this.state.queries
     temp.providers = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   numCourseChange(choice){
@@ -68,7 +68,7 @@ class Subjects extends Component{
     }
     var temp = this.state.queries
     temp.numCourse = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   sortChange(choice){
@@ -80,11 +80,15 @@ class Subjects extends Component{
     }
     var temp = this.state.queries
     temp.sort = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
-  makeQuery(){
+  makeQuery(isFilter){
     //Helper method for making an API call by stacking queries
+    var newPage = this.state.page
+    if (isFilter){
+      newPage = 1
+    }
     var url = 'http://api.learning2earn.me/subjects'
     var first = true
     var queries = this.state.queries
@@ -103,7 +107,7 @@ class Subjects extends Component{
       .then((response) => {return response.json()})
       .then((json) => {
         var sorted = json
-        this.setState({subjectList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, this.saveState())
+        this.setState({subjectList: sorted, page: newPage, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, this.saveState())
       })
   }
 
@@ -118,7 +122,7 @@ class Subjects extends Component{
     if(rehydrate != null){
       this.state = rehydrate
     }
-    this.makeQuery()
+    this.makeQuery(false)
   }
 
   componentWillUnmount(){

@@ -90,7 +90,7 @@ class Courses extends Component{
     }
     var temp = this.state.queries
     temp.subject = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   providerChange(choice){
@@ -109,7 +109,7 @@ class Courses extends Component{
     }
     var temp = this.state.queries
     temp.providers = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   jobChange(choice){
@@ -121,7 +121,7 @@ class Courses extends Component{
     }
     var temp = this.state.queries
     temp.jobs = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   priceChange(choice){
@@ -133,7 +133,7 @@ class Courses extends Component{
     }
     var temp = this.state.queries
     temp.price = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
 
@@ -146,11 +146,15 @@ class Courses extends Component{
     }
     var temp = this.state.queries
     temp.sort = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
-  makeQuery(){
+  makeQuery(isFilter){
     //Helper method to make an API query  with stacked queries stored in the state
+    var newPage = this.state.page
+    if (isFilter){
+      newPage = 1
+    }
     var url = 'http://api.learning2earn.me/courses'
     var first = true
     var queries = this.state.queries
@@ -169,7 +173,7 @@ class Courses extends Component{
       .then((response) => {return response.json()})
       .then((json) => {
         var sorted = json
-        this.setState({courseList: sorted, page: this.state.page, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, () => {this.setState({courseList: this.state.courseList},this.saveState())})
+        this.setState({courseList: sorted, page: newPage, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, () => {this.setState({courseList: this.state.courseList},this.saveState())})
       })
   }
 
@@ -199,7 +203,7 @@ class Courses extends Component{
       this.state = rehydrate
     }
     this.setState(rehydrate)
-    this.makeQuery()
+    this.makeQuery(false)
   }
 
   componentWillUnmount(){
