@@ -41,6 +41,7 @@ class Subjects extends Component{
   }
 
   providerChange(choice){
+    //Method for updating when provider filter is chosen
     this.setState({providerOption: choice})
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return encodeURI(providerList[parseInt(a)-1])})
@@ -59,6 +60,7 @@ class Subjects extends Component{
   }
 
   numCourseChange(choice){
+    //Method for updating when a number of courses filter is chosen
     this.setState({numCourseOption: choice})
     var str = ''
     if (choice != null){
@@ -70,6 +72,7 @@ class Subjects extends Component{
   }
 
   sortChange(choice){
+    //Method for updating when a sorting option is chosen
     this.setState({sortOption: choice})
     var str = ''
     if(choice != null){
@@ -81,6 +84,7 @@ class Subjects extends Component{
   }
 
   makeQuery(){
+    //Helper method for making an API call by stacking queries
     var url = 'http://api.learning2earn.me/subjects'
     var first = true
     var queries = this.state.queries
@@ -122,16 +126,14 @@ class Subjects extends Component{
   }
 
   saveState(){
+    //Saves the current state in loal storage
     var toSave = this.state
     toSave.subjectList = []
-    /*
-    toSave.filterOpen = false
-    toSave.sortOpen = false
-    */
     localStorage.setItem('subjectSavedState', JSON.stringify(toSave))
   }
 
   render(){
+    //Loading icon if not all the data is there
     if (!this.state.ready){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }

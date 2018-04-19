@@ -80,7 +80,6 @@ class JobData extends Component{
     this.getCourses()
     var job = this.state.info
     var variable = job.provider
-    //console.log(typeof(variable) + ' this is provider')
     var courseTemp = []
     var i = 0
     var lastInd = this.state.coursePage * this.state.pageSize

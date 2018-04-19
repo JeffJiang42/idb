@@ -89,7 +89,6 @@ class CourseData extends Component{
     if (_.isEmpty(this.state.subject)){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
-    console.log(JSON.stringify(this.state.subject))
     var course = this.state.info
     var jobTemp = []
     var finalLength = 0;
@@ -125,7 +124,6 @@ class CourseData extends Component{
       course.price = "Free"
     }
     var sub = this.state.subject
-    console.log(sub)
     return(
       <div className="box">
         <div className="container h-100">
@@ -159,7 +157,7 @@ class CourseData extends Component{
                     subContainerClassName={"pages pagination"}
                     activeClassName={"active"} />
                 </div>
-              </div>                
+              </div>
             </div>
           </div>
         </div>

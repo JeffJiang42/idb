@@ -52,6 +52,7 @@ class Courses extends Component{
 
 
   getSubjects(){
+    //Fetches subjectIds from all the courses for use for the subjects filter
     var subjectIds = new Set()
     for (let course of this.state.courseList){
       subjectIds.add(course['subject-id'])
@@ -61,6 +62,9 @@ class Courses extends Component{
   }
 
   getSubjectNames(subjectIds){
+    /*Helper method for getSubjects - Given a list of ids, makes API calls
+    * and stores the results
+    */
     if (subjectIds.length == 0){
       return;
     }
@@ -78,6 +82,7 @@ class Courses extends Component{
   }
 
   subjectChange(choice){
+    //Method for updating when a subject filter is chosen
     this.setState({subjectOption: choice})
     var str = ''
     if (choice != null){
@@ -89,6 +94,7 @@ class Courses extends Component{
   }
 
   providerChange(choice){
+    //Method for updating when a provider filter is chosen
     this.setState({providerOption: choice})
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return encodeURI(providersList[parseInt(a)-1])})
@@ -107,6 +113,7 @@ class Courses extends Component{
   }
 
   jobChange(choice){
+    //Method for updating when a job filter is chosen
     this.setState({relJobOption: choice})
     var str = ''
     if (choice != null){
@@ -118,6 +125,7 @@ class Courses extends Component{
   }
 
   priceChange(choice){
+    //Method for updating when a price filter is chosen
     this.setState({priceOption: choice})
     var str = ''
     if (choice != null){
@@ -130,6 +138,7 @@ class Courses extends Component{
 
 
   sortChange(choice){
+    //Method for updating when a sorting option is chosen
     this.setState({sortOption: choice})
     var str = ''
     if(choice != null){
@@ -141,6 +150,7 @@ class Courses extends Component{
   }
 
   makeQuery(){
+    //Helper method to make an API query  with stacked queries stored in the state
     var url = 'http://api.learning2earn.me/courses'
     var first = true
     var queries = this.state.queries
@@ -183,6 +193,7 @@ class Courses extends Component{
   }
 
   resetState(){
+    //Fetches old stack from browser local storage
     const rehydrate = JSON.parse(localStorage.getItem('coursesSavedState'))
     if (rehydrate != null){
       this.state = rehydrate
@@ -196,12 +207,14 @@ class Courses extends Component{
   }
 
   saveState(){
+    //Saves current state in browser local storage
     var toSave = this.state
     toSave.courseList = []
     localStorage.setItem('coursesSavedState', JSON.stringify(toSave))
   }
 
   render(){
+    //Displays loading when data isn't there
     if (!this.state.ready){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
@@ -218,6 +231,7 @@ class Courses extends Component{
     const sortOptions=[{label: "Name (Alphabetical)", value: 1}, {label: "Name (Descending alphabetical)", value: 2},{label: "Provider (Alphabetical)", value: 3},
     {label:"Provider (Descending alphabetical)", value: 4}, {label: "Price", value: 5}, {label: "Price (Descending)", value: 6},
     {label: "Relevant jobs", value: 7}, {label:"Relevant jobs (Descending)", value: 8}]
+    //Fetches subjects and builds parallel arrays for names and IDs for use in queries
     var subjectOptions = []
     var subjectIds = []
     var i = 1
