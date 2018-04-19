@@ -25,7 +25,6 @@ class TwitterFeed extends Component{
   render(){
   	var provider = this.props.provider
     provider = String(provider).toLowerCase().replace(/\s/g,'')
-
     if (this.state.mounted) {
       return(
       <Timeline

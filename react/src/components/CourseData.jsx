@@ -6,6 +6,7 @@ import JobCard from './JobCard';
 import _ from 'lodash'
 import { BarLoader } from 'react-spinners'
 import ReactPaginate from 'react-paginate'
+import TwitterFeed from './TwitterFeed.jsx'
 
 var card_remove_border = {
     'borderStyle': 'none'
@@ -91,6 +92,7 @@ class CourseData extends Component{
     console.log(JSON.stringify(this.state.subject))
     var course = this.state.info
     var jobTemp = []
+    var finalLength = 0;
     if (this.state.jobs.length == 0){
       jobTemp = <p>No relevant jobs for this course</p>
     }
@@ -108,6 +110,7 @@ class CourseData extends Component{
           </div>
         )
       }
+      finalLength = Math.ceil(jobTemp.length / 3) * 400;
     }
     if (jobTemp.constructor === Array){
       jobTemp = <div>
@@ -116,7 +119,7 @@ class CourseData extends Component{
       </div>
     }
     else{
-      jobTemp = <p className="card-text"><strong>Related Jobs:</strong> {jobTemp}</p>
+      jobTemp = <p className="card-text"><strong>Related Jobs:</strong>{jobTemp}</p>
     }
     if (course.price === 0){
       course.price = "Free"
@@ -125,24 +128,25 @@ class CourseData extends Component{
     console.log(sub)
     return(
       <div className="box">
-	     <div className="container h-100">
-	  	<div className="row h-100 justify-content-center align-items-center">
-			<div className="card h-100" align = "center">
-				<img className="card-img-top" src={course.image} />
-				<div className="card-body">
-				<h4 className="card-title">{course.course}</h4>
-				<p className="card-text"><strong>Provider</strong>: {course.provider}</p>
-				<p className="card-text"><strong>Price</strong>: {course.price}</p>
-				<p className="card-text"><strong>Instructor</strong>: {course.instructor}</p>
-				<p className="card-text"><strong>Link</strong>: <a href={course.link}>{course.link}</a></p>
-				<p className="card-text"><strong>Description</strong>: {course.desc}</p>
-        <p className="card-text"><strong>Course Subject</strong></p>
-            <div className='card' style={card_remove_border} >
-            <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length} totalJobs={sub['job-ids'].length}/>
-            </div>
-        {jobTemp}
-			  </div>
-        <ReactPaginate previousLabel={"previous"}
+        <div className="container h-100">
+          <div className="row h-100 justify-content-center align-items-center">
+            <div className="card h-100" align = "center">
+              <img className="card-img-top" src={course.image} />
+              <div className="card-body">
+                <h4 className="card-title">{course.course}</h4>
+                <p className="card-text"><strong>Provider</strong>: {course.provider}</p>
+                <p className="card-text"><strong>Price</strong>: {course.price}</p>
+                <p className="card-text"><strong>Instructor</strong>: {course.instructor}</p>
+                <p className="card-text"><strong>Link</strong>: <a href={course.link}>{course.link}</a></p>
+                <p className="card-text"><strong>Description</strong>: {course.desc}</p>
+                <p className="card-text"><strong>Course Subject</strong></p>
+                <div className='card' style={card_remove_border} >
+                  <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length} totalJobs={sub['job-ids'].length}/>
+                </div>
+                <TwitterFeed provider={course.provider} />
+                {jobTemp}
+                <div style={{'marginTop': finalLength }}>
+                  <ReactPaginate previousLabel={"previous"}
                     initialPage={this.state.jobPage-1}
                     nextLabel={"next"}
                     breakLabel={<a>...</a>}
@@ -154,10 +158,12 @@ class CourseData extends Component{
                     containerClassName={"pagination"}
                     subContainerClassName={"pages pagination"}
                     activeClassName={"active"} />
-			</div>
-		</div>
-	</div>
-</div>);
+                </div>
+              </div>                
+            </div>
+          </div>
+        </div>
+      </div>);
   }
 }
 
