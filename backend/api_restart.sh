@@ -3,5 +3,6 @@
 #run as sudo ./restart.sh
 git pull
 docker kill $(docker ps -q)
+docker system prune -a -f
 docker build -t my_flask_app .
 docker run  -d --restart=always -p 80:80 -t my_flask_app
