@@ -47,7 +47,7 @@ selenium:
 	- @(cd react/__tests__//gui_tests; pip install pyvirtualdisplay selenium; make travis)
 
 postman:
-	@echo node_modules/.bin/newman run postman_tests.json -g postman_globals.json
+	@npm install newman; node_modules/.bin/newman run postman_tests.json -g postman_globals.json
 
 # make frontend - runs frontend tests
 frontend:
