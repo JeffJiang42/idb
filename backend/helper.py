@@ -6,18 +6,18 @@ from flask_cors import CORS
 import re
 from werkzeug.datastructures import ImmutableMultiDict
 
-
-COURSE_SEARCH = 'SELECT * FROM Course WHERE description ILIKE %s OR course ILIKE %s OR provider ILIKE %s'
+# search queries
 SUBJECT_SEARCH = 'SELECT * FROM Subject WHERE subject ILIKE %s OR provider ILIKE %s'
+COURSE_SEARCH = 'SELECT * FROM Course WHERE description ILIKE %s OR course ILIKE %s OR provider ILIKE %s'
 JOB_SEARCH = 'SELECT * FROM Job WHERE name ILIKE %s OR company ILIKE %s OR description ILIKE %s OR provider ILIKE %s OR location ILIKE %s OR jobtype ILIKE %s'
 
+# api model fields
 SUBJECT_FIELDS = ('id', 'subject', 'provider', 'image', 'course-ids', 'job-ids','num-courses')
-# need to add provider to gitbook
 COURSE_FIELDS = ('id', 'course', 'desc', 'image', 'instructor', 'link', 'price', 'provider', 'job-ids', 'subject-id','num-relevant-jobs')
 JOB_FIELDS = ('id', 'name', 'company', 'desc', 'image', 'link', 'provider', 'course-ids', 'subject-ids', 'location', 'jobtype','num-related-courses')
-
 FIELDS = (SUBJECT_FIELDS,COURSE_FIELDS,JOB_FIELDS)
 
+# possible model filters
 SUBJECT_FILTERS = {'num-courses': 'range',
                    'provider': 'exact',
                    'sort_by': 'exact',
@@ -37,12 +37,12 @@ JOB_FILTERS = {'company': 'exact',
                'sort_by': 'exact',
                'desc': 'exact'  
               }
-
 FILTERS = (SUBJECT_FILTERS,COURSE_FILTERS,JOB_FILTERS)
+
+# Model names
 TABLES = ('Subject','Course','Job')
 
 best_cache = {}
-
 conn = psycopg2.connect('host=learning2earn.c9dnk6wbtbst.us-east-2.rds.amazonaws.com user=postgres dbname=learning2earn password=cs373spring2018')
 
 def clean_data(type_,sub):
@@ -78,7 +78,7 @@ def process_results(pg_result,type_):
     pg_result -- the result of an execution from pg
     type_ -- the type according to the FIELDS tuple
 
-    returns a serialized JSON string baby
+    returns a serialized JSON string
     """
     results = []
     type_fields = FIELDS[type_]
@@ -99,6 +99,14 @@ def process_results(pg_result,type_):
 
 
 def execute(statement, *formatted):
+    '''
+    create full sql query and fetch from database to return object for API
+
+    statement -- string with formatters to be sent to mogrify to build query
+    *formatted -- iterable that contains data for the corresponding formatters
+
+    return list of data found in database 
+    '''
     global conn
     for x in range(0, 3):
         try:
@@ -117,63 +125,102 @@ def execute(statement, *formatted):
             conn = psycopg2.connect('host=learning2earn.c9dnk6wbtbst.us-east-2.rds.amazonaws.com user=postgres dbname=learning2earn password=cs373spring2018')
     return [('error',)]
 
+def filter_logic(query,parts,filter_type,column,value):
+    """
+    update WHERE clause based on passed in filter_type and value
+
+    query -- current built WHERE clause
+    parts -- value array that corresponds to formatters in query
+    filter_type -- type of filter passed in (exact/range)
+    column -- table column
+    value -- value passed in to parameter
+
+    returns updated WHERE clause with added value
+    """
+    if filter_type == 'exact':
+        query += ' (UPPER(' + column + ') = %s)'
+        parts.append(value.upper())
+    elif filter_type == 'range':
+        range_ = value.split('..')
+        if len(range_) != 2:
+            raise ValueError(param + '_invalid_range')
+        else:
+            try:
+                if range_[0]=='':
+                    min_ = 0
+                else:
+                    min_ = int(range_[0])
+                if range_[1]=='':
+                    max_ = 2000
+                else:
+                    max_ = int(range_[1])
+                if min_>max_:
+                    raise ValueError(param + '_invalid_range')
+            except ValueError:
+                raise ValueError(param + '_range_not_integers')
+        query += ' (' + column + ' BETWEEN %s AND %s)'
+        parts.extend([min_,max_])
+    # print(query)
+    return query
 
 def filter_query(args,type_):
+    """
+    generate WHERE clause to be added to SQL query
+
+    args -- request args passed in by API call
+    type_ -- the type according to the FIELDS tuple
+
+    returns WHERE clause if valid parameters
+    """
     filters = FILTERS[type_]
     table = TABLES[type_]
     query = ''
     parts = []
-
     for param in args:
+        # already handled
         if 'Id' in param or 'limit' in param or 'sort_by' in param or 'desc' in param:
             continue
+        # invalid
         if param not in filters:
             raise ValueError(param +'_invalid_filter')
         if param in filters:
+            # type in dict
+            filter_type = filters[param]
+            # intersection
             query += ' and ('
             values = args.getlist(param)
-            first = True
-            filter_type = filters[param]
+            # db format
             param = param.replace('-','_')
+            first = True
             for value in values:
-                value = value
+                #value = value
                 column = table + '.' + param
+                # union of same column values
                 if first:
                     first = False
                 else:
                     query += ' or'
-                if filter_type == 'exact':
-                    query += ' (UPPER(' + column + ') = %s)'
-                    parts.append(value.upper())
-                elif filter_type == 'range':
-                    range_ = value.split('..')
-                    if len(range_) != 2:
-                        raise ValueError(param + '_invalid_range')
-                    else:
-                        try:
-                            if range_[0]=='':
-                                min_ = 0
-                            else:
-                                min_ = int(range_[0])
-                            if range_[1]=='':
-                                max_ = 2000
-                            else:
-                                max_ = int(range_[1])
-                            if min_>max_:
-                                raise ValueError(param + '_invalid_range')
-                        except ValueError:
-                            raise ValueError(param + '_range_not_integers')
-                    
-                    query += ' (' + column + ' BETWEEN %s AND %s)'
-                    parts.extend([min_,max_])
+                # update query
+                query = filter_logic(query,parts,filter_type,column,value)
+            # end of parameter
             query += ')'
     return query,parts
 
 
 def sort_by(args, type_):
+    '''
+    generates SORT BY clause for our SQL query
+
+    args -- parameters given to request (ImmutableMultiDict)
+    type_ -- int denoting model
+
+    returns built clause 
+    '''
+
     # default sort is by id
     ret = TABLES[type_] + '.id'
     fields = FIELDS[type_]
+ 
     if 'sort_by' in args:
         sort_val = args.getlist('sort_by')
         if len(sort_val)>1:
@@ -197,6 +244,13 @@ def sort_by(args, type_):
 
 
 def search(phrase):
+    '''
+    Given a string phrase, return any rows in models that contain this value in name/desc columns
+
+    phrase -- string to be searched
+
+    return JSONified dictionary containing the data found in each model	 
+    '''
     phrase = '%' + phrase + '%'
     course_data = execute(COURSE_SEARCH, phrase, phrase, phrase)
     subject_data = execute(SUBJECT_SEARCH, phrase, phrase)
