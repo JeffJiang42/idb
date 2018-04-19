@@ -57,6 +57,7 @@ class Jobs extends Component{
   }
 
   typeChange(choice){
+    //Method for updating when a job type filter is chosen
     this.setState({typeOption: choice})
     var str = ''
     if (choice != null){
@@ -68,6 +69,7 @@ class Jobs extends Component{
   }
 
   subjectChange(choice){
+    //Method for updating when a subject filter is chosen
     this.setState({subjectOption: choice})
     var str = ''
     if (choice != null){
@@ -79,6 +81,7 @@ class Jobs extends Component{
   }
 
   locationChange(choice){
+    //Method for updating when a location filter is chosen
     this.setState({locationOption: choice})
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return encodeURI(this.state.locationNames[parseInt(a)-1])})
@@ -98,6 +101,7 @@ class Jobs extends Component{
   }
 
   companyChange(choice){
+    //Method for updating when a company filter is chosen
     this.setState({companyOption: choice})
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return encodeURI(this.state.companyNames[parseInt(a)-1])})
@@ -116,6 +120,7 @@ class Jobs extends Component{
   }
 
   providerChange(choice){
+    //Method for updating when a provider filter is chosen
     this.setState({providerOption: choice})
     var choiceArr = choice.split(',')
     choiceArr = choiceArr.map((a) => {return encodeURI(providersList[parseInt(a)-1])})
@@ -134,6 +139,7 @@ class Jobs extends Component{
   }
 
   sortChange(choice){
+    //Method for updating for when a sorting option is chosen
     this.setState({sortOption: choice})
     var str = ''
     if(choice != null){
@@ -145,6 +151,7 @@ class Jobs extends Component{
   }
 
   numCourseChange(choice){
+    //Method for updating for when a number of courses filter is chosen
     this.setState({numCourseOption: choice})
     var str = ''
     if (choice != null){
@@ -156,6 +163,7 @@ class Jobs extends Component{
   }
 
   makeQuery(){
+    //Helper method for making an API call by stacking queries
     var url = 'http://api.learning2earn.me/jobs'
     var first = true
     var queries = this.state.queries
@@ -181,6 +189,9 @@ class Jobs extends Component{
   }
 
   getFilters(name){
+    /* Given a field, fetches the field and builds an array formatted for
+    use as the options for a select object
+    */
     var filters = new Set()
     for (let job of this.state.jobList){
       filters.add(job[name])
@@ -189,6 +200,7 @@ class Jobs extends Component{
   }
 
   getSubjects(){
+    //Fetches subjects from the API and stores them
     var subjectIds = new Set()
     for (let job of this.state.jobList){
       var subList = job['subject-ids']
@@ -201,6 +213,7 @@ class Jobs extends Component{
   }
 
   getSubjectNames(subjectIds){
+    //Helper method for getSubjects
     if (subjectIds.length == 0){
       return;
     }
@@ -227,6 +240,7 @@ class Jobs extends Component{
       .catch((error) => {console.log(error.message)})
       .then((info) => {this.setState({jobList: info, maxPage: Math.ceil(info.length / this.state.pageSize)},
         () => {
+          //Fetch additional data needed
           this.getSubjects()
           this.state.companyList = this.getFilters("company");
           this.state.companyNames = this.state.companyList.map((dict)=>{return dict["label"]})
@@ -238,6 +252,7 @@ class Jobs extends Component{
   }
 
   resetState(){
+    //Recovers state from browser local storage
     const rehydrate = JSON.parse(localStorage.getItem('jobsSavedState'))
     if (rehydrate != null){
       this.state = rehydrate
@@ -251,12 +266,14 @@ class Jobs extends Component{
   }
 
   saveState(){
+    //Saves state in browser local storage
     var toSave = this.state
     toSave.jobList = []
     localStorage.setItem('jobsSavedState', JSON.stringify(toSave))
   }
 
   render(){
+    //Loading icon if data isn't here yet
     if (!this.state.ready){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
@@ -277,6 +294,7 @@ class Jobs extends Component{
     const  typeOptions = [{label:"Part-time", value: 1},{label: "Full-time", value: 2}, {label: "Contract", value: 3}]
     const companyOptions = this.state.companyList
     const locationOptions = this.state.locationList
+    //Buidling parallel arrays for the subjects filter
     var subjectOptions = []
     var subjectIds = []
     var i = 1

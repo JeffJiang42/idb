@@ -31,10 +31,12 @@ class SubjectData extends Component{
   }
 
   handleJobPageChange(event){
+    //Page change for the paginated job cards
     this.setState({jobPage: Number(event.selected+1)})
   }
 
   handleCoursePageChange(event){
+    //Page change for the paginated course cards
     this.setState({coursePage: Number(event.selected+1)})
   }
 
@@ -51,6 +53,7 @@ class SubjectData extends Component{
   }
 
   getCourses(){
+    //Fetches course info for the given subject
     var cids = this.state.info['course-ids']
     var courseUrls = []
     for (let cid of cids){
@@ -68,6 +71,7 @@ class SubjectData extends Component{
   }
 
   getJobs(){
+    //Fetches job info for the given subject
     var jids = this.state.info['job-ids']
     if (jids.length == 0){
       return;
@@ -88,6 +92,7 @@ class SubjectData extends Component{
   }
 
   render(){
+    //Loading icon if data isn't here yet
     if (_.isEmpty(this.state.jobs)){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }

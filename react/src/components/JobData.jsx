@@ -31,14 +31,17 @@ class JobData extends Component{
   }
 
   handleCoursePageChange(event){
+    //Page change for paginated course cards
     this.setState({coursePage: Number(event.selected+1)})
   }
 
   handleSubjectPageChange(event){
-
+    //Page change for paginated subject cards
+    this.setState({subjectPage: Number(event.selected+1)})
   }
 
   getSubject(){
+    //Fetched subject info for the given job
     var url = 'http://api.learning2earn.me/subjects?jobId=' + this.props.match.params.id
     fetch(url)
       .then((response) => { return response.json()})
@@ -48,6 +51,7 @@ class JobData extends Component{
   }
 
   getCourses(){
+    //Fetched course info for the given job
     var url = 'http://api.learning2earn.me/courses?jobId=' + this.props.match.params.id
     fetch(url)
       .then((response) => { return response.json()})
@@ -69,6 +73,7 @@ class JobData extends Component{
   }
 
   render(){
+    //Loading icon if all the data isn't there
     if (_.isEmpty(this.state.subjects)){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
@@ -102,7 +107,7 @@ class JobData extends Component{
 
     var subTemp = []
     i = 0
-    lastInd = this.state.coursePage * this.state.pageSize
+    lastInd = this.state.subjectPage * this.state.pageSize
     firstInd = lastInd - this.state.pageSize
     var subArr = this.state.subjects.slice(firstInd, lastInd)
     for (let sub of subArr){
@@ -161,7 +166,7 @@ class JobData extends Component{
                 pageCount={this.state.subjectMaxPage}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
-                onPageChange={this.handleCoursePageChange}
+                onPageChange={this.handleSubjectPageChange}
                 containerClassName={"pagination"}
                 subContainerClassName={"pages pagination"}
                 activeClassName={"active"} />

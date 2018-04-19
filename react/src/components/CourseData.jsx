@@ -39,6 +39,7 @@ class CourseData extends Component{
       .then((response) => { return response.json() })
       .then( (courseJson) => {
         var temp = courseJson[0]
+        //Udemy links in database are broken, needs small fix
         if (temp.provider === 'Udemy'){
             temp.link = 'https://udemy.com' + temp.link
           }
@@ -50,6 +51,7 @@ class CourseData extends Component{
   }
 
   getSubject(){
+    //Fetches the subject info for the specific course
     var sid = this.state.info['subject-id']
     var subjectUrl = 'http://api.learning2earn.me/subjects?subjectId=' + sid
     fetch(subjectUrl)
@@ -61,6 +63,7 @@ class CourseData extends Component{
   }
 
   getJobs(){
+    //Fetches related jobs fo the specific course
     var jids = this.state.info['job-ids']
     if (jids.length == 0){
       return;
@@ -82,6 +85,7 @@ class CourseData extends Component{
 
 
   render(){
+    //Loading icon if data isn't here yet
     if (_.isEmpty(this.state.jobs)){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
