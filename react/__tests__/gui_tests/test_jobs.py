@@ -13,7 +13,7 @@ class UntitledTestCase(unittest.TestCase):
     def setUp(self):
         self.display = Display(visible=0, size=(1920, 1080))
         self.display.start()
-        self.driver = webdriver.Chrome('../linux_chrome')
+        self.driver = webdriver.Chrome('../chromedriver2')
         self.driver.delete_all_cookies()
         
         self.driver.implicitly_wait(30)
@@ -31,7 +31,6 @@ class UntitledTestCase(unittest.TestCase):
         driver.find_element_by_xpath("//div[@id='root']/div/div/div[3]/div[3]/div/a/div/div/h4").click()
         driver.find_element_by_link_text("Jobs").click()
         driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/h1").click()
-        driver.find_element_by_xpath("//span[@id='react-select-8--value']/div").click()
         driver.find_element_by_link_text("Jobs").click()
     
     def is_element_present(self, how, what):
