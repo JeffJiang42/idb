@@ -81,8 +81,6 @@ class JobData extends Component{
     if (_.isEmpty(this.state.courses)){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
-    this.getSubject()
-    this.getCourses()
     var job = this.state.info
     var variable = job.provider
     var courseTemp = []

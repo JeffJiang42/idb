@@ -219,9 +219,6 @@ class Courses extends Component{
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
 
-    if(this.state.subjectList == undefined || this.state.subjectList.length < 140){
-      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
-    }
 
     const providerOptions = [{label: 'Khan Academy', value: 1}, {label:'Udemy', value: 2}]
     const priceOptions=[{label:"Free", value: 1},{label:"less than $50", value:2},{label:"between $50 and $100", value:3},
