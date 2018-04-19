@@ -35,6 +35,9 @@ class Jobs extends Component{
       companyNames: '',
       companyOption: '',
       typeOption:'',
+      subjectList:[],
+      subjectIdList: [],
+      subjectOption: '',
       ready: false
     }
     this.handlePageChange = this.handlePageChange.bind(this)
@@ -48,6 +51,9 @@ class Jobs extends Component{
     this.locationChange = this.locationChange.bind(this)
     this.saveState = this.saveState.bind(this)
     this.resetState = this.resetState.bind(this)
+    this.getSubjects = this.getSubjects.bind(this)
+    this.getSubjectNames = this.getSubjectNames.bind(this)
+    this.subjectChange = this.subjectChange.bind(this)
   }
 
   typeChange(choice){
@@ -62,6 +68,19 @@ class Jobs extends Component{
     temp.jobType = str
     this.setState({queries: temp}, this.makeQuery())
     //this.makeQuery()
+  }
+
+  subjectChange(choice){
+    this.setState({subjectOption: choice})
+    var str = ''
+    if (choice != null){
+      //console.log(this.state.subjectIdList)
+      str = 'subjectId=' + this.state.subjectIdList[choice - 1]
+    }
+    console.log(str)
+    var temp = this.state.queries
+    temp.subject = str
+    this.setState({queries: temp}, this.makeQuery())
   }
 
   locationChange(choice){
@@ -181,6 +200,39 @@ class Jobs extends Component{
      return Array.from(filters).map((name,i) => { return {label: name, value: i+1} })
   }
 
+  getSubjects(){
+    var subjectIds = new Set()
+    for (let job of this.state.jobList){
+      var subList = job['subject-ids']
+      for (let id of subList){
+        subjectIds.add(id)
+      }
+    }
+    var ids = Array.from(subjectIds)
+    //console.log(Array.from(subjectIds).length)
+    this.setState({subjectIdList: ids}, this.getSubjectNames(ids))
+    //this.getSubjectNames(Array.from(subjectIds))
+  }
+
+  getSubjectNames(subjectIds){
+    //console.log(subjectIds.length)
+    if (subjectIds.length == 0){
+      return;
+    }
+    var url = 'http://api.learning2earn.me/subjects?subjectId=' + subjectIds.pop()
+    //console.log(url)
+    fetch(url)
+      .then((response) => {return response.json()})
+      .then((json) => {
+        var temp = this.state.subjectList.filter(name => name != null)
+        //temp = new Set(temp)
+        //temp = Array.from(temp)
+        temp.push(json[0])
+        this.setState({subjectList: temp}, () => {
+          this.getSubjectNames(subjectIds)})
+      })
+  }
+
   handlePageChange(event){
     this.setState({page: Number(event.selected+1)})
     window.scrollTo(0,0)
@@ -192,7 +244,9 @@ class Jobs extends Component{
       .then((response) => {return response.json()})
       .catch((error) => {console.log(error.message)})
       .then((info) => {this.setState({jobList: info, maxPage: Math.ceil(info.length / this.state.pageSize)},
-        () => {this.state.companyList = this.getFilters("company");
+        () => {
+          this.getSubjects()
+          this.state.companyList = this.getFilters("company");
           this.state.companyNames = this.state.companyList.map((dict)=>{return dict["label"]})
           this.state.locationList = this.getFilters("location")
           this.state.locationNames = this.state.locationList.map((dict)=>{return dict["label"]})
@@ -230,6 +284,11 @@ class Jobs extends Component{
     if (!this.state.ready){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
     }
+
+    if(this.state.subjectIdList == undefined){
+      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
+    }
+
     const providerOptions = [{label: "Authentic Jobs", value: 1}, {label: "GitHub Jobs", value: 2}]
     const  numCourseOptions = [{label: "between 0 and 200 courses", value: 1},{label: "between 200 and 400 courses", value: 2},
     {label: "between 400 and 600 courses", value: 3}, {label: "between 600 and 800 courses"}, {label: "between 800 and 1000 courses", value: 4},
@@ -242,6 +301,17 @@ class Jobs extends Component{
     const  typeOptions = [{label:"Part-time", value: 1},{label: "Full-time", value: 2}, {label: "Contract", value: 3}]
     const companyOptions = this.state.companyList
     const locationOptions = this.state.locationList
+    var subjectOptions = []
+    var subjectIds = []
+    var i = 1
+    for (let sub of this.state.subjectList){
+      subjectOptions.push({label: sub.subject, value: i++})
+      subjectIds.push(sub.id)
+    }
+    this.state.subjectIdList = subjectIds;
+    //var subjectOptions = this.state.subjectList
+    //console.log(subjectOptions.length)
+    //subjectOptions = subjectOptions.map((sub, i) => {return {label: sub.subject, value: sub.id}})
 
     var {jobList, page, pageSize, maxPage} = this.state
     var lastInd = page * pageSize
@@ -267,6 +337,7 @@ class Jobs extends Component{
               <Select multi options={providerOptions} simpleValue value={this.state.providerOption} placeholder='Provider' onChange={this.providerChange} />
               <Select options={numCourseOptions} simpleValue value={this.state.numCourseOption} placeholder='Number of related courses' onChange={this.numCourseChange} />
               <Select options={typeOptions} simpleValue value={this.state.typeOption} placeholder='Job type' onChange={this.typeChange} />
+              <Select options={subjectOptions} simpleValue value={this.state.subjectOption} placeholder='Subject' onChange={this.subjectChange} />
             </div>
           </Collapse>
         </div>
