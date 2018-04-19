@@ -29,4 +29,9 @@ describe('SubjectData Component', () => {
     expect(subject_data.hasClass('card-body'));
   })
 
+  it('Has a Timeline Twitter feed', () => {
+    const subject_data = shallow(<SubjectData match={dummy}/>);
+    expect(subject_data.hasClass('TimeLine'));
+  })
+
 })

@@ -29,4 +29,9 @@ describe('JobData Component', () => {
     expect(job_data.hasClass('card-body'));
   })
 
+  it('Has a Timeline Twitter feed', () => {
+    const job_data = shallow(<JobData match={dummy}/>);
+    expect(job_data.hasClass('TimeLine'));
+  })
+
 })

@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "mocha --require ignore-styles --require babel-polyfill --require babel-core --exit __tests__/unit_tests/testBoilerplate.js \"__tests__/unit_tests/*.test.js\" -r mock-local-storage",
+    "test": "mocha --no-warnings --require ignore-styles --require babel-polyfill --require babel-core --exit __tests__/unit_tests/testBoilerplate.js \"__tests__/unit_tests/*.test.js\" -r mock-local-storage",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

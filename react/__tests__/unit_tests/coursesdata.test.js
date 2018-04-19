@@ -29,4 +29,9 @@ describe('CourseData Component', () => {
     expect(course_data.hasClass('card-body'));
   })
 
+  it('Has a Timeline Twitter feed', () => {
+    const course_data = shallow(<CourseData match={dummy}/>);
+    expect(course_data.hasClass('TimeLine'));
+  })
+
 })

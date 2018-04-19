@@ -44,7 +44,7 @@ uml:
 
 # make selenium - runs selenium tests
 selenium:
-	- @(cd react/__tests__//gui_tests; make travis)
+	- @(cd react/__tests__//gui_tests; pip install pyvirtualdisplay selenium; make travis)
 
 postman:
 	@echo node_modules/.bin/newman run postman_tests.json -g postman_globals.json

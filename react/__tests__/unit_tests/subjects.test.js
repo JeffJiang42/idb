@@ -22,12 +22,10 @@ describe('Subjects Component', () => {
   it('contains a Filter', () => {
     const subjects = mount(<Subjects />);
     expect(subjects.hasClass('Filters'));
-    expect(subjects.find('.Filters')).to.have.length(1)
   })
 
   it('contains a sort function', () => {
     const subjects = mount(<Subjects />);
     expect(subjects.hasClass('Sorting'));
-    expect(subjects.find('.Sorting')).to.have.length(1)
   })
 })
