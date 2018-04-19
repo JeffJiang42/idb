@@ -303,7 +303,7 @@ class SearchPage extends Component{
 				{    e.preventDefault();
 					window.location.href = '/search/' + this.state.value}}>
             <img src="https://i.imgur.com/g16hr23.png" width="80"/>
-			<input value={ this.state.query } placeholder="Search" onChange={(event) => {this.setState({value: event.target.value})}} />
+			<input placeholder="Search" onChange={(event) => {this.setState({value: event.target.value})}} />
 			</form>
             <div class="search_filters">
             <div class={course_filter} onClick={e => this.handleButtonClick(0)}> Courses </div>

@@ -12,7 +12,6 @@ import JobData from './components/JobData.jsx'
 import SearchLanding from './components/SearchLanding.jsx'
 import SearchPage from './components/SearchPage.jsx'
 
-
 class App extends Component {
   render() {
     return (
@@ -27,7 +26,8 @@ class App extends Component {
           <Route path='/courses/:id' component={CourseData}/>
           <Route path='/subjects/:id' component={SubjectData}/>
           <Route path='/jobs/:id' component={JobData} />
-          <Route path='/search/:query' component={SearchPage} />
+          <Route exact path='/search/' component={SearchLanding} />
+          <Route exact path='/search/:query' component={SearchPage} />
           <Route path='/searche' component={SearchLanding} />
         </div>
     </Router>
