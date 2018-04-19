@@ -18,21 +18,21 @@ class SearchPage extends Component{
 		super(props);
 			var query = props.match.query;
 			this.state = {
-			ready: false,
-			value: "",
-			query: '',
-      		url:'http://api.learning2earn.me/search',
-      		display:0,
-      		pageSize: 15,
-					coursePage: 1,
-					subjectPage: 1,
-					jobPage: 1,
-					maxPageJobs: 1,
-					maxPageSubjects: 1,
-					maxPageCourses: 1,
-      		jobs: [],
-      		courses: [],
-      		subjects:[]
+        ready: false,
+        value: "",
+        query: '',
+        url:'http://api.learning2earn.me/search',
+        display:0,
+        pageSize: 15,
+        coursePage: 1,
+        subjectPage: 1,
+        jobPage: 1,
+        maxPageJobs: 1,
+        maxPageSubjects: 1,
+        maxPageCourses: 1,
+        jobs: [],
+        courses: [],
+        subjects:[]
 
 		};
 		this.getSubject = this.getSubject.bind(this)
@@ -60,22 +60,31 @@ class SearchPage extends Component{
 	}
 
 	componentWillMount(){
-		this.setState({query: this.props.match.params.query.toLowerCase()})
-		const url = this.state.url + "?q=" + this.props.match.params.query.toLowerCase();
+		this.setState({query: ( this.props.match.params.query ? this.props.match.params.query.toLowerCase() : '') })
+		const url = this.state.url + "?q=" + ( this.props.match.params.query ? this.props.match.params.query.toLowerCase() : '');
 		console.log(url)
 	    fetch(url)
 	      .then((response) => {return response.json()})
 	      .then((searchJson) =>{
-	        return searchJson
+          if (searchJson.error) {
+            return {
+              courses: [],
+              subjects: [],
+              jobs: []
+            }
+          } else return searchJson
 	      })
 	      .catch((error) => {console.log(error.message); return []})
-	      .then((info) => {this.setState({courses: info.courses, jobs: info.jobs, subjects: info.subjects,
+	      .then((info) => {
+          info.courses = (info.courses ? info.courses : [])
+          info.jobs = (info.jobs ? info.jobs : [])
+          info.subjects = (info.subjects ? info.subjects : [])
+          this.setState({courses: info.courses, jobs: info.jobs, subjects: info.subjects,
 					maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize),
 					maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize),
 					maxPageSubjects: Math.ceil(info.subjects.length / this.state.pageSize)}, () => {
 						this.setState({ready: true})
 					})})
-
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -89,14 +98,30 @@ class SearchPage extends Component{
 	    fetch(url)
 	      .then((response) => {return response.json()})
 	      .then((searchJson) =>{
-	        return searchJson
+          if (searchJson.error) {
+            return {
+              courses: [],
+              subjects: [],
+              jobs: []
+            }
+          } else return searchJson
 	      })
 	      .catch((error) => {console.log(error.message); return []})
-	      .then((info) => {this.setState({courses: info.courses, jobs: info.jobs, subjects: info.subjects,
-					maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize),
-					maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize),
-					maxPageSubjects: Math.ceil(info.subjects.length / this.state.pageSize)})})
-
+	      .then((info) => {
+          info.courses = (info.courses ? info.courses : [])
+          info.jobs = (info.jobs ? info.jobs : [])
+          info.subjects = (info.subjects ? info.subjects : [])
+          this.setState({
+            courses: info.courses, 
+            jobs: info.jobs, 
+            subjects: info.subjects,
+            maxPageCourses: Math.ceil(info.courses.length / this.state.pageSize),
+            maxPageJobs: Math.ceil(info.jobs.length / this.state.pageSize),
+            maxPageSubjects: Math.ceil(info.subjects.length / this.state.pageSize)
+          }
+        )
+      }
+    )
 	}
 	getSubject(subjectID){
 		var subName = async() => {await fetch('http://api.learning2earn.me/subjects?subjectId=' + subjectID)
@@ -189,7 +214,9 @@ class SearchPage extends Component{
 			</Row>
 	    )
     }
-		if (list.length == 0){
+    if (this.state.query.length == 0) {
+      list = <p style={{'fontSize': '16px', 'marginTop':'30px'}}>You didn't search anything.</p>
+    } else if (list.length == 0){
 			list = <p style={{'fontSize': '16px', 'marginTop':'30px'}}>Your search - <span style={{'fontWeight': 'bold'}}>{this.state.query}</span> - did not match any documents.<br /><br />Suggestions:<br />
             <ul>
                 <li>Make sure all words are spelled correctly.</li>
@@ -268,7 +295,7 @@ class SearchPage extends Component{
 				{    e.preventDefault();
 					window.location.href = '/search/' + this.state.value}}>
             <img src="https://i.imgur.com/g16hr23.png" width="80"/>
-			<input placeholder="Search" onChange={(event) => {this.setState({value: event.target.value})}}/>
+			<input value={ this.state.query } placeholder="Search" onChange={(event) => {this.setState({value: event.target.value})}} />
 			</form>
             <div class="search_filters">
             <div class={course_filter} onClick={e => this.handleButtonClick(0)}> Courses </div>
@@ -276,7 +303,6 @@ class SearchPage extends Component{
 	    	<div class={jobs_filter} onClick={e => this.handleButtonClick(2)}> Jobs </div>
             </div>
 			</div>
-
 	      	<table>
             <h2 class="search_desc" >Search Results: {results}</h2>
 	      		<tbody>

@@ -95,6 +95,7 @@ class JobData extends Component{
         </div>
       )
     }
+    var courseLength = 400 * Math.ceil(courseTemp.length / 3)
     courseTemp = <div>
       <p className="card-text"><strong>Related Courses:</strong></p>
       <ul className='linkList'> {courseTemp} </ul>
@@ -114,6 +115,7 @@ class JobData extends Component{
       </div>
       )
     }
+    var subjectLength = 400 * Math.ceil(subTemp.length / 3)
 
     subTemp = <div>
       <p className="card-text"><strong>Related Subjects:</strong></p>
@@ -121,47 +123,55 @@ class JobData extends Component{
     </div>
     return(
 	<div className="container h-100">
-	  	<div className="row h-100 justify-content-center align-items-center">
+    <div className="row h-100 justify-content-center align-items-center">
 			<div className="card h-100" align = "center">
 				<img className="card-img-top" src={job.image} />
 				<div className="card-body">
-				<h4 className="card-title">{job.name}</h4>
-				<p className="card-text"><strong>Provider</strong>: {job.provider}</p>
-        <p className="card-text"><strong>Type</strong>: {job.jobtype}</p>
-        <p className="card-text"><strong>Location</strong>: {job.location}</p>
-				<p className="card-text"><strong>Link</strong>: <a href={job.link}>{job.link}</a></p>
-				<p className="card-text"><strong>Description</strong>:{job.desc}</p>
-        <TwitterFeed provider={job.provider} />
-				{courseTemp}
-        {subTemp}
-			  </div>
-        <ReactPaginate previousLabel={"previous"}
-                    initialPage={this.state.coursePage-1}
-                    nextLabel={"next"}
-                    breakLabel={<a>...</a>}
-                    breakClassName={"break-me"}
-                    pageCount={this.state.courseMaxPage}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={this.handleCoursePageChange}
-                    containerClassName={"pagination"}
-                    subContainerClassName={"pages pagination"}
-                    activeClassName={"active"} />
-        <ReactPaginate previousLabel={"previous"}
-                    initialPage={this.state.subjectPage-1}
-                    nextLabel={"next"}
-                    breakLabel={<a>...</a>}
-                    breakClassName={"break-me"}
-                    pageCount={this.state.subjectMaxPage}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={this.handleCoursePageChange}
-                    containerClassName={"pagination"}
-                    subContainerClassName={"pages pagination"}
-                    activeClassName={"active"} />
-			</div>
-		</div>
-	</div>
+          <h4 className="card-title">{job.name}</h4>
+          <p className="card-text"><strong>Provider</strong>: {job.provider}</p>
+          <p className="card-text"><strong>Type</strong>: {job.jobtype}</p>
+          <p className="card-text"><strong>Location</strong>: {job.location}</p>
+          <p className="card-text"><strong>Link</strong>: <a href={job.link}>{job.link}</a></p>
+          <p className="card-text"><strong>Description</strong>:{job.desc}</p>
+          <TwitterFeed provider={job.provider} />
+          <div>
+            {courseTemp}
+            <div style={{ 'marginTop': courseLength }}>
+              <ReactPaginate previousLabel={"previous"}
+                initialPage={this.state.coursePage-1}
+                nextLabel={"next"}
+                breakLabel={<a>...</a>}
+                breakClassName={"break-me"}
+                pageCount={this.state.courseMaxPage}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={this.handleCoursePageChange}
+                containerClassName={"pagination"}
+                subContainerClassName={"pages pagination"}
+                activeClassName={"active"} />
+            </div>
+          </div>
+          <div style={{ 'marginTop': (courseLength + 100) }}>
+            {subTemp}
+            <div style={{ 'marginTop': subjectLength }}>
+              <ReactPaginate previousLabel={"previous"}
+                initialPage={this.state.subjectPage-1}
+                nextLabel={"next"}
+                breakLabel={<a>...</a>}
+                breakClassName={"break-me"}
+                pageCount={this.state.subjectMaxPage}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={this.handleCoursePageChange}
+                containerClassName={"pagination"}
+                subContainerClassName={"pages pagination"}
+                activeClassName={"active"} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
     );
   }
 }

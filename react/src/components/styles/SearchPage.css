@@ -8,6 +8,20 @@
     padding-left: 100px;
 }
 
+.search_button {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #757575;
+    font-family: Arial;
+    font-weight: bold;
+    line-height: 32px;
+    border-radius: 2px;
+    border: 1px solid #f2f2f2;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 .search_filter {
     cursor: pointer;
     font-size: 14px;
