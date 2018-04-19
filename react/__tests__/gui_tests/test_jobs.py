@@ -14,6 +14,8 @@ class UntitledTestCase(unittest.TestCase):
         self.display = Display(visible=0, size=(1920, 1080))
         self.display.start()
         self.driver = webdriver.Chrome('../linux_chrome')
+        self.driver.delete_all_cookies()
+        
         self.driver.implicitly_wait(30)
         self.base_url = "https://www.katalon.com/"
         self.verificationErrors = []
@@ -21,14 +23,15 @@ class UntitledTestCase(unittest.TestCase):
     
     def test_untitled_test_case(self):
         driver = self.driver
-        driver.get("http://www.learning2earn.me/courses")
-        driver.find_element_by_xpath("//img[contains(@src,'https://i.imgur.com/g16hr23.png')]").click()
+        driver.get("http://www.learning2earn.me/")
         driver.find_element_by_link_text("Jobs").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div/div/a/div/div").click()
-        driver.find_element_by_link_text("The Complete Cyber Security Course : Anonymous Browsing!").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div[3]/div/div/a/div").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div/div/div[2]/div/ul/div/div/a/div").click()
         driver.find_element_by_link_text("Jobs").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[7]/div/a/div/div").click()
-        driver.find_element_by_link_text(u"CRUSH IT !!! ÃÂ Sales Strategies").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div[3]/div[3]/div/a/div/div/h4").click()
+        driver.find_element_by_link_text("Jobs").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/h1").click()
+        driver.find_element_by_xpath("//span[@id='react-select-8--value']/div").click()
         driver.find_element_by_link_text("Jobs").click()
     
     def is_element_present(self, how, what):

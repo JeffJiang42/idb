@@ -14,6 +14,7 @@ class UntitledTestCase(unittest.TestCase):
         self.display = Display(visible=0, size=(1920, 1080))
         self.display.start()
         self.driver = webdriver.Chrome('../linux_chrome')
+        self.driver.delete_all_cookies()
         self.driver.implicitly_wait(30)
         self.base_url = "https://www.katalon.com/"
         self.verificationErrors = []
@@ -30,11 +31,6 @@ class UntitledTestCase(unittest.TestCase):
         driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[8]/div/a/div").click()
         driver.find_element_by_link_text("Subjects").click()
         driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[3]/div/a/div/div/p[2]").click()
-        driver.find_element_by_link_text("Green's, Stokes', and the divergence theorems").click()
-        driver.find_element_by_link_text("Subjects").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[4]/div/a/div/div/h4").click()
-        driver.find_element_by_link_text("Second order linear equations").click()
-        driver.find_element_by_link_text("Subjects").click()
     
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)

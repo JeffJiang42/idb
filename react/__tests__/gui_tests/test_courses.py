@@ -13,6 +13,8 @@ class UntitledTestCase(unittest.TestCase):
         self.display = Display(visible=0, size=(1920, 1080))
         self.display.start()
         self.driver = webdriver.Chrome('../linux_chrome')
+        self.driver.delete_all_cookies()
+        
         self.driver.implicitly_wait(30)
         self.base_url = "https://www.katalon.com/"
         self.verificationErrors = []
@@ -22,16 +24,13 @@ class UntitledTestCase(unittest.TestCase):
         driver = self.driver
         driver.get("http://www.learning2earn.me/")
         driver.find_element_by_link_text("Courses").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div/div/a/div/div").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/div/div/a/div").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div/div/div/div/a/div").click()
         driver.find_element_by_link_text("Courses").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[2]/div/a/div/div/h4").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div[2]/div[7]/div/a/div").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div/div/div/div/a/div/div/h4").click()
         driver.find_element_by_link_text("Courses").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[7]/div/a/div").click()
-        driver.find_element_by_link_text("Statistics Probability").click()
-        driver.find_element_by_link_text("Courses").click()
-        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[8]/div/a/div").click()
-        driver.find_element_by_link_text("Statistics Probability").click()
-        driver.find_element_by_link_text("Probability").click()
+        driver.find_element_by_xpath("//div[@id='root']/div/div/div/div[2]/h1").click()
         driver.find_element_by_link_text("Courses").click()
     
     def is_element_present(self, how, what):
