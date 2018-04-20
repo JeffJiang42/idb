@@ -28,6 +28,7 @@ class TwitterFeed extends Component{
     if (this.state.mounted) {
       return(
       <Timeline
+          style={{' background-color': 'black' }}
 			    dataSource={{
 			      sourceType: 'profile',
 			      screenName: provider

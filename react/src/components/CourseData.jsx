@@ -142,7 +142,9 @@ class CourseData extends Component{
                 <div className='card' style={card_remove_border} >
                   <SubjectCard provider={sub["provider"]} subId={sub["id"]} subName={sub["subject"]} image={sub["image"]} totalCourses={sub['course-ids'].length} totalJobs={sub['job-ids'].length}/>
                 </div>
+                <div>
                 <TwitterFeed provider={course.provider} />
+                </div>
                 {jobTemp}
                 <div style={{'marginTop': finalLength }}>
                   <ReactPaginate previousLabel={"previous"}
