@@ -227,6 +227,7 @@ class APIAuxFunctionTest(unittest.TestCase):
         args = ImmutableMultiDict([('num-courses', '0..10')])
         type_ = 0
         where_clause, data = main.filter_query(args, type_)
+        print(where_clause)
         self.assertTrue(where_clause == ' and ( (Subject.num_courses BETWEEN %s AND %s))')
         self.assertTrue(len(data) == 2)
 

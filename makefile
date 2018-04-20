@@ -36,11 +36,11 @@ issues:
 
 # make stories  - prints link to current phase's stories
 stories:
-	@echo "http://www.github.com/${GithubID}/${RepoName}/blob/${SHA}/stories.txt"
+	@echo "http://www.github.com/${GithubID}/${RepoName}/projects"
 
 # make uml      - prints link to uml diagram
 uml:
-	@echo "http://www.github.com/${GithubID}/${RepoName}/blob/${SHA}/uml.png"
+	@echo "http://www.github.com/${GithubID}/${RepoName}/blob/master/images/uml.png"
 
 # make selenium - runs selenium tests
 selenium:

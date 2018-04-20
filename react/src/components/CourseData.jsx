@@ -86,9 +86,6 @@ class CourseData extends Component{
 
   render(){
     //Loading icon if data isn't here yet
-    if (_.isEmpty(this.state.jobs)){
-      return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)
-    }
 
     if (_.isEmpty(this.state.subject)){
       return (<div><br/><br/><center><BarLoader color={'#123abc'} loading={true} /></center></div>)

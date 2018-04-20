@@ -65,7 +65,7 @@ class Jobs extends Component{
     }
     var temp = this.state.queries
     temp.jobType = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   subjectChange(choice){
@@ -77,7 +77,7 @@ class Jobs extends Component{
     }
     var temp = this.state.queries
     temp.subject = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   locationChange(choice){
@@ -97,7 +97,7 @@ class Jobs extends Component{
     }
     var temp = this.state.queries
     temp.locations = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   companyChange(choice){
@@ -116,7 +116,7 @@ class Jobs extends Component{
     }
     var temp = this.state.queries
     temp.companies = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   providerChange(choice){
@@ -135,7 +135,7 @@ class Jobs extends Component{
     }
     var temp = this.state.queries
     temp.providers = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   sortChange(choice){
@@ -147,7 +147,7 @@ class Jobs extends Component{
     }
     var temp = this.state.queries
     temp.sort = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
   numCourseChange(choice){
@@ -159,11 +159,15 @@ class Jobs extends Component{
     }
     var temp = this.state.queries
     temp.numCourse = str
-    this.setState({queries: temp}, this.makeQuery())
+    this.setState({queries: temp}, this.makeQuery(true))
   }
 
-  makeQuery(){
+  makeQuery(isFilter){
     //Helper method for making an API call by stacking queries
+    var newPage = this.state.page
+    if (isFilter){
+      newPage = 1
+    }
     var url = 'http://api.learning2earn.me/jobs'
     var first = true
     var queries = this.state.queries
@@ -183,7 +187,7 @@ class Jobs extends Component{
       .then((response) => {return response.json()})
       .then((json) => {
         var sorted = json
-        this.setState({jobList: sorted, page: 1, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, this.saveState())
+        this.setState({jobList: sorted, page: newPage, maxPage: Math.ceil(sorted.length / this.state.pageSize), ready: true}, this.saveState())
       })
 
   }
@@ -258,7 +262,7 @@ class Jobs extends Component{
       this.state = rehydrate
     }
     this.setState(rehydrate)
-    this.makeQuery()
+    this.makeQuery(false)
   }
 
   componentWillUnmount(){
