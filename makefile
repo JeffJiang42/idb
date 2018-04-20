@@ -50,7 +50,7 @@ postman:
 	@npm install newman; node_modules/.bin/newman run postman_tests.json -g postman_globals.json
 
 # make frontend - runs frontend tests
-frontend:
+frontend: FORCE
 	@(cd react; npm install; npm test)
 
 # make backend  - runs backend tests
