@@ -34,13 +34,13 @@ clean:
 
 travis:
 	- chmod +x ../linux_chrome
-	- python test_carousel.py
-	- python test_navbar.py
-	- python test_subjects.py
-	- python test_subjects_filter_sort.py
-	- python test_courses.py
-	- python test_jobs.py
-	- python test_jobs_filter_sort.py
-	- python test_about.py
-	- python test_search_page.py
+	- python3 test_carousel.py
+	- python3 test_navbar.py
+	- python3 test_subjects.py
+	- python3 test_subjects_filter_sort.py
+	- python3 test_courses.py
+	- python3 test_jobs.py
+	- python3 test_jobs_filter_sort.py
+	- python3 test_about.py
+	- python3 test_search_page.py
 
