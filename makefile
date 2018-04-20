@@ -54,9 +54,13 @@ frontend: FORCE
 	@(cd react; npm install; npm test)
 
 # make backend  - runs backend tests
-backend: FORCE
+backend: FORCE pypip
 	python3 backend/tests.py
 FORCE: ;
+
+pypip:
+	pip install mypy;pip install flask;pip install flask_corp; pip install numpy;pip install requests;pip install psycopg2
+ 
 
 # make website  - prints link to a website
 website:
