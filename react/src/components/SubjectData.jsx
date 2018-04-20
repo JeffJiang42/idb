@@ -158,6 +158,9 @@ class SubjectData extends Component{
 				<h4 className="card-title">{sub.subject}</h4>
 				<p className="card-text"><strong>Provider</strong>: {sub.provider}</p>
         <div>
+          <TwitterFeed provider={sub.provider} />
+        </div>
+        <div>
           {courseTemp}
           <div style={{ 'marginTop': courseLength }}>
             <ReactPaginate previousLabel={"previous"}
@@ -174,7 +177,6 @@ class SubjectData extends Component{
               activeClassName={"active"} />
           </div>
         </div>
-        <TwitterFeed provider={sub.provider} />
         <div style={{ 'marginTop': (courseLength + 100) }}>
           {jobTemp}
           <div style={{ 'marginTop': jobLength }}>
