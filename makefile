@@ -15,7 +15,7 @@ sha:
 gui_testing:
 	sudo apt-get install xserver-xephyr
 	sudo apt-get install xvfb
-	pip install pyvirtualdisplay selenium
+	pip3 install pyvirtualdisplay selenium
 
 travis:
 	cd react/; npm install
@@ -44,7 +44,7 @@ uml:
 
 # make selenium - runs selenium tests
 selenium:
-	- @(cd react/__tests__//gui_tests; pip install -r requirements.txt; make travis)
+	- @(cd react/__tests__//gui_tests; pip3 install -r requirements.txt; make travis)
 
 postman:
 	@npm install newman; node_modules/.bin/newman run postman_tests.json -g postman_globals.json
@@ -59,7 +59,7 @@ backend: FORCE pypip
 FORCE: ;
 
 pypip:
-	pip install mypy;pip install flask;pip install flask_corp; pip install numpy;pip install requests;pip install psycopg2
+	pip3 install mypy;pip3 install flask;pip3 install flask_corp; pip3 install numpy;pip3 install requests;pip3 install psycopg2
  
 
 # make website  - prints link to a website
